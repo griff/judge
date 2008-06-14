@@ -1,0 +1,10 @@
+require 'set'
+require 'judge/immutable_wrapper'
+require 'judge/locations'
+require 'judge/location'
+require 'judge/power'
+require 'judge/province'
+require 'judge/province_coast'
+require 'judge/map'
+require 'judge/map_reader'
+# vim: sts=4:sw=4:ts=4:et

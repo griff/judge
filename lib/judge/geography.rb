@@ -1,0 +1,2 @@
+module Geography
+end

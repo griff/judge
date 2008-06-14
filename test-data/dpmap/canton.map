@@ -1,0 +1,256 @@
+#   ------------------------------------------------------------
+#   Official names of each location, with all recognized aliases
+#   ------------------------------------------------------------
+Afghanistan                 = afg afganistan
+Akita                       = aki 
+Amur                        = amu amursk
+Arabia                      = ara saudi+arabia
+Arabian Sea                 = ase Arabian
+Armenia                     = arm
+Assam                       = asm ass asam
+Baghdad                     = bag bagdad
+Baluchistan                 = bal bel beluchistan pakistan
+Banda Sea                   = ban banda
+Bay of Bengal               = bob sea+bengal bengal+sea bengal bengal+bay
+Black Sea                   = bla black
+Bombay                      = bom
+Borneo                      = bor
+Bulgaria (east coast)       = bul/ec bul(ec) bulgaria/ec bulgaria(ec)
+Bulgaria (south coast)      = bul/sc bul(sc) bulgaria/sc bulgaria(sc)
+Bulgaria                    = bul
+Burma                       = bur myanmar
+Calcutta                    = cal
+Cambodia                    = cam
+Canton (east coast)         = can/ec can(ec) canton/ec canton(ec) kwa/ec kwa(ec) kwantung+(east+coast) kwantung/ec kwantung(ec)
+Canton (south coast)        = can/sc can(sc) canton/sc canton(sc) kwa/sc kwa(sc) kwantung+(south+coast) kwantung/sc kwantung(sc)
+Canton                      = can kwa kwangtung
+Celebes Sea                 = cse cel celebes
+Central Pacific Ocean       = cpo central+pacific
+Chungking                   = chu chongqing
+Constantinople              = con
+Damascus (south coast)      = dam/sc dam(sc) damascus/sc damascus(sc)
+Damascus (west coast)       = dam/wc dam(wc) damascus/wc damascus(wc)
+Damascus                    = dam
+Delhi                       = del new+delhi
+East China Sea              = ecs east+china
+East Indian Ocean           = eio east+indian east+india
+Egypt                       = egy
+Formosa                     = for taiwan
+Gulf of Martaban            = gom martaban andaman andaman+sea 
+Gulf of Siam                = gos siam+gulf gulf+siam gulf+thailand
+Hanoi                       = han
+Hong Kong                   = hko hk hon hongkong
+Hue                         = hue
+Irkutsk                     = irk irkusk irkust
+Java                        = jav
+Java Sea                    = jse
+Kansu                       = kan gansu
+Karimata Strait             = kar karimata
+Kashmir                     = kas
+Khabarovsk                  = kha kabarovsk kabarosk khabarosk
+Kirghiz                     = kir kirghizstan kyrgyz kyrgyzstan
+Korea                       = kor cor corea
+Kyoto                       = kyo kiota kyota kioto
+Laos                        = lao
+Madras                      = mad chennai
+Malaya                      = mal malaysia
+Manchuria                   = man
+Maritime Province           = mar maritime
+Mediterranian Sea           = med mediterranian
+Mongolia                    = mon
+Moscow                      = mos
+Peking                      = pek bejing beijing pekin 
+Persia                      = per iran
+Persian Gulf                = pgu persian
+Philippines                 = phi phillipines phillippines
+Philippine Sea              = pse philippines+sea 
+Red Sea                     = red 
+Rumania                     = rum romania
+Saigon                      = sai
+Sarawak                     = sar
+Sasebo                      = sas
+Sea of Japan                = soj sea+japan eastsea east+sea
+Sea of Okhotsk              = soo okhotsk ochotsk okhotsk+sea
+Sevastopol                  = sev sevastapol
+Shanghai                    = sha
+Shikoku                     = shi
+Siam (east coast)           = sia/ec sia(ec) siam/ec siam(ec) thailand+(east+coast) thailand/ec thailand(ec)
+Siam (west coast)           = sia/wc sia(wc) siam/wc siam(wc) thailand+(west+coast) thailand/wc thailand(wc) 
+Siam                        = sia thailand
+Siberia                     = sib
+Sinkiang                    = sin sinjiang xinjiang
+South China Sea             = scs southchina south+china
+South Indian Ocean          = sio south+indian south+india
+Sumatra                     = sum
+Tibet                       = tib xizang
+Tokyo                       = tok tokio
+Tomsk                       = tom
+Turkestan                   = tur turkmenistan
+West Indian Ocean           = wio westindian west+indian
+Yellow Sea                  = yel yellow
+Yesso                       = yes yeso yezzo yezo hokkaido
+Yunnan                      = yun yunan
+
+#   ------------------------------
+#   Location adjacency information
+#   ------------------------------
+LAND    AFG     ABUTS   BAL KAS PER SIN TUR
+COAST   AKI     ABUTS   KYO shi SOJ tok YES
+LAND    AMU     ABUTS   IRK KHA MAN MAR MON
+COAST   ARA     ABUTS   ASE BAG DAM/SC PGU RED
+COAST   ARM     ABUTS   BLA CON kir per SEV
+WATER   ASE     ABUTS   ARA BAL BOM PGU RED WIO
+LAND    ASM     ABUTS   BUR CAL CHU NEP TIB YUN
+COAST   BAG     ABUTS   ARA con dam PER PGU
+COAST   BAL     ABUTS   afg ASE BOM del kas PER PGU
+WATER   BAN     ABUTS   CSE JAV JSE SIO
+WATER   BOB     ABUTS   BUR CAL EIO GOM MAD WIO
+WATER   BLA     ABUTS   ARM BUL/EC CON RUM SEV
+COAST   BOM     ABUTS   ASE BAL del MAD WIO
+COAST   BOR     ABUTS   CSE JSE KAR SAR
+COAST   BUL/EC  ABUTS   BLA CON RUM
+COAST   BUL/SC  ABUTS   CON MED
+COAST   bul     ABUTS   BLA CON MED RUM
+COAST   BUR     ABUTS   asm CAL BOB GOM lao SIA/WC yun
+COAST   CAL     ABUTS   asm BOB BUR del MAD NEP
+COAST   CAM     ABUTS   GOS hue lao SAI SIA/EC
+COAST   CAN/EC  ABUTS   ECS HKO SCS SHA
+COAST   CAN/SC  ABUTS   HAN HKO SCS
+COAST   can     ABUTS   chu ECS HAN HKO SCS SHA yun
+LAND    CHU     ABUTS   ASM CAN KAN PEK SHA TIB YUN
+COAST   CON     ABUTS   ARM bag BLA BUL/EC BUL/SC DAM/WC MED per
+WATER   CSE     ABUTS   BAN BOR CPO JSE PHI SAR SCS
+WATER   CPO     ABUTS   CSE PHI PSE SOO TOK YES
+COAST   DAM/SC  ABUTS   ARA EGY RED
+COAST   DAM/WC  ABUTS   CON EGY MED
+COAST   dam     ABUTS   ARA bag CON EGY MED RED
+LAND    DEL     ABUTS   BAL BOM CAL KAS MAD NEP
+WATER   ECS     ABUTS   CAN/EC FOR KOR PSE SAS SCS SHA SOJ YEL
+WATER   EIO     ABUTS   BOB GOM SIO SUM WIO
+COAST   EGY     ABUTS   DAM/SC DAM/WC MED RED
+COAST   FOR     ABUTS   ECS PSE SCS
+WATER   GOM     ABUTS   BOB BUR EIO JSE MAL SIA/WC SUM
+WATER   GOS     ABUTS   CAM JSE KAR MAL SAI SIA/EC
+COAST   HAN     ABUTS   CAN/SC HUE lao SCS yun
+COAST   HKO     ABUTS   CAN/EC CAN/SC SCS
+COAST   HUE     ABUTS   cam HAN KAR lao SAI SCS
+LAND    IRK     ABUTS   AMU KHA MON SIB TOM
+COAST   JAV     ABUTS   BAN JSE SIO
+WATER   JSE     ABUTS   BAN BOR CSE GOM GOS JAV KAR MAL SIO SUM
+LAND    KAN     ABUTS   CHU MON PEK SIN TIB
+WATER   KAR     ABUTS   BOR GOS HUE JSE SAI SAR SCS
+LAND    KAS     ABUTS   AFG BAL DEL NEP SIN TIB
+COAST   KHA     ABUTS   amu irk MAR SOJ SOO
+LAND    KIR     ABUTS   ARM MOS SEV SIB TOM TUR
+COAST   KOR     ABUTS   ECS MAN MAR SOJ YEL
+COAST   KYO     ABUTS   AKI SAS shi SOJ
+LAND    LAO     ABUTS   BUR CAM HAN HUE SIA YUN
+COAST   MAD     ABUTS   BOB BOM CAL del WIO
+COAST   MAL     ABUTS   GOM GOS JSE SIA/EC SIA/WC
+COAST   MAN     ABUTS   amu KOR mar mon PEK YEL
+COAST   MAR     ABUTS   amu KHA KOR man SOJ
+WATER   MED     ABUTS   BUL/SC CON DAM/WC EGY
+LAND    MON     ABUTS   AMU IRK KAN MAN PEK SIN TOM
+LAND    MOS     ABUTS   KIR SEV SIB
+COAST   PEK     ABUTS   chu kan MAN mon SHA YEL
+COAST   PER     ABUTS   afg arm BAG BAL con PGU tur
+WATER   PGU     ABUTS   ARA ASE BAG BAL PER
+COAST   PHI     ABUTS   CSE CPO PSE SCS
+WATER   PSE     ABUTS   CPO ECS FOR PHI SAS SCS SHI TOK
+WATER   RED     ABUTS   ARA ASE DAM/SC EGY WIO
+COAST   RUM     ABUTS   BLA BUL/EC SEV
+COAST   SAI     ABUTS   CAM GOS HUE KAR
+COAST   SAS     ABUTS   ECS KYO PSE SHI SOJ
+COAST   SAR     ABUTS   BOR CSE KAR SCS
+WATER   SCS     ABUTS   CAN/EC CAN/SC CSE ECS FOR HAN HUE HKO KAR PHI PSE SAR 
+COAST   SEV     ABUTS   ARM BLA kir mos RUM
+COAST   SHA     ABUTS   CAN/EC chu ECS PEK YEL
+COAST   SHI     ABUTS   aki kyo PSE SAS TOK
+COAST   SIA/EC  ABUTS   CAM GOS MAL
+COAST   SIA/WC  ABUTS   BUR MAL GOM
+COAST   sia     ABUTS   BUR CAM GOM GOS lao MAL
+LAND    SIB     ABUTS   IRK KIR MOS TOM
+LAND    SIN     ABUTS   AFG KAN KAS MON TIB TOM TUR
+WATER   SIO     ABUTS   BAN EIO JAV JSE SUM WIO 
+WATER   SOJ     ABUTS   AKI ECS KHA KOR KYO MAR SAS SOO YES 
+WATER   SOO     ABUTS   CPO KHA SOJ YES
+COAST   SUM     ABUTS   EIO GOM JSE SIO
+LAND    TIB     ABUTS   ASM CHU KAN KAS NEP SIN
+COAST   TOK     ABUTS   aki CPO PSE SHI YES
+LAND    TOM     ABUTS   IRK MON KIR SIB SIN TUR
+LAND    TUR     ABUTS   AFG KIR PER SIN TOM
+WATER   WIO     ABUTS   ASE BOB BOM EIO MAD RED SIO
+WATER   YEL     ABUTS   ECS KOR MAN PEK SHA
+COAST   YES     ABUTS   AKI CPO SOJ SOO TOK
+LAND    YUN     ABUTS   ASM BUR CAN CHU HAN LAO
+
+#   ------------------
+#   Nepal (impassable)
+#   ------------------ 
+Nepal           = nep
+SHUT    NEP     ABUTS   ASM CAL DEL KAS TIB
+
+#   ----------------------------------
+#   Powers with initial unit positions
+#   ----------------------------------
+BRITAIN
+A CAL
+A DEL
+F MAD
+
+CHINA
+A CHU
+A SHA
+A TIB
+F PEK
+
+FRANCE
+A HAN
+A HUE
+F SAI
+
+HOLLAND
+F JAV
+F BOR
+F SUM
+
+JAPAN
+A KYO
+F SAS
+F TOK
+
+RUSSIA
+A IRK
+A MOS
+F KHA
+F SEV
+
+TURKEY
+A BAG
+A DAM
+F CON
+
+#   -------------------------
+#   Powers, with home centers
+#   -------------------------
+BRITAIN  (BRITISH)   CAL DEL MAD
+CHINA    (CHINESE)   CHU PEK SHA TIB
+FRANCE   (FRENCH)    HAN HUE SAI
+HOLLAND  (DUTCH)     BOR JAV SUM
+JAPAN    (JAPANESE)  KYO SAS TOK
+RUSSIA   (RUSSIAN)   IRK KHA MOS SEV
+TURKEY   (TURKISH)   BAG CON DAM
+UNOWNED              AFG BAL BUR CAM FOR HKO KOR MAL MAN PER PHI RUM SIA
+
+
+# ---------------------------
+# Game starts in Spring, 1901
+# ---------------------------
+BEGIN SPRING 1901 MOVEMENT
+
+# -----------------------
+# Nineteen centers to win 
+# -----------------------
+VICTORY 19
+     
+

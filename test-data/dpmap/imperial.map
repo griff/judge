@@ -1,0 +1,11 @@
+# DPJudge map of Imperial
+# Created by Joe Carl, Mar 2003
+
+USE imperial.politics
+USE imperial.locations
+USE imperial.geography
+USE imperial.military
+
+RULE HOME_BUILDS
+BEGIN SPRING 1861 MOVEMENT
+VICTORY 84

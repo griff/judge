@@ -1,0 +1,628 @@
+%!PS-Adobe-2.0
+%%Title: diplomacy map (regular map)
+%%Creator: mapit
+%%Pages: (atend) 1
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 250 400   BER Berlin
+% 396 217 CON Constantinople
+% 133 344 LON London
+% 367 344 MOS Moscow
+% 104 217 PAR Paris
+% 185 115 ROM Rome
+% 315 115 VIE Vienna
+% MAP
+
+% The original map postscript code is from William Roberts, 30/4/92
+
+% * modified by George Boyce for use with his mapit program, i.e.
+% * this file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+%
+
+% constants:
+  /NameOffset {LetterSize} def      % distance below point to draw name
+  /UnitOffset 8 def         % distance above point to draw unit
+
+  /TitleFontSize 20 def         % font size (Times-Roman)
+  /MessageFontSize 8 def        % font size (Times-Roman)
+  /NameFontSize 12 def          % font size (Helvetica-Bold)
+  /OrderFontSize 10 def         % font size (Courier)
+  /OwnerFontSize 8 def          % font size (Courier)
+
+  /HeadLength 10 def            % of a move arrow head
+  /HalfHeadThickness 5 2 div def    
+
+  /HalfThickness 1 2 div def        % of a move/support/convoy arrow shaft
+
+  /HoldCircle 10 def    % of a support hold arrow
+  /MoveCircle 4 def % of a support move arrow
+  /ConvoyCircle 6 def   % of a convoy arrow
+
+/ShowPage /showpage load def    % nothing special required
+
+/OrderReport {  % to the right of the map
+ maxx 5 add maxy 55 sub moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { % below order report with a title in slightly larger font
+ maxx 5 add maxy 500 sub moveto
+ /Courier-Bold findfont OrderFontSize 2 add scalefont setfont
+ currentpoint OrderFontSize sub 2 sub (Retreat orders:) show moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  % below left half of map
+ minx miny 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { % below right half of map
+ minx 450 add miny 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { % in upper right corner of map
+ maxx 100 sub maxy 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { WriteOwner } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { [2] 1 setdash } def
+/OkOrder { [] 0 setdash } def
+
+/DrawTitle {
+ maxx 5 add maxy 10 sub moveto
+ /Times-Roman findfont TitleFontSize scalefont setfont
+ currentpoint (DIPLOMACY) show moveto
+ 0 TitleFontSize neg rmoveto
+ dup stringwidth pop 308 exch div dup 1 lt
+    { gsave 1 scale show grestore }{ pop show } ifelse
+} def
+
+/DrawMessage {
+ minx maxy MessageFontSize add moveto
+ /Times-Roman findfont MessageFontSize scalefont setfont
+ show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  Red
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div atan sub def
+  /b 180 HalfThickness headdiam 2 div atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+ gsave
+ /Helvetica-Bold findfont NameFontSize scalefont setfont
+ 3 1 roll translate
+% mark the spot...
+% 0 0 5 0 360 arc fill
+ dup stringwidth pop
+ -2 div 0 NameOffset sub moveto show
+ grestore
+} def
+
+% Letters for the different countries
+%
+% 0 means "nobody", then 1-7 going clockwise from England
+/Countries [
+  (?) (E) (F) (G) (R) (T) (A) (I)
+] def
+
+/country 0 def
+
+/Black { 0 setgray }   bind def
+/White { 1 setgray }   bind def
+/Grey  { 0.7 setgray } bind def
+
+/Red    { 1 0 0   setrgbcolor } bind def
+/Pink   { 0.3 0 0 setrgbcolor } bind def
+/Blue   { 0 0 1   setrgbcolor } bind def
+/Mauve  { 1 0 1   setrgbcolor } bind def
+/Yellow { 1 1 0   setrgbcolor } bind def
+/Orange { 1 0.5 0.3  setrgbcolor } bind def
+/Green  { 0 0.7 0 setrgbcolor } bind def
+/Brown  { 0.7 0.5 0.2 setrgbcolor } bind def
+/Turquoise { 0.2 0.7 0.7 setrgbcolor } bind def
+
+
+% Piece colourname, Contrast colourname
+%
+/EnglandColours { /Blue  /White } def
+/FranceColours  { /Turquoise  /Black } def
+/GermanyColours { /Black /White } def
+/RussiaColours  { /White /Black } def
+/TurkeyColours  { /Yellow /Black } def
+/AustriaColours { /Red /Black } def
+/ItalyColours   { /Green /Black } def
+
+/set_country { % N /piececolour /contrast => -
+    load /Contrast exch store
+    load /PieceColour exch store
+    /country exch store
+} bind def
+
+/ENGLAND { 1 EnglandColours set_country } def
+/FRANCE  { 2 FranceColours  set_country } def
+/GERMANY { 3 GermanyColours set_country } def
+/RUSSIA  { 4 RussiaColours  set_country } def
+/TURKEY  { 5 TurkeyColours  set_country } def
+/AUSTRIA { 6 AustriaColours set_country } def
+/ITALY   { 7 ItalyColours   set_country } def
+
+/AUSTRIACENTER { Red } def
+/ENGLANDCENTER { Blue } def
+/FRANCECENTER  { Turquoise } def
+/GERMANYCENTER { Black } def
+/ITALYCENTER   { Green } def
+/RUSSIACENTER  { White } def
+/TURKEYCENTER  { Yellow } def
+/UNOWNEDCENTER { Brown } def
+
+/Offsets 8 array def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0               % maxdx maxdy
+  0 1 7 {
+    /N exch def
+    Countries N get % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy       % llx lly urx ury
+       3 -1 roll add -2 div % llx urx dy
+       3 1 roll add -2 div  % dy dx
+       exch 2 array astore  % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub       % llx urx leny
+    3 1 roll exch sub exch  % lenx leny
+                    % maxdx maxdy lenx leny
+    3 -1 roll max       % maxdx lenx newmaxdy
+    3 1 roll max        % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/DrawArmy { % x y X => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      Contrast 2 setlinewidth stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast 2 setlinewidth stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+% Fleet is a little boat...
+/DrawFleet { % N x y => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+/DrawMap {
+536 0 translate
+90 rotate
+0.9 dup scale       % reduce the size by 10%
+lastborder
+part1
+docenters
+
+% give credits
+% /Times-Roman findfont 6 scalefont setfont
+% 30 70 moveto
+% currentpoint (Electronic map by Juho Snellman) show
+% moveto 0 -12 rmoveto
+% currentpoint (Map drawn by mapit, public domain software) show
+% moveto 0 -6 rmoveto
+% currentpoint (written by George Boyce, 1992) show
+% moveto 0 -12 rmoveto
+% currentpoint (Diplomacy is a trademark of the Avalon Hill Game Company,) show
+% moveto 0 -6 rmoveto
+% (Baltimore, Maryland, all rights reserved.) show
+} def
+
+/minx 22 def /maxx 494 def
+/miny 25 def /maxy 460 def
+
+/gm /moveto load def
+/lin /lineto load def
+
+/lastborder { 
+  gsave
+    % frame 
+    newpath
+    minx miny moveto
+    minx maxy lineto
+    maxx maxy lineto
+    maxx miny lineto    
+    closepath
+    gsave 
+    Seawater fill
+    grestore 
+    Black 6 setlinewidth stroke 
+  grestore
+} def
+
+/buffer 255 string def
+
+/Coastcolour { 2.5 setlinewidth 0 setgray } def
+/Swisscolour { 0.5 setgray } def
+/Seawater    { 0.1 0.4 0.6 setrgbcolor } bind def
+/Landcolour  { 0.8 0.7 0.4 setrgbcolor } bind def%
+
+/ISLAND {
+    closepath
+    gsave Landcolour fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+/SEA {
+    closepath
+    gsave Seawater fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+1 setlinewidth
+0 setgray
+
+/supply {
+  gsave translate    
+  newpath
+    0 0 5 0 360 arc
+    gsave 
+    fill
+    grestore
+    0 setgray 
+    0.3 setlinewidth
+    stroke
+  grestore
+} def
+
+/docenters {
+gsave
+UNOWNEDCENTER
+BER supply
+MOS  supply
+CON  supply
+VIE  supply
+ROM  supply
+PAR  supply
+LON  supply
+grestore
+} def
+
+/draw_island
+{
+   0 0 moveto
+   gsave
+     translate
+       0 0 lineto
+       closepath
+       gsave
+         [3 3] 1.5 setdash 
+         0 setgray
+         stroke
+       grestore
+       newpath
+     0 0 35 0 360 arc
+     ISLAND
+   grestore   
+}
+def
+
+/BER { 250 380 } def
+/MOS { 367 324  } def
+/CON { 396 197   } def 
+/VIE { 315 95  } def 
+/ROM { 185 95  } def 
+/PAR { 104 197   } def 
+/LON { 133 324    } def 
+
+/part1 
+{
+   gsave 
+   
+   250 250 translate
+   
+   gsave
+
+   2.5 setlinewidth
+
+   0    150   draw_island
+   117  94    draw_island
+   146  -33   draw_island
+   65   -135  draw_island
+   -65  -135  draw_island
+   -146 -33   draw_island
+   -117 94    draw_island
+   
+   grestore
+
+   gsave
+     2.5 setlinewidth
+     [3 3] 3 setdash 
+     0 setgray
+     0 0 35 0 360 arc gsave Seawater fill grestore stroke 
+   grestore
+
+   grestore
+}
+def

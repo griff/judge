@@ -1,0 +1,288 @@
+#   --------
+#   Politics
+#   --------
+CARTHAGE    (CARTHAGENIAN)      CAR LEP PAN
+EGYPT       (EGYPTIAN)          ALE MEM THE
+MACEDON     (MACEDONIAN:A)      CAS KAL PEL
+ROME        (ROMAN)             BRU CAP ROM
+SYRIA       (SYRIAN)            ANT DAM TYR
+UNOWNED                         MAS SAG CIS DEL COR SYR CYR KNO CYD NAX
+UNOWNED                         PET ATH TRO TRA JER PER CHE RHO SPA SAR
+
+RULE        REMOTE_BUILDS
+
+BEGIN       B.C. 273 MOVEMENT
+FLOW        NEWYEAR:-1
+FLOW        B.C.:MOVEMENT,RETREATS
+FLOW        IFYEARDIV:2
+FLOW        B.C.:ADJUSTMENTS
+
+#   ---------
+#   Geography
+#   ---------
+Roma                = rom rome
+Etruria             = etr
+Samnium             = sam
+Brundisium          = bru
+Capua               = cap
+Cisalpina           = cis
+Insubria            = ins
+Massilia            = mas
+Kyrnos              = kyr
+Sardo               = sar
+Sinus Ligusticum    = sli
+Mare Tyrrhenum      = mty
+Liparacae           = lip
+Helvetia            = hel
+Gaul                = gau
+Illyria             = ill
+Celtiberia          = cel
+Knossos             = kno
+Emporiae            = emp
+Coele-Syria         = coe
+Saguntum            = sag
+Barcid Sea          = bas
+Baleares            = bal
+Mare Internum       = min
+Pillars of Hercules = poh
+Mauretania          = mau
+Numidia             = num
+Carthago            = car
+Tritonis            = tri
+West Sahara         = wsa
+Leptis Magna        = lep
+East Sahara         = esa
+Charax              = cha
+Cyrene              = cyr
+Panormus            = pan
+Syracuse            = syr
+Messenian Gulf      = meg
+Magna Grecian Sea   = mgs
+Syrtis Major        = sma
+Syrtis Minor        = smi
+Mare Ionium         = mio
+Minoan Sea          = mis
+Cydonia             = cyd
+Mare Adriaticum     = mad
+Epirus              = epi
+Delphi              = del
+Ptolemaic Sea       = pts
+Corinth             = cor
+Sparta              = spa
+Athens              = ath
+The Fetters         = fet
+Pella               = pel
+Istros              = ist
+Paeonia             = pae
+Kallatis            = kal
+Cassandreia         = cas
+Euboea              = eub
+Lesbos              = les
+Thasos              = tha
+Thrace              = thr
+Scythia             = scy
+Antigonid Sea       = ans
+Pontus Euxeinos     = pon
+Tanais              = tan
+Chersonesus         = che
+Maeotis Palus       = mpa
+Armenia             = arm
+Sea of Colchis      = soc
+Propontis           = pro
+Bithynia            = bit
+Troy                = tro
+Trapezus            = tra
+Aegean Sea          = aeg
+Pergamum            = per
+Phrygia             = phr
+Pisidia             = pis
+Rhodes              = rho
+Sinai               = sin
+Petra               = pet
+Myrtoan Sea         = myr
+Galatia             = gal
+Cilicia             = cil
+Cretan Sea          = crs
+Lycian Sea          = lys
+Antioch             = ant
+Damascus            = dam
+Tyre                = tyr
+Mesopotamia         = mes
+Jerusalem           = jer
+Raphia              = rap
+Arabia              = ara
+Sea of Alexander    = soa
+Bay of Pelusium     = bop
+Seleucid Sea        = ses
+Naxos               = nax
+Cyprus              = cyp
+Sea of Reeds        = sor
+Nubian Desert       = nub
+Thebes              = the
+Libya               = lib
+Alexandria          = ale
+Memphis             = mem
+Melita              = mel
+Bay of Apollo       = boa
+Sinus Tarentinus    = sta
+The Mamertines      = mam
+Dalmatia            = dal
+Ithican Sea         = its
+Saronic Gulf        = sgu
+Kos                 = kos
+Nabatea             = nab
+Desert of Palms     = dop
+Atropatena          = atr
+Media               = med
+Sarmatia            = srm
+Syene               = sye
+Halycus             = hal
+
+LAND    ROM     ABUTS   ETR SAM BRU CAP
+COAST   ETR     ABUTS   INS cis sam rom CAP MTY SLI
+COAST   SAM     ABUTS   CIS MAD BRU rom etr
+COAST   BRU     ABUTS   SAM MAD MIO STA EPI ROM CAP
+COAST   CAP     ABUTS   MAM LIP MTY ETR rom BRU STA MIO
+COAST   CIS     ABUTS   ins hel ill DAL MAD SAM etr
+COAST   INS     ABUTS   MAS SLI ETR cis hel gau
+COAST   MAS     ABUTS   SLI EMP gau INS
+COAST   KYR     ABUTS   SLI MTY SAR
+COAST   SAR     ABUTS   BAS SLI KYR MTY LIP MIN
+WATER   SLI     ABUTS   KYR MTY SAR BAS EMP MAS INS ETR
+WATER   MTY     ABUTS   SAR SLI KYR ETR CAP LIP
+WATER   LIP     ABUTS   MAM MIO CAP MTY SAR MIN
+LAND    HEL     ABUTS   ILL CIS INS GAU
+LAND    GAU     ABUTS   HEL INS MAS EMP CEL
+LAND    ILL     ABUTS   SRM SCY IST PEL DAL CIS HEL
+COAST   CEL     ABUTS   POH SAG emp gau
+COAST   KNO     ABUTS   CRS PTS MIS CYD
+COAST   EMP     ABUTS   MAS BAS BAL SAG cel gau SLI
+COAST   COE     ABUTS   TYR dam dop JER SES
+COAST   SAG     ABUTS   CEL EMP BAL MIN POH MAU
+WATER   BAS     ABUTS   SAR MIN BAL EMP SLI
+WATER   BAL     ABUTS   EMP BAS MIN SAG
+WATER   MIN     ABUTS   POH SAG BAL BAS SAR LIP MAM HAL PAN MGS CAR NUM MAU
+WATER   POH     ABUTS   MIN MAU CEL SAG
+COAST   MAU     ABUTS   NUM tri wsa POH SAG MIN
+COAST   NUM     ABUTS   MIN CAR tri MAU
+COAST   CAR     ABUTS   MIN MGS SMI SMA LEP tri NUM
+LAND    TRI     ABUTS   NUM CAR LEP WSA MAU
+LAND    WSA     ABUTS   MAU TRI LEP ESA
+COAST   LEP     ABUTS   SMA CHA esa wsa tri CAR
+LAND    ESA     ABUTS   WSA LEP CHA CYR LIB THE SYE
+COAST   CHA     ABUTS   LEP SMA CYR esa
+COAST   CYR     ABUTS   CHA SMA MIS PTS LIB esa
+COAST   PAN     ABUTS   MGS MIN HAL
+COAST   SYR     ABUTS   MIO MAM HAL MEL
+WATER   MEG     ABUTS   CRS MGS ITS SPA MYR
+WATER   MGS     ABUTS   MEG ITS MIO MEL CRS CYD MIS BOA SMA SMI CAR MIN PAN HAL
+WATER   SMA     ABUTS   SMI MGS BOA MIS CYR CHA LEP CAR
+WATER   SMI     ABUTS   CAR MGS SMA
+WATER   MIO     ABUTS   ITS MGS MEL SYR MAM LIP CAP STA BRU MAD DEL ATH COR
+WATER   MIS     ABUTS   CYR SMA BOA MGS CYD KNO PTS
+COAST   CYD     ABUTS   MGS CRS KNO MIS
+WATER   MAD     ABUTS   CIS DAL EPI DEL MIO BRU SAM
+COAST   EPI     ABUTS   DEL BRU MAD DAL pel fet
+COAST   DEL     ABUTS   EPI MAD MIO COR ATH fet
+WATER   PTS     ABUTS   SOA ALE LIB CYR MIS KNO CRS
+COAST   COR     ABUTS   MIO DEL ATH SPA ITS
+COAST   SPA     ABUTS   MEG ITS COR MYR ATH
+COAST   ATH     ABUTS   FET DEL MIO COR SPA MYR SGU AEG EUB
+COAST   FET     ABUTS   PEL epi del ATH EUB
+COAST   PEL     ABUTS   FET epi dal ill ist pae CAS EUB
+COAST   IST     ABUTS   PON ANS KAL pae pel ill SCY
+COAST   PAE     ABUTS   ist kal THR THA CAS pel
+COAST   KAL     ABUTS   IST ANS THR pae
+COAST   CAS     ABUTS   THA EUB PEL PAE
+WATER   EUB     ABUTS   THA LES AEG ATH FET PEL CAS
+WATER   LES     ABUTS   THA EUB AEG PER TRO PRO THR
+WATER   THA     ABUTS   THR LES EUB CAS PAE
+# PRO TRO
+COAST   THR     ABUTS   PAE KAL ANS PON BIT PRO TRO THA LES
+COAST   SCY     ABUTS   srm TAN MPA CHE PON IST ill
+WATER   ANS     ABUTS   THR KAL IST PON
+WATER   PON     ABUTS   ANS IST SCY CHE MPA SOC TRA BIT PRO THR
+COAST   TAN     ABUTS   ARM srm SCY MPA CHE SOC
+COAST   CHE     ABUTS   SCY MPA TAN PON
+WATER   MPA     ABUTS   CHE SCY TAN SOC PON
+COAST   ARM     ABUTS   TAN srm atr med dam gal TRA SOC
+WATER   SOC     ABUTS   PON MPA TAN ARM TRA
+WATER   PRO     ABUTS   PON BIT TRO LES THR
+# THA
+COAST   BIT     ABUTS   TRO PRO THR PON TRA gal phr
+COAST   TRO     ABUTS   THR PRO BIT phr PER LES
+# THA
+COAST   TRA     ABUTS   PON SOC BIT gal ARM
+WATER   AEG     ABUTS   KOS CRS NAX SGU ATH EUB LES PER RHO MYR
+COAST   PER     ABUTS   RHO AEG LES TRO phr
+LAND    PHR     ABUTS   TRO BIT GAL ANT CIL PIS RHO PER
+COAST   PIS     ABUTS   CIL LYS RHO phr
+COAST   RHO     ABUTS   phr PIS LYS SOA CRS KOS AEG PER
+COAST   SIN     ABUTS   BOP RAP MEM THE SOR PET jer
+COAST   PET     ABUTS   ARA dop nab jer SIN SOR
+WATER   MYR     ABUTS   SPA ATH SGU AEG NAX CRS MEG
+LAND    GAL     ABUTS   TRA BIT PHR ANT DAM ARM
+COAST   CIL     ABUTS   ANT LYS PIS phr
+WATER   CRS     ABUTS   MEG MYR NAX AEG KOS LYS RHO SOA PTS KNO CYD MGS
+WATER   LYS     ABUTS   KOS RHO PIS CIL ANT TYR CYP SES SOA CRS
+COAST   ANT     ABUTS   CIL phr gal dam TYR LYS
+LAND    DAM     ABUTS   GAL ARM MED MES DOP COE TYR ANT
+COAST   TYR     ABUTS   COE SES LYS ANT dam
+LAND    MES     ABUTS   MED DAM DOP ARA
+COAST   JER     ABUTS   RAP BOP SES COE dop nab pet sin
+COAST   RAP     ABUTS   SIN BOP JER
+COAST   ARA     ABUTS   SOR PET dop mes
+WATER   SOA     ABUTS   CRS RHO LYS CYP SES BOP MEM ALE PTS
+WATER   BOP     ABUTS   MEM SOA SES JER RAP SIN
+WATER   SES     ABUTS   BOP SOA CYP LYS TYR COE JER
+COAST   NAX     ABUTS   CRS MYR AEG
+COAST   CYP     ABUTS   LYS SOA SES
+WATER   SOR     ABUTS   ARA PET SIN THE NUB
+COAST   NUB     ABUTS   SOR THE sye
+COAST   THE     ABUTS   SIN SOR NUB sye esa lib ALE MEM
+COAST   LIB     ABUTS   CYR PTS ALE the esa
+COAST   ALE     ABUTS   PTS SOA MEM THE LIB
+COAST   MEM     ABUTS   ALE SOA BOP SIN THE
+WATER   MEL     ABUTS   MGS HAL SYR MIO
+WATER   BOA     ABUTS   MGS MIS SMA
+WATER   STA     ABUTS   MIO CAP BRU
+COAST   MAM     ABUTS   CAP LIP MIO SYR HAL MIN
+COAST   DAL     ABUTS   CIS MAD EPI pel ill
+WATER   ITS     ABUTS   COR MIO MGS MEG SPA
+WATER   SGU     ABUTS   MYR ATH AEG
+WATER   KOS     ABUTS   RHO AEG LYS CRS
+LAND    NAB     ABUTS   DOP PET JER
+LAND    DOP     ABUTS   PET ARA MES NAB COE DAM JER
+LAND    ATR     ABUTS   SRM ARM MED
+LAND    MED     ABUTS   MES DAM ARM ATR
+LAND    SRM     ABUTS   ATR ARM SCY ILL TAN
+LAND    SYE     ABUTS   ESA THE NUB
+COAST   HAL     ABUTS   MAM SYR PAN MIN MEL MGS
+
+#   --------
+#   Military
+#   --------
+CARTHAGE
+F CAR
+F LEP
+F PAN
+
+EGYPT
+F ALE
+F MEM
+A THE
+
+MACEDON
+F CAS
+F KAL
+A PEL
+
+ROME
+A BRU
+F CAP
+A ROM
+
+SYRIA
+A ANT
+A DAM
+F TYR

@@ -1,0 +1,289 @@
+NOTIFY  VonPowell@aol.com
+
+#   ==========================================================================
+#       Asterisked adjacencies invoke the "Cape of Good Hope" rules:
+#   1.  A fleet in Egypt or Hejaz cannot support a unit holding in or moving
+#       to Mid-Atlantic Ocean even though they may move to Mid-Atlantic Ocean 
+#       themselves.  Likewise, a fleet in Mid-Atlantic Ocean cannot support a
+#       unit holding in or moving to Egypt or Hejaz.
+#   2.  Units moving from Egypt or Hejaz to MAO or vice-versa, do so at
+#       HALF-strength.
+#   3.  Units retreating across an asterisked border will be destroyed in
+#       favor of any OTHER unit retreating to the same location.
+#   =========================================================================
+
+#   ----------------------------------------------------------------------
+#   Official names of each location, with all recognized aliases for each.
+#   Upper-and lower-case in this area of the .map file is not important.
+#   ----------------------------------------------------------------------
+Adriatic Sea                = adr adriatic  
+Aegean Sea                  = aeg aegean 
+Algeria                     = alg algiers
+Alsace                      = als alsace-lorraine
+Ankara                      = ank
+Apulia                      = apu
+Arabia                      = ara
+Armenia                     = arm
+Baltic Sea                  = bal baltic
+Barents Sea                 = bar barents
+Belgium                     = bel
+Berlin                      = ber
+Black Sea                   = bla black
+Bohemia                     = boh
+Bosnia                      = bos
+Brest                       = bre
+Budapest                    = bud
+Bulgaria                    = bul
+Burgundy                    = bur
+Clyde                       = cly
+Cologne                     = col ruh ruhr
+Constantinople              = con
+Cyrenaica                   = cyr
+Damascus                    = dam syr syria
+Denmark                     = den
+Eastern Mediterranean       = eas emed east eastern eastmed ems eme emd
+Edinburgh                   = edi
+Egypt                       = egy
+English Channel             = eng english channel ech
+Finland                     = fin
+Galicia                     = gal
+Gascony                     = gas
+Gibraltar                   = gib rock
+Greece                      = gre
+Gulf of Bothnia             = bot gbo gob both gulfofb bothnia
+Gulf of Lyon                = lyo gly gol gulfofl lyon
+Hejaz                       = hej
+Helgoland Bight             = hel helgoland heligoland heligoland+bight
+Iceland                     = ice
+Ionian Sea                  = ion ionian
+Ireland                     = ire
+Irish Sea                   = iri irish
+Kiel                        = kie
+Konya                       = kon
+Liverpool                   = lvp livp lpl
+Livonia                     = lvn lvo livo lva
+London                      = lon
+Macedonia (east coast)      = mac/ec mac(ec) macedonia/ec macedonia(ec) mac+(ec)
+Macedonia (west coast)      = mac/wc mac(wc) macedonia/wc macedonia(wc) mac+(wc)
+Macedonia                   = mac
+Marseilles                  = mar mars
+Mid-Atlantic Ocean          = mao mid midatlanticocean midatlantic mat
+Milan                       = mil
+Morocco                     = mor
+Moscow                      = mos
+Munich                      = mun
+Naples                      = nap
+Netherlands                 = net hol holland
+North Atlantic Ocean        = nao nat
+North Sea                   = nth norsea nts
+Norway                      = nwy nor norw
+Norwegian Sea               = nwg nws norwegian norwsea nrg
+Palestine                   = pal
+Paris                       = par
+Picardy                     = pic
+Piedmont                    = pie
+Portugal                    = por
+Prussia                     = pru
+Rome                        = rom roma
+Rumania                     = rum
+Serbia                      = ser
+Sevastopol                  = sev sevastapol
+Siberia                     = sib
+Silesia                     = sil
+Skagerrak                   = ska
+Southern Algeria            = sou sal salg
+Spain (east coast)          = spa/ec spa(ec) spain/ec spain(ec) spa+(ec) spain+(ec)
+Spain (north coast)         = spa/nc spa(nc) spain/nc spain(nc) spa+(nc) spain+(nc)
+Spain (west coast)          = spa/wc spa(wc) spain/wc spain(wc) spa+(wc) spain+(wc)
+Spain                       = spa
+St Petersburg (north coast) = stp/nc stp(nc) stpete/nc stpete(nc) st.+petersburg/nc stp+(nc)
+St Petersburg (south coast) = stp/sc stp(sc) stpete/sc stpete(sc) st.+petersburg/sc stp+(sc)
+St Petersburg               = stp stpete st.+petersburg st.petersburg
+Sweden                      = swe
+Switzerland                 = swi
+Trieste                     = tri
+Tripolitania                = trp trip tripoli
+Tunisia                     = tun tunis
+Tyrolia                     = tyr tyl trl
+Tyrrhenian Sea              = tys tyrr tyrrhenian tyn tyh
+Ukraine                     = ukr
+Venetia                     = ven venice
+Vienna                      = vie
+Wales                       = wal
+Warsaw                      = war
+Western Mediterranean       = wes wmed west western westmed wms wme wmd west+med
+Yorkshire                   = yor york  yonkers
+
+# ----------------------------------------------------------------
+# Location adjacency information, keyed off the official dpjudge
+# name of the location.  Here, upper- and lower-case IS important.
+# ----------------------------------------------------------------
+WATER   ADR     ABUTS   APU BOS ION TRI VEN MAC/WC
+WATER   AEG     ABUTS   CON EAS GRE ION KON MAC/EC
+COAST   ALG     ABUTS   MOR WES sou TUN TYS 
+LAND    ALS     ABUTS   BEL BUR COL MUN SWI
+COAST   ANK     ABUTS   ARM BLA CON kon
+COAST   APU     ABUTS   ADR ION NAP rom VEN
+LAND    ARA     ABUTS   DAM HEJ PAL
+COAST   ARM     ABUTS   ANK BLA dam kon SEV
+WATER   BAL     ABUTS   BER DEN BOT LVN KIE PRU SWE
+WATER   BAR     ABUTS   NWY NWG STP/NC
+COAST   BEL     ABUTS   als bur col ENG NTH NET PIC 
+COAST   BER     ABUTS   BAL KIE mun PRU sil
+WATER   BLA     ABUTS   ANK ARM BUL CON RUM SEV
+LAND    BOH     ABUTS   BUD GAL MUN SIL TYR VIE
+COAST   BOS     ABUTS   ADR MAC/WC ser TRI
+COAST   BRE     ABUTS   ENG GAS MAO par PIC
+LAND    BUD     ABUTS   BOH GAL RUM SER TRI VIE
+COAST   BUL     ABUTS   BLA CON mac RUM ser
+LAND    BUR     ABUTS   BEL ALS GAS MAR PAR PIC SWI
+COAST   CLY     ABUTS   EDI IRE LVP NAO NWG
+LAND    COL     ABUTS   ALS BEL KIE MUN NET
+COAST   CON     ABUTS   AEG ANK BUL BLA KON MAC/EC
+COAST   CYR     ABUTS   EAS EGY ION TRP
+COAST   DAM     ABUTS   ara arm EAS KON PAL
+COAST   DEN     ABUTS   BAL HEL KIE NTH SKA SWE
+WATER   EAS     ABUTS   AEG CYR DAM EGY ION KON PAL
+COAST   EDI     ABUTS   CLY lvp NTH NWG YOR
+COAST   EGY     ABUTS   CYR EAS HEJ PAL *MAO
+WATER   ENG     ABUTS   BEL BRE IRI LON MAO NTH PIC WAL
+COAST   FIN     ABUTS   BOT nwy STP/SC SWE
+LAND    GAL     ABUTS   BOH BUD RUM SIL UKR WAR
+COAST   GAS     ABUTS   bur BRE MAO mar par SPA/NC
+WATER   BOT     ABUTS   BAL FIN LVN STP/SC SWE
+PORT    GIB     ABUTS   MAO MOR SPA/EC SPA/WC WES
+WATER   LYO     ABUTS   MAR PIE ROM SPA/EC TYS WES
+COAST   GRE     ABUTS   AEG MAC/EC MAC/WC ION
+COAST   HEJ     ABUTS   ara EGY pal *MAO
+WATER   HEL     ABUTS   DEN KIE NET NTH
+COAST   ICE     ABUTS   NAO NWG
+WATER   ION     ABUTS   ADR AEG APU CYR EAS GRE MAC/WC NAP TRP TUN TYS
+COAST   IRE     ABUTS   CLY IRI MAO NAO
+WATER   IRI     ABUTS   ENG IRE LVP MAO NAO WAL
+COAST   KIE     ABUTS   BAL BER col DEN HEL mun NET
+COAST   KON     ABUTS   AEG ank arm CON DAM EAS
+COAST   LON     ABUTS   ENG NTH YOR WAL
+COAST   LVN     ABUTS   BAL BOT mos PRU STP/SC war
+COAST   LVP     ABUTS   CLY edi IRI NAO WAL yor
+COAST   MAC/EC  ABUTS   AEG CON GRE
+COAST   MAC/WC  ABUTS   ADR BOS GRE ION
+COAST   mac     ABUTS   ADR AEG BOS BUL CON GRE ION SER
+COAST   MAR     ABUTS   bur gas LYO PIE SPA/EC swi
+WATER   MAO     ABUTS   BRE ENG GAS GIB IRE IRI MOR NAO POR SPA/NC SPA/WC *EGY *HEJ
+LAND    MIL     ABUTS   PIE ROM SWI TYR VEN
+COAST   MOR     ABUTS   ALG GIB MAO sou WES
+LAND    MOS     ABUTS   LVN SEV SIB STP UKR WAR
+LAND    MUN     ABUTS   ALS BER BOH COL KIE SIL TYR SWI
+COAST   NAP     ABUTS   APU ION ROM TYS
+WATER   NAO     ABUTS   CLY ICE IRE IRI LVP MAO NWG
+COAST   NET     ABUTS   BEL col HEL KIE NTH
+WATER   NTH     ABUTS   BEL DEN EDI ENG LON HEL NET NWY NWG SKA YOR
+COAST   NWY     ABUTS   BAR fin NTH NWG SKA STP/NC SWE
+WATER   NWG     ABUTS   BAR CLY EDI ICE NAO NWY NTH
+COAST   PAL     ABUTS   ara DAM EAS EGY hej
+LAND    PAR     ABUTS   BRE BUR GAS PIC
+COAST   PIC     ABUTS   BEL BRE bur ENG par
+COAST   PIE     ABUTS   LYO MAR ROM mil swi
+COAST   POR     ABUTS   MAO SPA/NC SPA/WC
+COAST   PRU     ABUTS   BAL BER LVN sil war
+COAST   ROM     ABUTS   apu LYO NAP mil PIE TYS ven
+COAST   RUM     ABUTS   BLA bud BUL gal ser SEV ukr
+LAND    SER     ABUTS   BOS BUD BUL MAC RUM TRI
+COAST   SEV     ABUTS   ARM BLA mos RUM sib ukr
+LAND    SIB     ABUTS   MOS SEV STP
+LAND    SIL     ABUTS   BER BOH GAL MUN PRU WAR
+WATER   SKA     ABUTS   DEN NWY NTH SWE
+LAND    SOU     ABUTS   ALG MOR TRP TUN
+COAST   SPA/EC  ABUTS   GIB LYO MAR WES
+COAST   SPA/NC  ABUTS   GAS MAO POR
+COAST   SPA/WC  ABUTS   GIB MAO POR
+COAST   spa     ABUTS   GAS GIB LYO MAR MAO POR WES
+COAST   STP/NC  ABUTS   BAR NWY
+COAST   STP/SC  ABUTS   FIN BOT LVN
+COAST   stp     ABUTS   BAR FIN BOT LVN mos NWY sib
+COAST   SWE     ABUTS   BAL DEN FIN BOT NWY SKA
+LAND    SWI     ABUTS   ALS BUR MAR MIL MUN PIE TYR
+COAST   TRI     ABUTS   ADR BOS bud ser tyr VEN vie
+COAST   TRP     ABUTS   CYR ION sou TUN
+COAST   TUN     ABUTS   ALG ION sou TRP TYS
+LAND    TYR     ABUTS   BOH MIL MUN TRI VEN VIE SWI
+WATER   TYS     ABUTS   ALG LYO ION ROM NAP TUN WES
+LAND    UKR     ABUTS   GAL MOS RUM SEV WAR
+COAST   VEN     ABUTS   ADR APU mil rom TRI tyr
+LAND    VIE     ABUTS   BOH BUD TRI TYR
+COAST   WAL     ABUTS   ENG IRI LON LVP yor
+LAND    WAR     ABUTS   GAL LVN MOS PRU SIL UKR
+WATER   WES     ABUTS   ALG GIB LYO MOR SPA/EC TYS
+COAST   YOR     ABUTS   EDI LON lvp NTH wal
+
+# -----------------------------------------------------------------
+# Powers and home centers.  Note that although they begin with
+# units there, and the centers are owned by them at game-start,
+# Britain cannot build in Egypt and France cannot build in Algeria.
+# Note that AUSTRIA should be AUSTRIA-HUNGARY (AUSTRO-HUNGARIAN)
+# but the results file looks wrong and map generation code no likee
+# -----------------------------------------------------------------
+AUSTRIA         (AUSTRIAN)          BUD TRI VIE
+BRITAIN         (BRITISH)           EDI LON LVP
+FRANCE          (FRENCH)            BRE MAR PAR
+GERMANY         (GERMAN)            BER COL KIE MUN
+ITALY           (ITALIAN)           MIL NAP ROM
+RUSSIA          (RUSSIAN)           MOS SEV STP WAR *SIB
+TURKEY          (OTTOMAN)           ANK CON DAM
+UNOWNED                             BEL BUL DEN GRE MOR
+UNOWNED                             NET NWY POR RUM SER 
+UNOWNED                             SPA SWE SWI TRP 
+
+# ---------------------------
+# Game starts in Spring, 1900
+# ---------------------------
+BEGIN SPRING 1900 MOVEMENT
+
+# ------------------------------------------------------
+# Eighteen centers to win (game continues if tied at 18)
+# ------------------------------------------------------
+VICTORY 18
+
+# ----------------------------------
+# Powers with initial unit positions
+# ----------------------------------
+AUSTRIA
+A BUD
+A VIE
+A TRI
+
+BRITAIN
+OWNS EDI EGY LON LVP
+F EDI
+F EGY
+F GIB
+F LON
+
+FRANCE
+OWNS ALG BRE MAR PAR
+A ALG
+F BRE
+A MAR
+A PAR
+
+GERMANY
+A BER
+A COL
+F KIE
+A MUN
+
+ITALY
+A MIL
+F NAP
+A ROM
+
+RUSSIA
+A WAR
+A MOS
+F SEV
+F STP/SC
+
+TURKEY
+F ANK
+A CON
+A DAM

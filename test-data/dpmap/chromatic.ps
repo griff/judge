@@ -1,0 +1,2213 @@
+%!PS-Adobe-2.0
+%%Title: diplomacy map (chromatic map)
+%%Creator: mapit
+%%Pages: (atend) 1
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 3976  4881    ALA Alabaster
+% 2824  1103    AQU Aquatic Sea
+% 3187  2220    AZU Azure
+% 5350  1139    BUT Sea of Butter
+% 6185  2500    BRO Bronze
+% 2636  3892    CAR Carnation Sea
+% 3032  1536    CER Cerulean
+% 4013  4046    CHA Chalk
+% 3324  4586    CHE Sea of Cherries
+% 5460  3706    COA Coal
+% 3727  2179    COB Cobalt
+% 3487  2741    COL Cold
+% 2643  3616    CRI Crimson
+% 3841  3178    CRY Crystal
+% 4578  1487    CYA Sea of Cyan
+% 5304  3430    EBO Ebony
+% 3812  1800    EME Bay of Emeralds
+% 2982  3461    FIR Fire Engine
+% 3642  1250    FOR Forest Sea
+% 2543  4695    GAR Garnet
+% 3649  3826    GHO Ghost
+% 4649  1778    GOL Gold
+% 5012  2606    HAZ Gulf of Hazel
+% 3438  3232    HOT Hot
+% 3782  5262    ICE Sea of Ice
+% 2695  1920    IND Indigo Sea
+% 4538  2997    INK Ink
+% 4050  4438    IVO Ivory
+% 4630  3543    JET Jet
+% 1788  3525    LAV Sea of Lava
+% 4316  4562    LEA Sea of Lead
+% 5105  1732    LEM Lemon
+% 1861  2125    MAG Magenta
+% 4171   740    MAL Malachite
+% 2370  3410    MAR Maroon
+% 2826  2781    MAU Gulf of Mauve
+% 5253  4047    MER Sea of Mercury
+% 6105  3872    NIG Sea of Night
+% 5685  3580    OBS Obsidian
+% 4045  3562    PAP Paper
+% 4664  3905    PLA Gulf of Platinum
+% 4940  3228    RAV Raven
+% 3376  3988    ROS Bay of Roses
+% 3059  1920    ROY Royal
+% 3077  3002    RUB Ruby
+% 4187  2470    SAF Saffron
+% 2871  1562    SAP Sapphire
+% 5454  2193    SEP Sepiatic Sea
+% 5103  4883    SIL Silver
+% 3845  4673    SNO Snow
+% 4486  2129    SUL Sulphur
+% 4675  2547    SUN Sunshine
+% 5024  1421    TOP Topaz
+% 5612  3084    UMB Sea of Umber
+% 2272  3615    VER Vermillion
+% 2356  2789    VIO Violet Sea
+% MAP
+
+% The original map postscript code is from William Roberts, 30/4/92
+
+% * modified by George Boyce for use with his mapit program, i.e.
+% * this file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+%
+
+% constants:
+  /NameOffset {LetterSize} def      % distance below point to draw name
+  /UnitOffset 40 def            % distance above point to draw unit
+
+  /TitleFontSize 200 def        % font size (Times-Roman)
+  /MessageFontSize 80 def       % font size (Times-Roman)
+  /NameFontSize 80 def          % font size (Helvetica-Bold)
+  /OrderFontSize 100 def        % font size (Courier)
+  /OwnerFontSize 80 def         % font size (Courier)
+
+  /HeadLength 100 def           % of a move arrow head
+  /HalfHeadThickness 25 def 
+
+  /HalfThickness 4 def          % of a move/support/convoy arrow shaft
+
+  /HoldCircle 100 def   % of a support hold arrow
+  /MoveCircle 40 def    % of a support move arrow
+  /ConvoyCircle 60 def  % of a convoy arrow
+
+/ShowPage /showpage load def    % nothing special required
+
+/OrderReport {  % to the right of the map
+ maxx 50 add maxy 550 sub moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { % below order report with a title in slightly larger font
+ maxx 50 add maxy 3240 sub moveto
+ /Courier-Bold findfont OrderFontSize 20 add scalefont setfont
+ currentpoint OrderFontSize sub 20 sub (Retreat orders:) show moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  % below left half of map
+ minx miny 60 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { % below retreat report
+ maxx 50 add miny 1080 add moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { % above upper right arc of map
+ maxx 720 sub maxy 100 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { WriteOwner } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { [20] 10 setdash } def
+/OkOrder { [] 0 setdash } def
+
+/DrawTitle {
+ maxx 50 add maxy 100 sub moveto
+ /Times-Roman findfont TitleFontSize scalefont setfont
+ currentpoint (Chromatic DIPLOMACY) show moveto
+ 0 TitleFontSize neg rmoveto show
+} def
+
+/DrawMessage {
+ minx maxy MessageFontSize add moveto
+ /Times-Roman findfont MessageFontSize scalefont setfont
+ show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  Red
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div atan sub def
+  /b 180 HalfThickness headdiam 2 div atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+ gsave
+ /Helvetica-Bold findfont NameFontSize scalefont setfont
+ 3 1 roll translate
+% mark the spot...
+% 0 0 5 0 360 arc fill
+ dup stringwidth pop
+ -2 div 0 NameOffset sub moveto show
+ grestore
+} def
+
+% Letters for the different countries
+%
+% 0 means "nobody", then 1-5 going clockwise from Light
+/Countries [
+  (?) (L) (D) (Y) (B) (R)
+] def
+
+/gm /moveto load def
+/lin /lineto load def
+
+/country 0 def
+
+/Light  {White} def
+/Dark   {Black} def
+/Yellow { 1 1 0 setrgbcolor } def
+/Blue   { 0 0 1 setrgbcolor } def
+/Red    { 1 0 0 setrgbcolor } def
+
+/Black { 0 0 0 setrgbcolor }   bind def
+/White { 0.9 0.9 0.9 setrgbcolor }   bind def
+/Brown  { 0.6 0.45 0.2 setrgbcolor } bind def
+
+% Piece colourname, Contrast colourname
+%
+/LightColours   { /Light  /Black } def
+/DarkColours    { /Dark   /White } def
+/YellowColours  { /Yellow /Black } def
+/BlueColours    { /Blue   /White } def
+/RedColours { /Red    /White } def
+
+/set_country { % N /piececolour /contrast => -
+    load /Contrast exch store
+    load /PieceColour exch store
+    /country exch store
+} bind def
+
+/LIGHT  { 1 LightColours  set_country } def
+/DARK   { 2 DarkColours   set_country } def
+/YELLOW { 3 YellowColours set_country } def
+/BLUE   { 4 BlueColours   set_country } def
+/RED    { 5 RedColours    set_country } def
+
+/LIGHTCENTER    { Light } def
+/DARKCENTER { Dark } def
+/YELLOWCENTER   { Yellow } def
+/BLUECENTER { Blue } def
+/REDCENTER  { Red } def
+/UNOWNEDCENTER  { Brown     } def
+
+/Offsets 6 array def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0               % maxdx maxdy
+  0 1 5 {
+    /N exch def
+    Countries N get % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy       % llx lly urx ury
+       3 -1 roll add -2 div % llx urx dy
+       3 1 roll add -2 div  % dy dx
+       exch 2 array astore  % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub       % llx urx leny
+    3 1 roll exch sub exch  % lenx leny
+                    % maxdx maxdy lenx leny
+    3 -1 roll max       % maxdx lenx newmaxdy
+    3 1 roll max        % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/DrawArmy { % x y X => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      Contrast 2 setlinewidth stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast 2 setlinewidth stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+% Fleet is a little boat...
+/DrawFleet { % N x y => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+
+/supply 
+{
+  gsave  translate
+  newpath 1.000 0.957 scale
+  0 0 31 0.000 360.000 arc fill
+  grestore 
+} 
+def
+
+/GOL { 4579 1929 } def
+/TOP { 4843 1705 } def 
+/SUN { 4556 2384 } def 
+/CRY {3944 3028 } def
+/BRO {5935 2655 } def
+/EBO {5182 3307 } def
+/OBS {5474 3494 } def
+/JET {4740 3418 } def
+/SIL {4940 4786 } def
+/IVO {4078 4287 } def
+/ALA {3996 4623 } def
+/GHO {3829 3905 } def
+/GAR {2606 4542 } def
+/CRI {2797 3564 } def
+/VER {2438 3591 } def
+/RUB {3077 3204 } def
+/MAG {2108 2191 } def
+/ROY {3099 2088 } def
+/SAP {2968 1768 } def
+/COB {3525 2251 } def
+/MAL {4175 1018 } def
+
+/cen
+{
+  UNOWNEDCENTER
+  
+  GOL supply
+  TOP supply
+  SUN supply
+  CRY supply
+  BRO supply
+  EBO supply
+  OBS supply
+  JET supply
+  SIL supply
+  IVO supply
+  ALA supply
+  GHO supply
+  GAR supply
+  CRI supply
+  VER supply
+  RUB supply  
+  MAG supply
+  ROY supply
+  SAP supply
+  COB supply
+  MAL supply
+  
+  Black
+}
+def 
+
+/DrawMap {
+Freelance_Plus begin
+.1 .1 scale
+/ecm matrix currentmatrix bdf
+/sem {ecm setmatrix} bdf
+5820 -1000 translate
+90 rotate
+0 setlinecap
+0 setlinejoin
+1.42 setmiterlimit
+
+part0
+
+part11 
+part12 
+part15
+part16 
+part19
+part20 
+part23 
+part24 
+cen
+
+%Credits
+end
+} def
+
+/Credits {
+% give credits
+/Ich 256 array def StandardEncoding Ich copy pop /bullet/paragraph/section/dieresis/tilde/ring
+/circumflex/grave/acute/quotedblleft/quotesingle
+/ellipsis/endash/emdash/guilsinglleft/guilsinglright
+/quotedblbase/quotesinglbase/quotedblright/OE/oe
+/Ydieresis/fi/fl/dagger/daggerdbl/Ccedilla/udieresis
+/eacute/acircumflex/adieresis/agrave/aring/ccedilla
+/ecircumflex/edieresis/egrave/idieresis/icircumflex
+/igrave/Adieresis/Aring/Eacute/ae/AE/ocircumflex
+/odieresis/ograve/ucircumflex/ugrave/ydieresis
+/Odieresis/Udieresis/oslash/sterling/Oslash/florin
+/aacute/iacute/oacute/uacute/ntilde/Ntilde/ordfeminine
+/ordmasculine/questiondown/exclamdown/guillemotleft
+/guillemotright/Aacute/Acircumflex/Agrave/cent/yen
+/atilde/Atilde/currency/Ecircumflex/Edieresis/Egrave
+/dotlessi/Iacute/Icircumflex/Idieresis/Igrave/Oacute
+/germandbls/Ocircumflex/Ograve/otilde/Otilde/Uacute
+/Ucircumflex/Ugrave/macron/cedilla/periodcentered
+Ich 127 97 getinterval astore pop
+/Ienc { /ncs Ich def /nfn ed /bfn ed /bfd bfn findfont def
+/nf bfd maxlength dict def bfd{exch dup dup /FID ne exch /Encoding ne and
+{exch nf 3 1 roll put}{pop pop} ifelse }forall nf/FontName nfn put
+nf/Encoding ncs put nfn nf definefont pop}bdf
+
+/IencO { /ncs Ich def /nfn ed /bfn ed /lnw ed /bfd bfn findfont def
+/nf bfd maxlength 4 add dict def bfd{exch dup dup /FID ne exch /Encoding ne and
+{exch nf 3 1 roll put}{pop pop} ifelse }forall nf/FontName nfn put nf/Encoding ncs put
+nf/PaintType 2 put nf/StrokeWidth lnw put
+nfn nf definefont pop}bdf
+
+/IencSO { /nfn ed /bfn ed /lnw ed /bfd bfn findfont def
+/nf bfd maxlength 4 add dict def bfd{exch dup /FID ne { exch nf 3 1 roll put}{pop pop} ifelse }forall
+nf/FontName nfn put nf/PaintType 2 put
+nf/StrokeWidth lnw put nfn nf definefont pop}bdf
+
+/Times-Roman /Flfon5 Ienc
+
+sv np 
+6500  500 itr mt
+8155  500 itr l2
+8155 1210 itr l2
+6500 1210 itr l2
+6500  500 itr l2
+cp
+st rs
+
+[161 0 0.00 161 -14 -110]  /Flfon5 cfnt
+
+6607 1147 itr mt
+(Chromatic Diplomacy) 
+show
+
+[78 0 0.00 78 -7 -53]  /Flfon5 cfnt
+
+6543  927 itr mt
+(Version 2.0 by JimmY Millington) 
+show
+
+6543  849 itr mt
+(Robs Schone and Lynsey Smith, 1994) 
+show
+
+6543  772 itr mt
+(Map by Nicholas Fitzpatrick, 1994) 
+show
+
+6543  694 itr mt
+(E-mail: nick@sunburn.uwaterloo.ca) 
+show
+
+6543  616 itr mt
+(Diplomacy copyright 1976 Avalon Hill Game Co.) 
+show
+
+} def
+
+/Coastcolour { 10 setlinewidth 0 setgray } def
+/Swisscolour { 0.5 setgray } def
+/Seawater    { 0.1 0.4 0.6 setrgbcolor } bind def
+/Landcolour  { 0.8 0.7 0.4 setrgbcolor } bind def%
+
+/ISLAND {
+    closepath
+    gsave Landcolour fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+    6 sw
+} def
+
+%
+% The rest of this file is the map drawn by Nick Fitzpatrick
+% with slight changes to make it fit the page better
+%
+% To allow for different land/sea colouring, I've modified
+% the Postscript rather horribly. Blame me if it stops working
+% somewhere. --jsnell
+
+/minx 1440 def /maxx 6442 def
+/miny  527 def /maxy 5529 def
+
+/Freelance_Plus dup 100 dict def load begin
+[ ] {bind} stopped { (patching the bind operator...) = flush
+/*bind /bind load def /bind { dup xcheck { *bind } if } *bind def } if pop
+/bdf {bind def} bind def /ldf {load def} bdf
+/mt /moveto ldf /rt /rmoveto ldf /l2 /lineto ldf /c2 /curveto ldf
+/sg /setgray ldf /gs /gsave ldf /ef /eofill ldf /rl2 /rlineto ldf
+/st /stroke ldf /gr /grestore ldf /np /newpath ldf
+/sv /gsave ldf /su /statusdict ldf /rs /grestore ldf
+/sw /setlinewidth ldf /sd /setdash ldf /cp /closepath ldf /ed {exch def } bdf
+/cfnt {findfont exch makefont setfont} bdf
+/itr {transform round exch round exch itransform} bdf
+/fres 72 0 matrix currentmatrix dtransform
+exch dup mul exch dup mul add sqrt def
+/res fres def /mcm matrix currentmatrix bdf
+end
+
+% The rim and the sea.
+/part0 %{{{ 
+{
+  Seawater
+
+  sv np 
+  3941 3028 itr mt
+  currentpoint translate
+  np 0 0 2501 0.000 360.000 arc fill
+  Black
+  12 sw
+  np 0 0 2501 0.000 360.000 arc sem  
+  st rs
+  6 sw
+  
+  Black
+}
+def
+
+%}}}
+
+% Tunis-equivalents 
+/part11 { %{{{ 
+
+0.000 sg
+
+6 sw
+
+% BRO 
+newpath
+6419 2748 gm
+6350 2760 lin
+6289 2764 lin
+6226 2791 lin
+6165 2808 lin
+6110 2802 lin
+6058 2757 lin
+6020 2757 lin
+5977 2781 lin
+5941 2888 lin
+5878 2891 lin
+5913 2789 lin
+5891 2765 lin
+5861 2788 lin
+5814 2760 lin
+5781 2692 lin
+5781 2595 lin
+5764 2552 lin
+5770 2505 lin
+5815 2466 lin
+5901 2413 lin
+5916 2361 lin
+5961 2339 lin
+5978 2398 lin
+6056 2365 lin
+6142 2332 lin
+6191 2289 lin
+6249 2259 lin
+6304 2236 lin
+6380 2492 lin
+ISLAND
+
+% SIL
+5018 5282 gm
+4982 5212 lin
+4959 5155 lin
+4912 5104 lin
+4876 5053 lin
+4864 4998 lin
+4889 4934 lin
+4877 4898 lin
+4841 4866 lin
+4728 4866 lin
+4704 4808 lin
+4813 4807 lin
+4828 4779 lin
+4796 4757 lin
+4807 4704 lin
+4861 4651 lin
+4953 4619 lin
+4988 4589 lin
+5034 4579 lin
+5086 4610 lin
+5164 4674 lin
+5218 4671 lin
+5254 4706 lin
+5203 4742 lin
+5260 4805 lin
+5319 4876 lin
+5375 4907 lin
+5423 4952 lin
+5467 5001 lin
+5260 5170 lin
+ISLAND 
+
+% MAG
+1743 1842 gm
+1829 1874 lin
+1881 1907 lin
+1949 1920 lin
+2008 1940 lin
+2049 1978 lin
+2066 2044 lin
+2098 2066 lin
+2147 2071 lin
+2237 2005 lin
+2291 2038 lin
+2203 2102 lin
+2207 2134 lin
+2246 2132 lin
+2268 2182 lin
+2256 2257 lin
+2200 2336 lin
+2190 2381 lin
+2158 2417 lin
+2098 2422 lin
+1998 2417 lin
+1955 2451 lin
+1906 2443 lin
+1926 2385 lin
+1843 2367 lin
+1753 2345 lin
+1689 2352 lin
+1624 2344 lin
+1541 2332 lin
+1622 2070 lin
+ISLAND
+
+% MAL
+4399 579 gm
+4393 653 lin
+4378 712 lin
+4387 781 lin
+4385 843 lin
+4363 894 lin
+4305 931 lin
+4294 967 lin
+4304 1016 lin
+4395 1081 lin
+4380 1143 lin
+4292 1079 lin
+4263 1093 lin
+4276 1129 lin
+4236 1166 lin
+4161 1177 lin
+4068 1149 lin
+4022 1153 lin
+3979 1133 lin
+3955 1079 lin
+3930 981 lin
+3884 951 lin
+3876 901 lin
+3938 903 lin
+3929 819 lin
+3922 726 lin
+3896 668 lin
+3883 603 lin
+3875 540 lin
+4137 530 lin
+ISLAND
+
+% GAR
+newpath
+2172 4783 gm
+2222 4723 lin
+2268 4683 lin
+2301 4621 lin
+2338 4571 lin
+2386 4543 lin
+2454 4545 lin
+2484 4522 lin
+2504 4477 lin
+2466 4371 lin
+2514 4329 lin
+2549 4431 lin
+2581 4437 lin
+2591 4400 lin
+2645 4392 lin
+2713 4426 lin
+2772 4503 lin
+2813 4526 lin
+2837 4567 lin
+2825 4625 lin
+2790 4720 lin
+2810 4770 lin
+2789 4816 lin
+2738 4779 lin
+2698 4854 lin
+2650 4932 lin
+2638 4996 lin
+2611 5056 lin
+2583 5115 lin
+2320 4945 lin
+ISLAND
+
+} def
+
+%}}}
+
+% Sardinia-equivalents
+/part12 { %{{{ 
+
+5184 2779 gm
+5212 2757 lin
+5275 2779 lin
+5315 2742 lin
+5391 2736 lin
+5467 2684 lin
+5526 2706 lin
+5494 2774 lin
+5528 2803 lin
+5362 2903 lin
+5330 2926 lin
+5233 2953 lin
+5199 2926 lin
+5187 2886 lin
+5203 2815 lin
+5184 2779 lin
+ISLAND
+
+4584 4115 gm
+4615 4134 lin
+4614 4200 lin
+4662 4227 lin
+4693 4296 lin
+4766 4352 lin
+4764 4414 lin
+4690 4406 lin
+4674 4448 lin
+4526 4323 lin
+4493 4301 lin
+4436 4218 lin
+4450 4177 lin
+4485 4153 lin
+4557 4145 lin
+4584 4115 lin
+ISLAND
+
+3130 3990 gm
+3121 4025 lin
+3059 4046 lin
+3049 4100 lin
+2993 4151 lin
+2965 4239 lin
+2905 4258 lin
+2889 4185 lin
+2844 4183 lin
+2914 4002 lin
+2924 3964 lin
+2984 3883 lin
+3027 3883 lin
+3061 3908 lin
+3093 3974 lin
+3130 3990 lin
+ISLAND
+
+2795 2528 gm
+2759 2530 lin
+2721 2476 lin
+2666 2483 lin
+2601 2445 lin
+2509 2443 lin
+2473 2392 lin
+2538 2355 lin
+2526 2311 lin
+2721 2325 lin
+2760 2324 lin
+2854 2357 lin
+2867 2399 lin
+2853 2439 lin
+2799 2487 lin
+2795 2528 lin
+ISLAND
+
+4070 1774 gm
+4057 1740 lin
+4096 1687 lin
+4073 1637 lin
+4089 1563 lin
+4062 1475 lin
+4100 1425 lin
+4156 1476 lin
+4193 1451 lin
+4240 1640 lin
+4253 1677 lin
+4251 1777 lin
+4215 1802 lin
+4173 1801 lin
+4110 1765 lin
+4070 1774 lin
+ISLAND
+
+} def
+
+%}}}
+
+% Corsica and the "little island north of sardinia"-equivalents
+% {{{ 
+/part15 {
+2412 4178 gm
+2417 4107 lin
+2395 4091 lin
+2326 4054 lin
+2288 4042 lin
+2188 3954 lin
+2141 3935 lin
+2111 3928 lin
+2090 3957 lin
+2075 4025 lin
+2008 4117 lin
+2091 4160 lin
+2161 4150 lin
+2209 4150 lin
+2299 4158 lin
+2360 4185 lin
+2412 4178 lin
+ISLAND
+
+5866 3072 gm
+5817 3126 lin
+5825 3152 lin
+5856 3223 lin
+5880 3257 lin
+5904 3387 lin
+5929 3431 lin
+5949 3455 lin
+5983 3446 lin
+6036 3401 lin
+6146 3370 lin
+6107 3285 lin
+6046 3249 lin
+6007 3220 lin
+5942 3159 lin
+5911 3099 lin
+5866 3072 lin
+ISLAND
+
+
+4529 4854 gm
+4463 4827 lin
+4440 4843 lin
+4384 4895 lin
+4359 4928 lin
+4244 4993 lin
+4209 5032 lin
+4194 5058 lin
+4214 5087 lin
+4274 5123 lin
+4338 5216 lin
+4406 5153 lin
+4421 5083 lin
+4436 5037 lin
+4472 4955 lin
+4518 4906 lin
+4529 4854 lin
+ISLAND
+
+2405 1897 gm
+2475 1881 lin
+2483 1855 lin
+2499 1778 lin
+2499 1738 lin
+2554 1617 lin
+2559 1566 lin
+2557 1536 lin
+2522 1524 lin
+2453 1529 lin
+2346 1492 lin
+2329 1584 lin
+2359 1648 lin
+2373 1694 lin
+2392 1782 lin
+2383 1849 lin
+2405 1897 lin
+ISLAND
+
+4550 1208 gm
+4586 1269 lin
+4614 1269 lin
+4691 1260 lin
+4730 1248 lin
+4861 1263 lin
+4912 1252 lin
+4940 1240 lin
+4941 1204 lin
+4914 1140 lin
+4916 1027 lin
+4824 1038 lin
+4771 1087 lin
+4732 1115 lin
+4655 1159 lin
+4589 1172 lin
+4550 1208 lin
+ISLAND
+
+2901 2424 gm
+2955 2407 lin
+3050 2410 lin
+3125 2450 lin
+3085 2463 lin
+3049 2522 lin
+2940 2492 lin
+2901 2424 lin
+ISLAND
+
+4201 1843 gm
+4235 1889 lin
+4261 1980 lin
+4246 2064 lin
+4222 2029 lin
+4154 2013 lin
+4149 1900 lin
+4201 1843 lin
+ISLAND
+
+3062 3859 gm
+3061 3801 lin
+3091 3711 lin
+3151 3651 lin
+3152 3694 lin
+3198 3745 lin
+3137 3841 lin
+3062 3859 lin
+ISLAND
+
+5156 2925 gm
+5122 2971 lin
+5042 3022 lin
+4958 3032 lin
+4984 2998 lin
+4979 2930 lin
+5086 2892 lin
+5156 2925 lin
+ISLAND
+
+4438 4136 gm
+4383 4119 lin
+4308 4060 lin
+4271 3984 lin
+4312 3998 lin
+4375 3971 lin
+4446 4059 lin
+4438 4136 lin
+ISLAND
+
+} def
+
+%}}}
+
+% Continent 
+/part16 { %{{{ 
+newpath
+4893 2639 gm
+4878 2610 lin
+4791 2461 lin
+4747 2460 lin
+4662 2425 lin
+4633 2400 lin
+4663 2363 lin
+4648 2349 lin
+4620 2319 lin
+4635 2235 lin
+4781 2125 lin
+4798 2001 lin
+4900 1888 lin
+4979 1852 lin
+5061 1854 lin
+5061 1830 lin
+5046 1803 lin
+5098 1758 lin
+5179 1705 lin
+5260 1658 lin
+5333 1611 lin
+5363 1560 lin
+5336 1525 lin
+5297 1546 lin
+5281 1546 lin
+5233 1583 lin
+5196 1608 lin
+5180 1632 lin
+5153 1594 lin
+5103 1521 lin
+5104 1492 lin
+5155 1469 lin
+5183 1430 lin
+5172 1357 lin
+5141 1369 lin
+5106 1357 lin
+5107 1303 lin
+5043 1205 lin
+4991 1216 lin
+4979 1253 lin
+5012 1290 lin
+5028 1331 lin
+5055 1356 lin
+5054 1393 lin
+5024 1453 lin
+5009 1502 lin
+4945 1553 lin
+4906 1590 lin
+4905 1614 lin
+4891 1638 lin
+4869 1638 lin
+4813 1638 lin
+4828 1650 lin
+4789 1699 lin
+4766 1743 lin
+4735 1763 lin
+4673 1761 lin
+4614 1796 lin
+4562 1869 lin
+4481 1957 lin
+4430 2019 lin
+4391 2078 lin
+4376 2146 lin
+4360 2213 lin
+4309 2267 lin
+4270 2303 lin
+4217 2302 lin
+4166 2276 lin
+4128 2237 lin
+4073 2199 lin
+4017 2125 lin
+3981 2044 lin
+3966 2013 lin
+3928 2010 lin
+3894 2004 lin
+3871 2013 lin
+3840 2018 lin
+3672 2055 lin
+3657 2096 lin
+3598 2166 lin
+3565 2186 lin
+3538 2146 lin
+3521 2156 lin
+3483 2173 lin
+3409 2133 lin
+3348 1960 lin
+3236 1906 lin
+3160 1774 lin
+3151 1688 lin
+3178 1610 lin
+3155 1602 lin
+3124 1609 lin
+3098 1546 lin
+3073 1452 lin
+3052 1361 lin
+3031 1276 lin
+2991 1232 lin
+2950 1247 lin
+2958 1290 lin
+2952 1306 lin
+2974 1363 lin
+2986 1406 lin
+3003 1428 lin
+2959 1442 lin
+2874 1467 lin
+2847 1458 lin
+2840 1402 lin
+2813 1363 lin
+2740 1351 lin
+2741 1384 lin
+2719 1414 lin
+2668 1397 lin
+2555 1427 lin
+2550 1480 lin
+2581 1502 lin
+2626 1482 lin
+2670 1480 lin
+2702 1462 lin
+2738 1474 lin
+2786 1522 lin
+2827 1551 lin
+2855 1627 lin
+2879 1676 lin
+2901 1685 lin
+2920 1705 lin
+2913 1727 lin
+2896 1779 lin
+2912 1769 lin
+2946 1821 lin
+2981 1856 lin
+2991 1892 lin
+2969 1951 lin
+2984 2018 lin
+3038 2089 lin
+3097 2194 lin
+3139 2261 lin
+3183 2317 lin
+3244 2352 lin
+3303 2387 lin
+3339 2453 lin
+3360 2501 lin
+3343 2551 lin
+3302 2592 lin
+3254 2616 lin
+3200 2656 lin
+3112 2687 lin
+3025 2696 lin
+2991 2700 lin
+2976 2736 lin
+2960 2767 lin
+2952 2808 lin
+2947 2841 lin
+2934 3013 lin
+2969 3039 lin
+3018 3117 lin
+3027 3154 lin
+2982 3167 lin
+2986 3188 lin
+2992 3228 lin
+2931 3287 lin
+2748 3295 lin
+2664 3387 lin
+2516 3421 lin
+2430 3404 lin
+2364 3356 lin
+2350 3375 lin
+2346 3406 lin
+2279 3413 lin
+2182 3410 lin
+2088 3402 lin
+2001 3399 lin
+1948 3424 lin
+1950 3467 lin
+1994 3472 lin
+2007 3482 lin
+2068 3479 lin
+2113 3480 lin
+2139 3469 lin
+2139 3515 lin
+2139 3604 lin
+2121 3628 lin
+2066 3617 lin
+2021 3633 lin
+1989 3699 lin
+2020 3707 lin
+2042 3737 lin
+2010 3781 lin
+2007 3898 lin
+2055 3918 lin
+2086 3895 lin
+2080 3846 lin
+2091 3803 lin
+2083 3767 lin
+2105 3737 lin
+2164 3705 lin
+2205 3674 lin
+2286 3669 lin
+2340 3661 lin
+2355 3642 lin
+2380 3630 lin
+2398 3643 lin
+2443 3675 lin
+2438 3656 lin
+2497 3639 lin
+2542 3616 lin
+2579 3617 lin
+2628 3655 lin
+2696 3660 lin
+2782 3629 lin
+2898 3604 lin
+2976 3582 lin
+3042 3557 lin
+3093 3509 lin
+3144 3463 lin
+3217 3448 lin
+3269 3441 lin
+3312 3472 lin
+3340 3523 lin
+3348 3577 lin
+3371 3640 lin
+3374 3733 lin
+3358 3820 lin
+3352 3854 lin
+3382 3878 lin
+3404 3896 lin
+3410 3898 lin
+3438 3913 lin
+3597 3982 lin
+3633 3958 lin
+3722 3936 lin
+3761 3939 lin
+3758 3987 lin
+3779 3990 lin
+3819 3997 lin
+3856 4073 lin
+3803 4249 lin
+3862 4359 lin
+3846 4510 lin
+3803 4585 lin
+3735 4633 lin
+3750 4652 lin
+3777 4665 lin
+3762 4732 lin
+3728 4822 lin
+3690 4908 lin
+3658 4989 lin
+3664 5048 lin
+3706 5060 lin
+3725 5020 lin
+3739 5011 lin
+3755 4952 lin
+3771 4910 lin
+3769 4882 lin
+3813 4896 lin
+3897 4927 lin
+3913 4951 lin
+3886 4999 lin
+3886 5047 lin
+3937 5100 lin
+3955 5072 lin
+3991 5061 lin
+4022 5105 lin
+4132 5146 lin
+4167 5107 lin
+4155 5070 lin
+4106 5060 lin
+4069 5036 lin
+4033 5032 lin
+4012 5001 lin
+4000 4935 lin
+3984 4886 lin
+4006 4808 lin
+4015 4754 lin
+4003 4735 lin
+4000 4707 lin
+4017 4693 lin
+4063 4662 lin
+4044 4660 lin
+4046 4598 lin
+4039 4549 lin
+4052 4514 lin
+4104 4479 lin
+4131 4416 lin
+4129 4326 lin
+4144 4207 lin
+4149 4128 lin
+4146 4057 lin
+4118 3993 lin
+4091 3930 lin
+4100 3857 lin
+4111 3804 lin
+4154 3774 lin
+4212 3764 lin
+4265 3774 lin
+4331 3773 lin
+4421 3800 lin
+4497 3843 lin
+4528 3861 lin
+4560 3840 lin
+4591 3825 lin
+4596 3820 lin
+4620 3797 lin
+4737 3669 lin
+4725 3628 lin
+4734 3536 lin
+4750 3501 lin
+4794 3519 lin
+4803 3500 lin
+4823 3465 lin
+4907 3455 lin
+5056 3562 lin
+5180 3541 lin
+5317 3606 lin
+5375 3672 lin
+5397 3750 lin
+5420 3744 lin
+5441 3721 lin
+5499 3758 lin
+5574 3820 lin
+5642 3883 lin
+5709 3939 lin
+5766 3954 lin
+5792 3917 lin
+5760 3886 lin
+5756 3871 lin
+5706 3835 lin
+5671 3808 lin
+5644 3800 lin
+5672 3763 lin
+5727 3694 lin
+5756 3685 lin
+5792 3728 lin
+5838 3743 lin
+5905 3711 lin
+5884 3686 lin
+5885 3648 lin
+5936 3633 lin
+6012 3543 lin
+5986 3497 lin
+5948 3497 lin
+5922 3539 lin
+5888 3566 lin
+5871 3599 lin
+5835 3609 lin
+5769 3599 lin
+5718 3598 lin
+5651 3551 lin
+5603 3525 lin
+5580 3531 lin
+5553 3525 lin
+5547 3504 lin
+5531 3450 lin
+5523 3468 lin
+5466 3445 lin
+5416 3436 lin
+5389 3412 lin
+5372 3352 lin
+5322 3306 lin
+5236 3278 lin
+5129 3226 lin
+5054 3195 lin
+4987 3175 lin
+4917 3180 lin
+4849 3185 lin
+4782 3152 lin
+4736 3126 lin
+4721 3075 lin
+4731 3017 lin
+4757 2970 lin
+4778 2907 lin
+4833 2832 lin
+4898 2773 lin
+4925 2750 lin
+4917 2713 lin
+4912 2678 lin
+4894 2639 lin
+ISLAND
+
+} def
+
+%}}}
+
+
+% North-south split of Italy.
+/part19 { %{{{ 
+
+sv np
+4496 3562 gm
+4555 3477 lin
+4590 3405 lin
+4594 3348 lin
+4599 3326 lin
+4599 3326 lin
+4633 3263 lin
+4696 3217 lin
+4723 3222 lin
+4749 3246 lin
+4786 3280 lin
+4846 3329 lin
+4938 3377 lin
+5041 3418 lin
+5080 3424 lin
+5108 3429 lin
+5160 3433 lin
+5210 3419 lin
+5226 3416 lin
+5295 3460 lin
+5387 3533 lin
+5467 3594 lin
+5531 3627 lin
+5568 3644 lin
+5587 3655 lin
+5612 3651 lin
+5638 3671 lin
+5711 3714 lin
+st rs
+
+sv np
+3621 3720 gm
+3720 3747 lin
+3799 3757 lin
+3854 3742 lin
+3876 3740 lin
+3876 3740 lin
+3948 3752 lin
+4011 3796 lin
+4016 3823 lin
+4002 3855 lin
+3981 3903 lin
+3954 3974 lin
+3939 4077 lin
+3935 4188 lin
+3941 4227 lin
+3946 4254 lin
+3958 4305 lin
+3988 4348 lin
+3996 4361 lin
+3977 4442 lin
+3937 4553 lin
+3905 4648 lin
+3896 4719 lin
+3891 4760 lin
+3888 4781 lin
+3899 4803 lin
+3889 4835 lin
+3872 4917 lin
+st rs
+
+sv np 
+3189 2950 gm
+3196 3053 lin
+3212 3132 lin
+3244 3178 lin
+3254 3199 lin
+3254 3199 lin
+3266 3270 lin
+3244 3344 lin
+3220 3358 lin
+3185 3355 lin
+3134 3350 lin
+3058 3348 lin
+2955 3368 lin
+2849 3399 lin
+2814 3418 lin
+2790 3431 lin
+2746 3460 lin
+2715 3502 lin
+2705 3514 lin
+2623 3522 lin
+2505 3521 lin
+2404 3522 lin
+2334 3536 lin
+2295 3545 lin
+2273 3548 lin
+2256 3567 lin
+2223 3567 lin
+2139 3578 lin
+st rs
+
+sv np 
+3807 2281 gm
+3711 2317 lin
+3640 2356 lin
+3605 2400 lin
+3588 2415 lin
+3588 2415 lin
+3523 2447 lin
+3446 2449 lin
+3426 2430 lin
+3419 2395 lin
+3408 2345 lin
+3387 2271 lin
+3339 2179 lin
+3278 2086 lin
+3249 2059 lin
+3229 2040 lin
+3190 2006 lin
+3141 1989 lin
+3126 1983 lin
+3094 1906 lin
+3061 1793 lin
+3031 1698 lin
+2997 1635 lin
+2976 1599 lin
+2967 1580 lin
+2944 1568 lin
+2935 1537 lin
+2899 1460 lin
+st rs
+
+
+sv np 
+4618 2660 gm
+4553 2580 lin
+4495 2524 lin
+4442 2504 lin
+4422 2493 lin
+4422 2493 lin
+4372 2441 lin
+4346 2368 lin
+4358 2344 lin
+4389 2326 lin
+4433 2300 lin
+4497 2258 lin
+4570 2183 lin
+4639 2096 lin
+4657 2061 lin
+4669 2036 lin
+4689 1988 lin
+4690 1935 lin
+4691 1920 lin
+4754 1866 lin
+4851 1799 lin
+4932 1741 lin
+4982 1689 lin
+5010 1659 lin
+5025 1644 lin
+5029 1619 lin
+5056 1600 lin
+5118 1543 lin
+st rs
+
+} def
+
+%}}}
+
+% The east-west borders in Italy, and the short sea-zones.
+/part20 {
+
+6 sw
+sv np 
+5866 3072 gm
+5890 2888 lin
+st rs
+
+sv np 
+5514 2711 gm
+5621 2724 lin
+5778 2649 lin
+st rs
+
+sv np 
+4972 3029 gm
+4929 3070 lin
+4990 3178 lin
+st rs
+
+sv np 
+5923 3425 gm
+5898 3456 lin
+5905 3482 lin
+5935 3503 lin
+st rs
+
+sv np 
+5156 2925 gm
+5195 2913 lin
+st rs
+
+sv np 
+5102 3429 gm
+5114 3322 lin
+5144 3238 lin
+st rs
+
+sv np 
+5226 3567 gm
+5289 3465 lin
+st rs
+
+sv np 
+4737 3121 gm
+4740 3198 lin
+4727 3220 lin
+st rs
+
+sv np 
+4529 4854 gm
+4711 4817 lin
+st rs
+
+sv np 
+4757 4404 gm
+4779 4510 lin
+4900 4635 lin
+st rs
+
+sv np 
+4279 3995 gm
+4226 3969 lin
+4144 4061 lin
+st rs
+
+sv np 
+4214 5024 gm
+4176 5011 lin
+4154 5026 lin
+4144 5061 lin
+st rs
+
+sv np 
+4438 4136 gm
+4462 4169 lin
+st rs
+
+sv np 
+3943 4249 gm
+4048 4226 lin
+4137 4226 lin
+st rs
+
+sv np 
+3854 4411 gm
+3969 4438 lin
+st rs
+
+sv np 
+4115 3803 gm
+4044 3831 lin
+4018 3826 lin
+st rs
+
+sv np 
+2412 4178 gm
+2507 4339 lin
+st rs
+
+sv np 
+2912 4247 gm
+2819 4303 lin
+2741 4458 lin
+st rs
+
+sv np 
+3143 3662 gm
+3151 3604 lin
+3037 3557 lin
+st rs
+
+sv np 
+2149 3936 gm
+2149 3896 lin
+2128 3880 lin
+2092 3882 lin
+st rs
+
+sv np 
+3062 3859 gm
+3039 3892 lin
+st rs
+
+sv np 
+2794 3427 gm
+2850 3519 lin
+2879 3604 lin
+st rs
+
+sv np 
+2612 3395 gm
+2624 3514 lin
+st rs
+
+sv np 
+3272 3446 gm
+3222 3387 lin
+3219 3360 lin
+st rs
+
+sv np 
+2405 1897 gm
+2279 2034 lin
+st rs
+
+sv np 
+2485 2395 gm
+2405 2322 lin
+2234 2293 lin
+st rs
+
+sv np 
+3112 2445 gm
+3171 2436 lin
+3183 2312 lin
+st rs
+
+sv np 
+2560 1575 gm
+2598 1563 lin
+2607 1538 lin
+2595 1504 lin
+st rs
+
+sv np 
+2901 2424 gm
+2862 2412 lin
+st rs
+
+sv np 
+3235 2042 gm
+3163 2123 lin
+3091 2175 lin
+st rs
+
+sv np 
+3212 1859 gm
+3103 1905 lin
+st rs
+
+sv np 
+3357 2504 gm
+3399 2440 lin
+3423 2429 lin
+st rs
+
+sv np 
+4550 1208 gm
+4380 1130 lin
+st rs
+
+sv np 
+4101 1438 gm
+4145 1339 lin
+4119 1167 lin
+st rs
+
+sv np 
+4247 2049 gm
+4274 2102 lin
+4394 2076 lin
+st rs
+
+sv np 
+4904 1256 gm
+4927 1288 lin
+4954 1289 lin
+4982 1267 lin
+st rs
+
+sv np 
+4201 1843 gm
+4201 1801 lin
+st rs
+
+sv np 
+4668 2042 gm
+4569 1999 lin
+4497 1946 lin
+st rs
+
+sv np 
+4835 1964 gm
+4757 1874 lin
+st rs
+
+sv np 
+4266 2301 gm
+4341 2321 lin
+4358 2340 lin
+st rs
+
+6 sw
+sv np 
+4818 1822 gm
+4758 1750 lin
+st rs
+
+sv np 
+5377 3527 gm
+5413 3443 lin
+st rs
+
+sv np 
+2987 1864 gm
+3071 1816 lin
+st rs
+
+sv np 
+3936 4542 gm
+4044 4542 lin
+st rs
+
+sv np 
+2520 3623 gm
+2499 3521 lin
+st rs
+
+} 
+def
+
+% The large arcs in the sea.
+/part23 {
+sv np 
+4067 1635 gm
+3776 1700 lin
+3538 1796 lin
+3412 1893 lin
+3339 1962 lin
+st rs
+
+sv np 
+3029 1290 gm
+3180 1127 lin
+3421 1013 lin
+3698 950 lin
+3882 945 lin
+st rs
+
+sv np 
+5316 2735 gm
+5168 2477 lin
+5007 2276 lin
+4877 2184 lin
+4781 2127 lin
+st rs
+
+sv np 
+5335 1613 gm
+5542 1739 lin
+5721 1936 lin
+5862 2183 lin
+5922 2357 lin
+st rs
+
+sv np 
+4668 4225 gm
+4865 4002 lin
+5002 3784 lin
+5047 3631 lin
+5061 3562 lin
+st rs
+
+sv np 
+5705 3937 gm
+5684 4115 lin
+5557 4348 lin
+5370 4562 lin
+5224 4675 lin
+st rs
+
+sv np 
+3053 4105 gm
+3328 4219 lin
+3579 4277 lin
+3737 4270 lin
+3804 4250 lin
+st rs
+
+sv np 
+3658 4991 gm
+3487 5030 lin
+3226 4985 lin
+2962 4878 lin
+2808 4777 lin
+st rs
+
+sv np 
+2003 3398 gm
+1905 3174 lin
+1872 2910 lin
+1897 2628 lin
+1949 2451 lin
+st rs
+
+sv np 
+2662 2488 gm
+2634 2784 lin
+2652 3041 lin
+2705 3191 lin
+2749 3295 lin
+st rs
+
+} def
+
+% Borders in the central continent.
+/part24 {
+
+18 sw
+sv np 
+4421 3068 gm
+4421 3068 lin
+st rs
+
+sv np 
+4597 3820 gm
+4597 3820 lin
+4573 3814 lin
+4528 3790 lin
+4486 3759 lin
+4453 3712 lin
+4471 3669 lin
+4471 3669 lin
+4496 3624 lin
+4494 3578 lin
+4501 3552 lin
+4445 3508 lin
+4419 3473 lin
+4357 3438 lin
+4299 3380 lin
+4207 3291 lin
+4185 3195 lin
+4230 3035 lin
+4272 2988 lin
+4320 2895 lin
+4275 2859 lin
+st rs
+
+sv np 
+4063 3487 gm
+4063 3487 lin
+st rs
+
+sv np 
+3409 3898 gm
+3409 3898 lin
+3407 3874 lin
+3415 3825 lin
+3430 3774 lin
+3465 3727 lin
+3511 3730 lin
+3511 3730 lin
+3562 3739 lin
+3604 3722 lin
+3632 3721 lin
+3655 3653 lin
+3679 3617 lin
+3692 3547 lin
+3728 3474 lin
+3782 3358 lin
+3865 3306 lin
+4032 3297 lin
+4090 3321 lin
+4209 3292 lin
+st rs
+
+sv np 
+3553 3292 gm
+3553 3292 lin
+st rs
+
+sv np 
+2952 2808 gm
+2952 2808 lin
+2974 2799 lin
+3024 2790 lin
+3076 2788 lin
+3132 2805 lin
+3144 2850 lin
+3144 2850 lin
+3152 2901 lin
+3182 2935 lin
+3192 2962 lin
+3263 2960 lin
+3306 2972 lin
+3376 2962 lin
+3457 2972 lin
+3584 2985 lin
+3661 3047 lin
+3723 3201 lin
+3720 3265 lin
+3779 3360 lin
+st rs
+
+sv np 
+3586 2729 gm
+3586 2729 lin
+st rs
+
+sv np 
+3873 2013 gm
+3873 2013 lin
+3889 2030 lin
+3912 2076 lin
+3929 2125 lin
+3929 2183 lin
+3889 2208 lin
+3889 2208 lin
+3843 2231 lin
+3819 2270 lin
+3797 2287 lin
+3819 2355 lin
+3820 2398 lin
+3851 2463 lin
+3864 2543 lin
+3889 2669 lin
+3852 2760 lin
+3723 2865 lin
+3662 2880 lin
+3578 2984 lin
+st rs
+
+sv np 
+4123 2588 gm
+4123 2588 lin
+st rs
+
+sv np 
+4893 2639 gm
+4893 2639 lin
+4881 2660 lin
+4845 2696 lin
+4803 2728 lin
+4748 2745 lin
+4712 2716 lin
+4712 2716 lin
+4676 2679 lin
+4632 2667 lin
+4609 2652 lin
+4551 2694 lin
+4510 2709 lin
+4458 2757 lin
+4386 2795 lin
+4274 2858 lin
+4176 2851 lin
+4036 2760 lin
+4003 2706 lin
+3888 2665 lin
+st rs
+
+} def

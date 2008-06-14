@@ -1,0 +1,3589 @@
+%!PS-Adobe-2.0
+%%Title: Diplomacy Map (Canton)
+%%Creator: mapit
+%%Pages: (atend)
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%LanguageLevel: 2
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 267   370 AFG Afghanistan
+% 731   474 AKI Akita
+% 607   545 AMU Amur
+% 113   305 ARA Arabia
+% 150   490 ARM Armenia
+% 229   210 ASE Arabian Sea
+% 451   291 ASM Assam
+% 112   441 BAG Baghdad
+% 244   315 BAL Baluchistan
+% 730   48  BAN Banda Sea
+% 99    531 BLA Black Sea
+% 401   175 BOB Bay of Bengal
+% 305   236 BOM Bombay
+% 627   69  BOR Borneo
+% 49    558 BUL Bulgaria
+% 68    543 BUL/EC Bulgaria (east coast)
+% 30    543 BUL/SC Bulgaria (south coast)
+% 473   236 BUR Burma
+% 401   267 CAL Calcutta
+% 544   171 CAM Cambodia
+% 595   315 CAN Canton
+% 641   317 CAN/EC Canton (east coast)
+% 585   266 CAN/SC Canton (south coast)
+% 518   327 CHU Chungking
+% 72    497 CON Constantinople
+% 789   348 CPO Central Pacific Ocean
+% 773   151 CSE Celebes Sea
+% 73    439 DAM Damascus
+% 48    420 DAM/SC Damascus (south coast)
+% 58    456 DAM/WC Damascus (west coast)
+% 343   282 DEL Delhi
+% 685   369 ECS East China Sea
+% 16    411 EGY Egypt
+% 395   83  EIO East Indian Ocean
+% 663   298 FOR Formosa
+% 466   153 GOM Gulf of Martaban
+% 526   130 GOS Gulf of Siam
+% 547   253 HAN Hanoi
+% 621   292 HKO Hong Kong
+% 578   189 HUE Hue
+% 530   575 IRK Irkutsk
+% 593   19  JAV Java
+% 557   63  JSE Java Sea
+% 465   400 KAN Kansu
+% 571   112 KAR Karimata Strait
+% 323   342 KAS Kashmir
+% 677   555 KHA Khabarovsk
+% 248   520 KIR Kirghiz
+% 678   419 KOR Korea
+% 726   439 KYO Kyoto
+% 531   229 LAO Laos
+% 348   208 MAD Madras
+% 520   87  MAL Malaya
+% 626   483 MAN Manchuria
+% 684   497 MAR Maritime Province
+% 23    474 MED Mediterranian Sea
+% 509   477 MON Mongolia
+% 203   570 MOS Moscow
+% 395   310 NEP Nepal
+% 564   418 PEK Peking
+% 180   381 PER Persia
+% 216   284 PGU Persian Gulf
+% 679   235 PHI Philippines
+% 716   302 PSE Philippine Sea
+% 101   229 RED Red Sea
+% 63    581 RUM Rumania
+% 564   155 SAI Saigon
+% 634   112 SAR Sarawak
+% 715   402 SAS Sasebo
+% 628   207 SCS South China Sea
+% 140   565 SEV Sevastopol
+% 624   364 SHA Shanghai
+% 740   423 SHI Shikoku
+% 518   196 SIA Siam
+% 510   146 SIA/EC Siam (east coast)
+% 485   122 SIA/WC Siam (west coast)
+% 370   578 SIB Siberia
+% 381   413 SIN Sinkiang
+% 440   20  SIO South Indian Ocean
+% 698   462 SOJ Sea of Japan
+% 738   580 SOO Sea of Okhotsk
+% 509   51  SUM Sumatra
+% 398   332 TIB Tibet
+% 761   482 TOK Tokyo
+% 363   514 TOM Tomsk
+% 257   441 TUR Turkestan
+% 187   65  WIO West Indian Ocean
+% 650   401 YEL Yellow Sea
+% 730   526 YES Yesso
+% 516   274 YUN Yunnan
+% MAP
+
+% * modified by George Boyce for use with his mapit program, i.e.
+% * this file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnotemessage
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+% * DestroyUnit
+% * DisbandUnit
+%
+% Improved layout code by Mario Huys (mario_huys@hotmail.com).
+%
+% The layout code gives a choice of arrangements between the map and the
+% various textual reports (orders, ownership, etc.). Reports are adequately
+% arranged in columns in order to better exploit the available space.
+% Long lines (typical for ownership) are split over multiple rows. There are
+% other guards against overflows such as when a report becomes too long.
+% Furthermore the layout adapts itself automatically to various page sizes.
+% Try it out. (In GhostView for example, there's a menu to choose between
+% various standard pagesizes.)
+%
+% Feel free to add your own layout or to improve on the existing ones. Check 
+% out SetUpPage and the various Layout procedures. 
+%
+
+%<< /PageSize [842 1090] >> setpagedevice
+
+/bd { bind def } bind def
+/xd { exch def } bind def
+
+/AbsoluteRoundingError .001 def
+/ifloor { AbsoluteRoundingError add floor cvi } bd
+/iceiling { AbsoluteRoundingError sub ceiling cvi } bd
+
+/TextFixedFont /Courier findfont def
+/TextTitleFont /Times-Roman findfont def
+/TextMinorTitleFont /Courier-Bold findfont def
+/MapUnitLetterFont /Helvetica-Bold findfont def
+/MapNameFont MapUnitLetterFont def
+/MapNumberFont /Helvetica findfont def
+
+/MapUnitScale .5 def
+/MapUnitOffset 8 def % distance above point to draw unit
+/MapUnitLetterSize 14 def
+/MapNameFontSize 14 def
+/MapNameOffset 14 def  % distance below point to draw name
+/MapNumberFontSize 14 def
+
+/ArrowLineThickness 1 def
+
+/HeadLength 20 def
+/HalfHeadThickness 5 def
+/HalfThickness 1 def % of a move/support/convoy arrow shaft
+
+/HoldCircle 24 def % of a support hold arrow
+/MoveCircle 8 def % of a support move arrow
+/ConvoyCircle 12 def % of a convoy arrow
+
+/HalfSlashThickness 5 def
+/HalfSlashLength 16 def
+
+/Black { 0 setgray } bd
+/White { .9 setgray } bd
+/Grey  { .7 setgray } bd
+/DarkGrey { .5 setgray } bd
+
+/Red { 1 0 0 setrgbcolor } bd
+/Pink { .3 0 0 setrgbcolor } bd
+/Blue { 0 0 1 setrgbcolor } bd
+/Mauve { 1 0 1 setrgbcolor } bd
+/Yellow { 1 1 0 setrgbcolor } bd
+/Orange { 1 .5 .3 setrgbcolor } bd
+/Green { 0 .7 0 setrgbcolor } bd
+/Brown { .6 .45 .2 setrgbcolor } bd
+/Turquoise { .2 .7 .7 setrgbcolor } bd
+/LightBlue { .4 .6 1 setrgbcolor } bd
+/DarkGreen { 0 .4 0 setrgbcolor } bd
+
+/secure_atan { 2 copy 0 eq exch 0 eq and { pop pop 0 } { atan } ifelse } def
+
+/ExpandBoundingBox { % llx lly urx ury x y => llx' lly' urx' ury'
+  6 dict begin
+  /y xd /x xd /ury xd /urx xd /lly xd /llx xd
+  x llx lt { /llx x def }{ x urx gt { /urx x def } if } ifelse
+  y lly lt { /lly y def }{ y ury gt { /ury y def } if } ifelse
+  llx lly urx ury
+  end
+} bd
+
+/GetFontUnitBBox { % fontdict => llx lly width height
+  8 dict begin
+  dup /FontBBox get aload pop /Top xd /Right xd /Bottom xd /Left xd
+  /FontMatrix get /FontMatrix xd
+  Left Bottom FontMatrix transform 2 copy
+  Left Top FontMatrix transform ExpandBoundingBox
+  Right Top FontMatrix transform ExpandBoundingBox
+  Right Bottom FontMatrix transform ExpandBoundingBox
+  end
+} bd
+
+/AdaptPositionToFont { % left top fontdict fontsize => x y
+  exch GetFontUnitBBox exch pop exch pop
+  exch 2 index mul 5 -1 roll add 4 1 roll mul sub
+} bd
+
+%
+% THE REPORTS
+%
+
+% Divide a rectangle such that it can contain a number of entries, 
+% whereby the dimensions of one cell are as close to a square as possible.
+% In addition, the rectangle might contain a number of reserved rows and columns. 
+% Note that these numbers may be real numbers instead of integers.
+% The calculated number of columns and rows are however integers,
+% describing the inner rectangle containing the entries,
+% thus without the reserved columns and rows.
+% The calculated size is the smaller of the optimal cell width and height.
+/FindOptimalSquareSize { % entries width height reservedcolumns reservedrows => size columns rows
+  8 dict begin
+  /ReservedRows xd
+  /ReservedColumns xd
+  /UnitHeight xd
+  /UnitWidth xd
+  /Entries xd
+
+  % Mathematical formula:
+  %   (c + rc) / (r + rr) = w / h
+  %   c * r = e
+  % Is a quadratic equation in c or r.
+  % Solve for c (expected to be the smaller of the two), taking the positive root.
+  % Next, round c up or down and calculate r' accordingly, such that c' * r' >= e.
+  % Determine the biggest cell dimensions from there.
+ 
+  UnitWidth UnitHeight div dup ReservedRows mul ReservedColumns sub
+  dup dup mul 3 2 roll Entries mul 4 mul add sqrt add 2 div
+  iceiling /Columns xd
+  UnitWidth Columns ReservedColumns add div
+  UnitHeight Entries Columns div iceiling ReservedRows add div 
+  2 copy gt { exch } if pop
+  Columns 1 gt {
+    UnitHeight Entries Columns 1 sub div iceiling ReservedRows add div
+    2 copy lt {
+      /Columns Columns 1 sub def
+      exch
+    } if pop
+  } if
+  Columns
+  UnitHeight 2 index div ifloor ReservedRows sub
+
+  end
+} bd
+
+/RedistributeEntries { % (fix) var fix var ... parties columns rows => var' var' ... 
+  8 dict begin
+  /Rows xd
+  /Columns xd
+  /Parties xd
+  0 1 2 Parties { index add } for /VariableCount xd
+  0 2 2 Parties { index add } for /FixedCount xd
+  /AvailableCount Columns Rows mul FixedCount sub def
+
+  % Redistribute the extra or missing fields among the variable entries.
+  % Make sure that no fixed party is split over several columns.
+  % Move it to the next column if necessary.
+  Parties 2 mod 1 eq { 
+    Parties 0 
+  }{ 
+    Parties dup 1 sub exch index 
+  } ifelse /AssignedCount xd -2 3 {
+    dup 1 add -2 roll 1 index AvailableCount mul VariableCount idiv
+    1 index 1 gt {
+      dup AssignedCount add dup Rows idiv exch 3 index add 1 sub Rows idiv ne {
+        AssignedCount add Rows idiv 1 add Rows mul AssignedCount sub
+      } if
+    } if 
+    dup 3 2 roll AssignedCount add add /AssignedCount xd
+    VariableCount 3 2 roll sub /VariableCount xd
+    dup AvailableCount exch sub /AvailableCount xd
+    exch 1 sub 1 roll
+  } for pop AvailableCount
+  end
+} bd
+
+/SetUpMap { % MapPctX MapPctY MarginPct => ImageSizeX ImageSizeY MarginSize BorderSize
+  8 dict begin
+  /MarginPct xd
+  /MapPctY xd
+  /MapPctX xd
+
+  currentpagedevice /PageSize get aload pop /PageSizeY xd /PageSizeX xd
+  %/PageSizeX 8.5 72 mul def
+  %/PageSizeY 11.0 72 mul def
+
+  /MapOriginX BBllx def
+  /MapOriginY BBlly def
+  /MapSizeX BBurx BBllx sub def
+  /MapSizeY BBury BBlly sub def  
+
+  MapSizeX MapSizeY gt PageSizeX PageSizeY gt ne {
+    PageSizeX 0 translate
+    90 rotate
+    PageSizeX PageSizeY /PageSizeX xd /PageSizeY xd
+  } if
+
+  PageSizeX MapPctX mul MapSizeX div PageSizeY MapPctY mul MapSizeY div 2 copy gt {
+    exch pop /MapScale xd
+    /MarginSize MarginPct MapSizeY mul MapPctY div def
+    /MarginPctY MarginPct def
+    /MarginPctX PageSizeY MarginPct mul PageSizeX div def
+    /MapPctX MapScale MapSizeX mul PageSizeX div def
+  }{
+    pop /MapScale xd
+    /MarginSize MarginPct MapSizeX mul MapPctX div def
+    /MarginPctX MarginPct def
+    /MarginPctY PageSizeX MarginPct mul PageSizeY div def
+    /MapPctY MapScale MapSizeY mul PageSizeY div def
+  } ifelse
+  MarginPctX PageSizeX mul 1 MapPctY sub MarginPctY sub PageSizeY mul translate
+  MapScale dup scale
+  MapOriginX neg MapOriginY neg translate
+
+  PageSizeX MapScale div MarginSize 2 mul sub
+  PageSizeY MapScale div MarginSize 2 mul sub
+  MarginSize
+  MarginSize 2 div
+
+  end
+} bd
+
+/OrdersToRightLayout { % - => ...
+  32 dict begin
+
+  /NrOfPlayers 7 def
+  /NrOfSupplyCenters 36 def
+  /OrderColumnLength 32 def
+  /OrderEntries NrOfPlayers NrOfSupplyCenters add def
+  /TitleEntries 5 def
+  /MinorTitleEntries 2 def
+  /RetreatEntries 6 def
+  /AdjustEntries 7 def
+  /StatusEntries 1 def
+  /OwnerEntries NrOfPlayers 1 add def
+  /SupplyEntries NrOfSupplyCenters 1 add 2 idiv def
+  /SupplyColumnLength 18 SupplyEntries 4 mul add def
+  /AdjustSupplyEntries 4 def
+  /AdjustColumnLength 18 AdjustSupplyEntries 5 mul add def 
+
+  .75 .9 .03 SetUpMap /BorderSize xd pop /ImageSizeY xd /ImageSizeX xd
+
+  /OrderBoxStartX BBurx BorderSize add def
+  /OrderBoxStartY BBury def
+  /OrderBoxWidth ImageSizeX BBurx BBllx sub sub BorderSize sub def
+  /OrderBoxHeight ImageSizeY def
+
+  % Find the optimal font size. 
+  TextFixedFont setfont (X) stringwidth pop /CharWidth xd /CharHeight 1 def
+  OrderEntries MinorTitleEntries add RetreatEntries add
+  OrderBoxWidth CharWidth OrderColumnLength .5 add mul div
+  OrderBoxHeight CharHeight div
+  0 TitleEntries
+  FindOptimalSquareSize /OrderRows xd /OrderColumns xd /OrderRowHeight xd
+  /OrderColumnWidth OrderBoxWidth OrderColumns div def
+  /OrderColumnLength OrderColumnWidth OrderRowHeight CharWidth CharHeight div mul div .5 sub ifloor def
+
+  OrderEntries MinorTitleEntries RetreatEntries 3 OrderColumns OrderRows
+  RedistributeEntries /RetreatEntries xd /OrderEntries xd
+
+  /OwnerBoxStartX BBllx def
+  /OwnerBoxStartY BBlly BorderSize sub def
+  /OwnerBoxWidth BBurx BBllx sub def
+  /OwnerBoxHeight ImageSizeY BBury BBlly sub sub BorderSize sub def
+
+  OwnerEntries 
+  OwnerBoxWidth CharWidth SupplyColumnLength AdjustColumnLength add 1.5 add mul div
+  OwnerBoxHeight CharHeight div
+  0 0 
+  FindOptimalSquareSize OwnerEntries add /OwnerEntries pop xd /OwnerRowHeight xd
+
+  /OwnerRows OwnerEntries def
+  /OwnerCharWidth CharWidth CharHeight div OwnerRowHeight mul def
+  /OwnerColumnLength OwnerBoxWidth OwnerCharWidth div .5 sub ifloor AdjustColumnLength 1 add sub def
+
+  % Title Coords
+  OrderBoxStartX
+  OrderBoxStartY
+  OrderColumnWidth
+  OrderRowHeight 2 mul
+
+  % Order Coords
+  OrderBoxStartX
+  OrderBoxStartY TitleEntries OrderRowHeight mul sub
+  OrderColumnWidth
+  OrderColumnLength  
+  OrderRows
+  OrderRowHeight
+  0
+  OrderEntries 1 sub
+
+  % Retreat Title Coords
+  OrderBoxStartX OrderColumnWidth OrderEntries OrderRows idiv mul add
+  OrderBoxStartY TitleEntries OrderRowHeight mul sub OrderEntries OrderRows mod .6 add OrderRowHeight mul sub
+  OrderColumnWidth
+  OrderRowHeight 1.2 mul
+  
+  % Retreat Coords
+  OrderBoxStartX
+  OrderBoxStartY TitleEntries OrderRowHeight mul sub
+  OrderColumnWidth
+  OrderColumnLength
+  OrderRows 
+  OrderRowHeight
+  OrderEntries MinorTitleEntries add
+  dup RetreatEntries add 1 sub
+
+  % Owner Coords
+  OwnerBoxStartX
+  OwnerBoxStartY
+  OwnerColumnLength OwnerCharWidth mul
+  OwnerColumnLength
+  OwnerRows
+  OwnerRowHeight
+  0
+  OwnerEntries 1 sub
+
+  % Status Coords
+  OwnerBoxStartX OwnerColumnLength 1 add OwnerCharWidth mul add
+  OwnerBoxStartY AdjustEntries OwnerRowHeight mul add
+  OwnerBoxWidth OwnerColumnLength 1 add OwnerCharWidth mul sub
+  AdjustColumnLength
+  OwnerRows
+  OwnerRowHeight
+  AdjustEntries
+  dup StatusEntries add 1 sub
+
+  % Adjust Coords
+  OwnerBoxStartX OwnerColumnLength 1 add OwnerCharWidth mul add
+  OwnerBoxStartY
+  OwnerBoxWidth OwnerColumnLength 1 add OwnerCharWidth mul sub
+  AdjustColumnLength
+  OwnerRows
+  OwnerRowHeight
+  0
+  AdjustEntries 1 sub
+  
+  end
+} bd
+
+/AdaptStartToFont { % dict fontdict => dict
+  exch dup begin exch
+  /Font xd
+  StartX StartY Font FontSize AdaptPositionToFont /StartY xd /StartX xd
+  end
+} bd
+
+/SetUpPage {
+  MapBBox /BBury xd /BBurx xd /BBlly xd /BBllx xd
+
+  OrdersToRightLayout
+
+  9 dict dup begin 9 1 roll
+  /Last xd
+  /First xd
+  /FontSize xd
+  /NrOfRows xd
+  /ColumnLength xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextFixedFont AdaptStartToFont /AdjustCoords xd
+
+  9 dict dup begin 9 1 roll
+  /Last xd
+  /First xd
+  /FontSize xd
+  /NrOfRows xd
+  /ColumnLength xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextFixedFont AdaptStartToFont /StatusCoords xd
+
+  9 dict dup begin 9 1 roll
+  /Last xd
+  /First xd
+  /FontSize xd
+  /NrOfRows xd
+  /ColumnLength xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextFixedFont AdaptStartToFont /OwnerCoords xd
+
+  9 dict dup begin 9 1 roll
+  /Last xd
+  /First xd
+  /FontSize xd
+  /NrOfRows xd
+  /ColumnLength xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextFixedFont AdaptStartToFont /RetreatCoords xd
+
+  5 dict dup begin 5 1 roll
+  /FontSize xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextMinorTitleFont AdaptStartToFont /RetreatTitleCoords xd
+
+  9 dict dup begin 9 1 roll
+  /Last xd
+  /First xd
+  /FontSize xd
+  /NrOfRows xd
+  /ColumnLength xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextFixedFont AdaptStartToFont /OrderCoords xd
+
+  5 dict dup begin 5 1 roll
+  /FontSize xd
+  /ColumnWidth xd
+  /StartY xd
+  /StartX xd
+  end TextTitleFont AdaptStartToFont /TitleCoords xd
+
+  /InMapMode false def
+  /WritingReport false def
+} bd
+
+/ShowPage {
+  SwitchToTextMode
+
+  showpage
+  SetUpPage
+} bd
+
+/SwitchToMapMode {
+  FinishReport
+  InMapMode not {
+    /InMapMode true def
+    gsave
+    ClipEdge
+    ArrowLineThickness setlinewidth Black OkOrder
+  } if
+} bd
+
+/SwitchToTextMode {
+  FinishReport
+  InMapMode {
+    grestore
+    /InMapMode false def
+  } if
+} bd
+
+% Title
+
+/DrawTitle {
+  SwitchToTextMode
+
+  TitleCoords begin
+  StartX StartY moveto
+  Font FontSize scalefont setfont
+  currentpoint (DIPLOMACY) show moveto
+  0 FontSize neg rmoveto
+  dup stringwidth pop dup ColumnWidth gt {
+    ColumnWidth exch div dup 1 scale exch
+    show
+    1 exch div 1 scale
+  }{
+    pop show
+  } ifelse
+  end
+} bd
+
+/DrawMinorTitle { % dict str => -
+  SwitchToTextMode
+
+  exch begin
+  StartX StartY moveto
+  Font FontSize scalefont setfont
+  show
+  end
+} bd
+
+/DrawMessage { % str => -
+  SwitchToTextMode
+
+  TitleCoords begin
+  BBurx BBlly Font FontSize 2.5 div AdaptPositionToFont moveto
+  Font FontSize 2.5 div scalefont setfont
+  show
+  end
+} bd
+
+% Reports
+
+/StartReport { % dict => -
+  SwitchToTextMode
+
+  /WritingCoords xd
+  /WritingReport true def
+  WritingCoords begin
+  StartX First NrOfRows idiv ColumnWidth mul add StartY First NrOfRows mod FontSize mul sub moveto
+  Font FontSize scalefont setfont
+  First
+  end
+  /WritingCount xd
+} bd
+
+/FinishReport { % - => -
+  WritingReport {
+    /WritingReport false def
+    WritingCoords begin
+    WritingCount Last gt {
+      WritingCount Last 1 add eq {
+        WritingLast show
+      }{
+        (... \() show WritingCount Last sub dup log iceiling string cvs show ( more\)) show
+      } ifelse
+    } if
+    end
+  } if
+} bd
+
+/OrderReport {
+  OrderCoords StartReport
+} bd
+/RetreatReport {
+  RetreatTitleCoords (Retreat orders:) DrawMinorTitle
+  RetreatCoords StartReport
+} bd
+/OwnerReport {
+  OwnerCoords StartReport
+} bd
+/AdjustReport {
+  AdjustCoords StartReport
+} bd
+/StatusReport {
+  StatusCoords StartReport
+} bd
+
+% Writing
+
+/SpaceChar ( ) 0 get def
+
+% Split a string which is too long into 2 parts on a space character.
+% Copy the empty space (the space characters at the start of the string) to the start of the second string.
+% If asked, insert an extra indentation (can be everything).
+% This splitting routine works well for monospaced fonts. For proportional fonts, 
+% it becomes slightly more complex.
+/SplitString { % string nrChars indentString => string false || string1 string2 true
+  7 dict begin
+  /indentString xd
+  /nrChars xd
+  /objectString xd
+  /objectLast objectString length 1 sub def
+  % Short string?
+  objectLast nrChars lt {
+    objectString false
+  }{
+    % Look for a suitable place to split.
+    % First tracking backwards, if that doesn't work, look forward.
+    /splitIndex -1 def
+    nrChars -1 0 {
+      objectString 1 index get SpaceChar eq {
+        /splitIndex xd exit
+      } if pop
+    } for splitIndex -1 eq {
+      nrChars 1 add 1 objectLast {
+        objectString 1 index get SpaceChar eq {
+          /splitIndex xd exit
+        } if pop
+      } for
+    } if
+    splitIndex -1 eq splitIndex objectLast eq or {
+      objectString false
+    }{
+      % The first part.
+      objectString 0 splitIndex getinterval
+      % The second part.
+      objectString splitIndex 1 add objectLast splitIndex sub getinterval
+      % Add indentation if needed.
+      indentString length 0 gt {
+        dup length indentString length add string
+        dup 0 indentString putinterval
+        dup indentString length 4 3 roll putinterval
+      } if
+      % Add white space of the first part.
+      /nonSpaceIndex objectLast 1 add def
+      0 1 objectLast {
+        objectString 1 index get SpaceChar ne {
+          /nonSpaceIndex xd exit
+        } if pop
+      } for
+      nonSpaceIndex 0 gt nonSpaceIndex splitIndex lt and {
+        dup length nonSpaceIndex add string
+        dup 0 objectString 0 nonSpaceIndex getinterval putinterval
+        dup nonSpaceIndex 4 3 roll putinterval
+      } if
+      true
+    } ifelse
+  } ifelse
+  end
+} bd 
+
+/HighLightChar (!) 0 get def
+
+/ExtractHighLight { % string => highLightArray string'
+  16 dict begin
+  /copyString xd
+  /pasteString copyString length string def
+  /wordCount 0 def
+  /copied 0 def
+  /pasted 0 def
+  /letterCount 0 def
+  /inWord false def
+  /highLighted false def
+  /highLighting false def
+  [ copyString {
+    highLighting {
+      /highLighting false def
+      dup HighLightChar ne {
+        /highLighted true def
+      } if
+      true
+    }{
+      dup HighLightChar eq {
+        pop false
+        /highLighting true def
+        letterCount 0 gt {
+          pasteString pasted copyString copied letterCount getinterval putinterval
+          /pasted pasted letterCount add def
+          /copied copied letterCount add def 
+          /letterCount 0 def
+        } if
+        /copied copied 1 add def
+      }{
+        true
+      } ifelse
+    } ifelse {
+      /letterCount letterCount 1 add def
+      SpaceChar eq inWord eq {
+        /inWord inWord not def
+        inWord {
+          /wordCount wordCount 1 add def
+        }{
+          highLighted {
+            wordCount
+            /wordCount 0 def
+          } if
+        } ifelse
+        /highLighted false def
+      } if
+    } if
+  } forall 
+  inWord highLighting highLighted or and {
+    wordCount
+  } if ]
+  copied 0 eq {
+    copyString
+  }{
+    letterCount 0 gt {
+      pasteString pasted copyString copied letterCount getinterval putinterval
+      /pasted pasted letterCount add def
+    } if
+    pasted string dup 0 pasteString 0 pasted getinterval putinterval
+  } ifelse
+  end
+} bd
+
+/HighLight { % highLightArray string => highLightArray'
+  1 index length 0 eq {
+    Black show
+  }{
+    8 dict begin
+    /copyString xd
+    /boldArray xd
+    /copied 0 def
+    /letterCount 0 def
+    /boldCount 0 def
+    /wordCount boldArray boldCount get def
+    /inWord false def
+    copyString {
+      SpaceChar eq inWord eq {
+        /inWord inWord not def
+        inWord {
+          /wordCount wordCount 1 sub def
+          wordCount 0 eq {
+            copyString copied letterCount getinterval Black show
+            /copied copied letterCount add def
+            /letterCount 0 def
+          } if
+        }{
+          wordCount 0 eq {
+            copyString copied letterCount getinterval Red show
+            /copied copied letterCount add def
+            /letterCount 0 def
+            /boldCount boldCount 1 add def
+            boldArray length boldCount eq {
+              /letterCount copyString length copied sub def
+              exit
+            }{
+              /wordCount boldArray boldCount get def
+            } ifelse
+          } if
+        } ifelse
+      } if
+      /letterCount letterCount 1 add def
+    } forall
+    copyString copied letterCount getinterval inWord wordCount 0 eq and {
+      Red show
+      /boldCount boldCount 1 add def
+    }{
+      Black show
+    } ifelse
+    [ wordCount 0 eq {
+      boldCount 
+    }{
+      wordCount
+      boldCount 1 add
+    } ifelse boldArray {
+      1 index 0 eq {
+        exch
+      }{
+        pop 1 sub
+      } ifelse
+    } forall pop ]
+    end
+  } ifelse
+} bd
+
+/Write { % string => - 
+  WritingCount 1 add exch
+  ExtractHighLight
+  WritingCoords begin
+  (  ) {
+    3 index Last gt {
+      pop true exit
+    } if
+    ColumnLength exch SplitString dup { 5 2 roll }{ 4 1 roll } ifelse
+    currentpoint 4 2 roll HighLight 3 1 roll
+    3 index NrOfRows mod 0 eq {
+      pop ColumnWidth add StartY
+    }{
+      FontSize sub
+    } ifelse moveto
+    3 2 roll not { false exit } if
+    exch 1 add 3 1 roll exch () % No extra indentation for a third or later split up.
+  } loop
+  end
+  {
+    /WritingLast xd
+  } if
+  pop
+  /WritingCount xd
+} bd
+
+/WriteOrder { Write } bd
+/WriteRetreat { Write } bd
+/WriteOwner { Write } bd
+/WriteAdjust { Write } bd
+/WriteStatus { Write } bd
+
+%
+% THE MAP
+%
+
+/ClipEdge {
+  newpath
+  BBllx BBlly BBurx BBllx sub BBury BBlly sub rectclip
+} bd
+
+/Frame {
+  SwitchToTextMode
+  1 dict begin
+  /lw 4 def
+  gsave
+  newpath
+  BBllx lw sub BBlly lw sub moveto
+  BBllx lw sub BBury lw add lineto
+  BBurx lw add BBury lw add lineto
+  BBurx lw add BBlly lw sub lineto
+  closepath
+  [] 0 setdash 0 setgray
+  gsave lw 2 mul setlinewidth stroke grestore
+  clip lw setlinewidth LandColor stroke
+  grestore
+  end 
+  SwitchToMapMode
+} bind def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { SwitchToMapMode [4 6] 2 setdash } def
+/OkOrder { SwitchToMapMode [] 0 setdash } def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove { % x0 y0 x1 y1 => -
+  SwitchToMapMode
+
+  8 dict begin
+  MapUnitScale div /tipy xd
+  MapUnitScale div /tipx xd
+  MapUnitScale div /taily xd
+  MapUnitScale div /tailx xd
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx secure_atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  MapUnitScale dup scale
+  tailx taily MapUnitOffset add translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base MapUnitLetterSize gt {/base base MapUnitLetterSize sub def MapUnitLetterSize /arrowlength arrowlength MapUnitLetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base MapUnitLetterSize ge {
+    /base base MapUnitLetterSize sub def
+    /arrowlength arrowlength MapUnitLetterSize sub def
+  } if
+
+  x 0 translate
+
+% draw the arrow head ...
+  newpath
+  base HalfHeadThickness neg moveto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  closepath stroke
+
+% now the shaft ...
+  HalfThickness 2 mul setlinewidth
+  0 0 moveto
+  base 0 lineto
+  stroke
+
+  grestore
+
+  end
+} bd
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat { % x0 y0 x1 y1 => -
+  SwitchToMapMode
+
+  8 dict begin
+  MapUnitScale div /tipy xd
+  MapUnitScale div /tipx xd
+  MapUnitScale div /taily xd
+  MapUnitScale div /tailx xd
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx secure_atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  Red
+  MapUnitScale dup scale
+  tailx taily MapUnitOffset add translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base MapUnitLetterSize gt {/base base MapUnitLetterSize sub def MapUnitLetterSize /arrowlength arrowlength MapUnitLetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base MapUnitLetterSize ge {
+    /base base MapUnitLetterSize sub def
+    /arrowlength arrowlength MapUnitLetterSize sub def
+  } if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+% draw the double arrow head ...
+  newpath
+  base HalfHeadThickness neg moveto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  closepath stroke
+
+% now the shaft ...
+  HalfThickness 2 mul setlinewidth
+  0 0 moveto
+  base 0 lineto
+  stroke
+
+  grestore
+  
+  end
+} bd
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold { % x0 y0 x1 y1 => -
+  HoldCircle ArrowCircle
+} bd
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport { % x y x1 y1 x2 y2 => -
+  3 2 roll add 2 div 3 1 roll add 2 div exch MoveCircle ArrowCircle
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy { % x y x1 y1 x2 y2 => -
+  3 2 roll add 2 div 3 1 roll add 2 div exch ConvoyCircle ArrowCircle
+} def
+
+% like an arrow but with a circle at the tip
+/ArrowCircle { % x0 y0 x1 y1 d => - 
+  SwitchToMapMode
+
+  8 dict begin
+  /headdiam xd
+  MapUnitScale div /tipy xd
+  MapUnitScale div /tipx xd
+  MapUnitScale div /taily xd
+  MapUnitScale div /tailx xd
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx secure_atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  MapUnitScale dup scale
+  tailx taily MapUnitOffset add translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by MapUnitLetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base MapUnitLetterSize gt {
+    /base base MapUnitLetterSize sub def
+    /arrowlength arrowlength MapUnitLetterSize sub def
+    MapUnitLetterSize
+  }{
+    0
+  } ifelse def
+
+  x 0 translate
+
+% draw the circle ...
+  newpath
+  arrowlength 0 headdiam 0 360 arc
+  closepath stroke  
+
+% now the shaft ...
+  HalfThickness 2 mul setlinewidth
+  0 0 moveto
+  base 0 lineto
+  stroke
+
+  grestore
+
+  end
+} bd
+
+% A slash striking through the unit
+/DestroyUnit { % x y => -
+  SwitchToMapMode
+
+  gsave
+  translate
+  MapUnitScale dup scale
+  0 MapUnitOffset translate
+  newpath
+
+  HalfSlashThickness neg HalfSlashLength sub HalfSlashLength neg moveto
+  HalfSlashThickness neg HalfSlashLength add HalfSlashLength lineto
+  HalfSlashThickness HalfSlashLength add HalfSlashLength lineto
+  HalfSlashThickness HalfSlashLength sub HalfSlashLength neg lineto
+
+  closepath fill
+
+  grestore
+} bd
+
+% A red slash striking through the unit
+/DisbandUnit {
+  gsave
+  Red
+  DestroyUnit
+  grestore
+} bd
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+  SwitchToMapMode
+
+  gsave
+  MapNameFont MapNameFontSize scalefont setfont
+  3 1 roll translate
+  MapUnitScale dup scale
+  % mark the spot...
+%  0 0 5 0 360 arc fill
+  dup stringwidth pop
+  -2 div MapNameOffset neg moveto show
+  grestore
+} bd
+
+/DrawArmy { % x y => -
+  SwitchToMapMode
+
+  Country begin
+
+  gsave 
+  translate
+  newpath
+  MapUnitScale dup scale
+  0 MapUnitOffset translate
+  3 setlinewidth [] 0 setdash
+  -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+   0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+   0 4 rlineto      % barrel
+   4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+  -20  10 rlineto       % carriage
+  Contrast stroke
+  0 0 9 0 360 arc   % wheel
+  closepath
+  Contrast stroke
+  newpath
+  -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+   0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+   0 4 rlineto      % barrel
+   4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+  -20  10 rlineto       % carriage
+  PieceColour fill
+  0 0 9 0 360 arc   % wheel
+  closepath
+  PieceColour fill
+
+  Offset aload pop moveto
+  MapUnitLetterFont MapUnitLetterSize scalefont setfont
+  Contrast Letter show
+
+  grestore
+
+  end
+} bd
+
+/DrawFleet { % x y => -
+  SwitchToMapMode
+
+  Country begin
+
+  gsave
+  translate
+  newpath
+  MapUnitScale dup scale
+  0 MapUnitOffset translate
+  2 setlinewidth [] 0 setdash
+  -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+  -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+  -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+  1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+  2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+  2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+  2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+  2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+  2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+  8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+  7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+  6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+  -1 0 rlineto 0 -2 rlineto
+  closepath
+  gsave Contrast stroke grestore
+  PieceColour fill
+
+  Offset aload pop moveto
+  MapUnitLetterFont MapUnitLetterSize scalefont setfont
+  Contrast Letter show
+
+  grestore
+ 
+  end
+} bd
+
+/VisitTerritories { % coastproc landproc waterproc beachproc mountainproc iceproc => -
+
+6 dict begin
+/i xd
+/m xd
+/b xd
+/w xd
+/l xd
+/c xd
+
+Territories
+
+end
+} bd
+
+/DoTroops {
+  { dup type /stringtype ne {(XXX)} if 3 1 roll 2 copy DrawArmy 2 copy DrawFleet 3 2 roll DrawName } bind
+  { dup type /stringtype ne {(XXX)} if 3 1 roll 2 copy DrawArmy 3 2 roll DrawName } bind
+  { dup type /stringtype ne {(XXX)} if 3 1 roll 2 copy DrawFleet 3 2 roll DrawName } bind
+  { dup type /stringtype ne {(XXX)} if 3 1 roll DrawFleet pop } bind
+  { dup type /stringtype ne {(XXX)} if 3 1 roll DrawArmy pop } bind
+  { dup type /stringtype ne {(XXX)} if 3 1 roll DrawFleet pop } bind
+  VisitTerritories
+} bd
+
+/PrintNumber { % x y int => -
+  newpath
+  4 string cvs dup 4 1 roll 0 0 moveto true charpath pathbbox newpath
+  3 -1 roll add 2 div 3 1 roll add 2 div exch
+  3 -1 roll sub neg 3 1 roll sub exch moveto show
+} bd
+
+
+/NumberTerritories {
+  6 dict begin
+  /Coast 0 def
+  /Land 0 def
+  /Water 0 def
+  /Beach 0 def
+  /Mountain 0 def
+  /Ice 0 def
+  gsave
+  MapNumberFont MapNumberFontSize scalefont setfont
+  { dup type /stringtype eq {pop} if /Coast Coast 1 add store Red Coast PrintNumber } bind 
+  { dup type /stringtype eq {pop} if /Land Land 1 add store Green Land PrintNumber } bind 
+  { dup type /stringtype eq {pop} if /Water Water 1 add store White Water PrintNumber } bind 
+  { dup type /stringtype eq {pop} if /Beach Beach 1 add store Yellow Beach PrintNumber } bind 
+  { dup type /stringtype eq {pop} if /Mountain Mountain 1 add store Black Mountain PrintNumber } bind 
+  { dup type /stringtype eq {pop} if /Ice Ice 1 add store Blue Ice PrintNumber pop } bind 
+  VisitTerritories
+  grestore
+  end
+} bd
+
+/DoNames {
+  { DrawName } bind dup dup dup dup dup VisitTerritories
+} bd
+
+/DrawNames {
+  { DrawName } bind
+  { DrawName } bind
+  { DrawName } bind
+  { pop pop pop } bind
+  { pop pop pop } bind
+  { pop pop pop } bind
+  VisitTerritories
+} bd
+
+/VisitCenters { % supplyproc homeproc => -
+
+2 dict begin
+/h xd
+/s xd
+
+Centers 
+
+end
+
+} bd
+
+/DoCenters {
+  {
+    dup type /nametype eq {pop} if
+    gsave
+    0 1 0 setrgbcolor
+    translate
+    0 0 3 0 360 arc fill
+    grestore
+  } bind
+  {
+    dup type /nametype eq {pop} if
+    gsave
+    1 0 0 setrgbcolor
+    translate
+    -2 -2 4 4 rectfill
+    grestore
+  } bind
+  VisitCenters
+} bd
+
+/NumberCenters { % - => -
+  2 dict begin
+  /Supply 0 def
+  /Home 0 def
+  gsave
+  MapNumberFont MapNumberFontSize scalefont setfont
+  { dup type /nametype eq {pop} if /Supply Supply 1 add store Mauve Supply PrintNumber } bind
+  { dup type /nametype eq {pop} if /Home Home 1 add store DarkGreen Home PrintNumber } bind
+  VisitCenters
+  grestore
+  end
+} bd
+
+/DoCenterNames { % - => -
+  {gsave Mauve 0 MapNameOffset MapUnitScale mul translate 3 string cvs DrawName grestore} bind
+  {gsave DarkGreen 0 MapNameOffset MapUnitScale mul translate 3 string cvs DrawName grestore} bind
+  VisitCenters
+} bd
+
+/DefineCenters { % - => -
+  [
+    currentdict 4 1 /roll load { newpath 0 0 3 0 360 arc fill } bind 4 2 /roll load
+    3 /array load /astore load /cvx load /put load
+  ] cvx bind
+  [
+    currentdict 4 1 /roll load { -2 -2 4 4 rectfill } bind 4 2 /roll load 
+    3 /array load /astore load /cvx load /put load
+  ] cvx bind
+  VisitCenters
+} bd
+
+/supply { % proc x y => -
+  Country begin
+  
+  gsave
+  PieceColour
+  translate
+  exec
+  grestore
+  
+  end
+} bd
+
+/DrawCenters { % - => -
+  {
+    load exec supply pop pop
+  } bind dup VisitCenters
+} bd
+
+%
+% THE COUNTRIES
+%
+
+/VisitPowers { % powerproc => -
+
+  1 dict begin
+  /p xd
+
+  Powers
+
+  end
+
+} bd
+
+/Countries 20 dict def
+
+/AddCountry { % name letter piececolour contrast => -
+  8 dict dup begin 4 1 roll
+  load /Contrast xd
+  load /PieceColour xd
+  /Letter xd
+  end 
+  [ /Country 2 index /def load ] cvx bind
+  dup 3 index xd
+  2 index 16 string cvs dup length dup 6 add string dup 0 5 4 roll putinterval dup 3 2 roll (CENTER) putinterval cvn xd
+  Countries 3 1 roll put
+} bd
+
+/DefinePowers { % - => -
+
+  /UNOWNED (?) /Brown /White AddCountry
+  { currentdict end 5 1 roll AddCountry begin } bind VisitPowers
+
+  % Letter offsets
+  MapUnitLetterFont MapUnitLetterSize scalefont setfont
+  Countries {
+    begin
+    /Offset [ newpath 0 0 moveto Letter true charpath pathbbox
+    3 2 roll add -2 div 3 1 roll add -2 div exch ] def
+    end pop
+  } forall
+
+} bd
+
+%%BeginSetup
+%%EndSetup
+
+% 
+
+% 
+/MapBBox {
+0 0 806 611
+} bd
+% 
+
+% 
+/Powers {
+/BRITAIN (B) /Blue /White p
+/CHINA (C) /Yellow /Black p
+/FRANCE (F) /Turquoise /Black p
+/HOLLAND (H) /Green /Black p
+/JAPAN (J) /Red /White p
+/RUSSIA (R) /White /Black p
+/TURKEY (T) /Orange /Black p
+} bd
+% 
+
+% 
+/Centers {
+
+% 
+203 596 /MOS h
+654 574 /KHA h
+115 571 /SEV h
+507 544 /IRK h
+46 522 /CON h
+753 467 /TOK h
+77 462 /DAM h
+589 430 /PEK h
+718 428 /KYO h
+114 426 /BAG h
+713 391 /SAS h
+650 368 /SHA h
+424 342 /TIB h
+552 339 /CHU h
+337 306 /DEL h
+423 262 /CAL h
+546 242 /HAN h
+578 173 /HUE h
+335 166 /MAD h
+551 146 /SAI h
+588 76 /BOR h
+530 38 /SUM h
+566 20 /JAV h
+% 
+
+% 
+79 569 /RUM s
+626 463 /MAN s
+657 450 /KOR s
+171 413 /PER s
+296 387 /AFG s
+266 327 /BAL s
+665 313 /FOR s
+608 285 /HKO s
+682 223 /PHI s
+473 222 /BUR s
+517 178 /SIA s
+538 158 /CAM s
+529 73 /MAL s
+% 
+
+} bd
+% 
+
+% 
+/ContinentalOutline {
+
+% 
+gsave
+1 6 div dup scale
+3858 3654 m
+3850 3642 3845 3629 3838 3618 c
+3818 3589 3770 3564 3792 3528 c
+3834 3562 l
+3900 3559 l
+3942 3591 l
+3972 3583 l
+4026 3546 l
+4032 3546 l
+4039 3555 4046 3568 4060 3561 c
+4077 3552 4100 3521 4108 3504 c
+4111 3496 4109 3488 4113 3481 c
+4123 3461 4147 3447 4162 3430 c
+4172 3418 4176 3403 4185 3391 c
+4193 3378 4206 3369 4212 3354 c
+4222 3320 4192 3308 4186 3282 c
+4183 3271 4193 3263 4189 3252 c
+4184 3238 4166 3230 4165 3216 c
+4165 3202 4181 3192 4186 3180 c
+4190 3166 4185 3151 4191 3138 c
+4197 3123 4214 3111 4216 3096 c
+4221 3069 4186 3043 4183 3018 c
+4181 3006 4190 2998 4192 2988 c
+4194 2970 4171 2944 4156 2937 c
+4145 2931 4133 2936 4122 2933 c
+4110 2929 4105 2917 4092 2916 c
+4078 2914 4063 2926 4051 2919 c
+4028 2906 4030 2876 4024 2856 c
+4015 2829 3992 2813 3979 2790 c
+3973 2780 3965 2765 3967 2754 c
+3976 2716 4021 2702 4042 2676 c
+4052 2663 4050 2647 4059 2634 c
+4069 2620 4086 2613 4095 2598 c
+4111 2569 4113 2538 4123 2508 c
+4135 2476 4154 2469 4134 2436 c
+4092 2430 l
+4074 2448 l
+4060 2436 4036 2405 4015 2421 c
+3999 2431 4004 2484 4002 2502 c
+4000 2513 3994 2521 3991 2532 c
+3978 2573 3977 2609 3936 2634 c
+3924 2616 l
+3918 2616 l
+3906 2658 l
+3891 2664 3867 2670 3853 2657 c
+3842 2645 3839 2598 3816 2607 c
+3780 2620 3806 2698 3762 2687 c
+3734 2680 3718 2644 3696 2628 c
+3675 2614 3588 2609 3603 2568 c
+3605 2562 3617 2555 3622 2550 c
+3629 2541 3636 2532 3648 2529 c
+3669 2521 3678 2545 3696 2553 c
+3716 2563 3730 2552 3750 2556 c
+3772 2561 3775 2588 3804 2577 c
+3852 2561 3808 2528 3786 2514 c
+3794 2499 3808 2484 3802 2466 c
+3793 2432 3755 2416 3769 2376 c
+3776 2356 3794 2346 3810 2334 c
+3821 2326 3832 2313 3846 2307 c
+3857 2301 3870 2301 3882 2295 c
+3892 2288 3897 2277 3907 2271 c
+3918 2263 3931 2263 3942 2253 c
+3956 2241 3948 2228 3957 2214 c
+3963 2203 3980 2197 3990 2190 c
+3988 2187 3982 2176 3976 2175 c
+3969 2175 3961 2182 3954 2180 c
+3927 2171 3929 2156 3948 2142 c
+3948 2136 l
+3925 2118 3929 2108 3948 2088 c
+3933 2073 3909 2050 3913 2028 c
+3915 2013 3933 2002 3927 1986 c
+3921 1971 3897 1970 3895 1956 c
+3892 1944 3903 1936 3904 1926 c
+3906 1914 3899 1906 3895 1896 c
+3887 1869 3888 1861 3858 1866 c
+3852 1860 l
+3856 1845 3873 1825 3873 1812 c
+3871 1775 3839 1766 3816 1749 c
+3801 1739 3796 1723 3784 1710 c
+3778 1704 3769 1705 3762 1701 c
+3745 1690 3752 1663 3732 1656 c
+3720 1653 3707 1660 3696 1659 c
+3689 1659 3684 1655 3678 1656 c
+3668 1659 3664 1671 3654 1671 c
+3628 1672 3615 1641 3598 1629 c
+3587 1619 3570 1624 3559 1617 c
+3547 1609 3546 1593 3534 1587 c
+3523 1581 3508 1587 3501 1577 c
+3489 1561 3501 1528 3474 1522 c
+3435 1512 3452 1565 3442 1578 c
+3431 1593 3415 1581 3402 1577 c
+3391 1573 3380 1570 3375 1560 c
+3367 1545 3379 1532 3376 1518 c
+3368 1489 3324 1478 3324 1452 c
+3323 1436 3336 1419 3340 1404 c
+3354 1333 3416 1257 3468 1206 c
+3479 1194 3490 1180 3504 1173 c
+3516 1165 3529 1166 3537 1152 c
+3554 1118 3519 1075 3516 1044 c
+3514 1026 3525 1006 3520 990 c
+3513 969 3489 967 3474 957 c
+3464 950 3458 939 3450 931 c
+3443 926 3433 925 3426 921 c
+3415 914 3411 902 3402 895 c
+3393 887 3381 886 3373 880 c
+3349 861 3336 831 3316 811 c
+3306 801 3281 799 3273 811 c
+3262 826 3278 847 3274 864 c
+3268 886 3263 894 3270 918 c
+3250 921 3217 908 3198 919 c
+3181 930 3175 953 3162 966 c
+3150 976 3122 991 3108 994 c
+3080 1001 3068 980 3059 960 c
+3039 917 3049 870 3029 828 c
+3020 809 3015 794 3009 774 c
+3007 765 3000 759 3003 750 c
+3009 735 3029 738 3042 738 c
+3066 738 3105 733 3126 719 c
+3148 703 3182 666 3195 642 c
+3200 630 3196 617 3199 606 c
+3200 597 3207 591 3208 582 c
+3209 560 3195 540 3199 516 c
+3206 469 3230 422 3204 378 c
+3147 400 3082 440 3048 492 c
+3042 499 3033 506 3030 516 c
+3020 548 3047 589 3030 618 c
+3021 633 3001 632 2988 644 c
+2966 664 2967 695 2955 720 c
+2945 738 2925 746 2922 768 c
+2919 783 2918 813 2925 828 c
+2929 838 2937 846 2940 858 c
+2945 873 2943 890 2946 906 c
+2950 921 2960 931 2957 948 c
+2945 995 2934 1044 2921 1092 c
+2916 1106 2903 1118 2904 1134 c
+2904 1146 2914 1153 2919 1164 c
+2926 1180 2924 1218 2904 1227 c
+2889 1233 2877 1207 2868 1200 c
+2850 1230 l
+2827 1199 2780 1146 2736 1179 c
+2712 1197 2752 1235 2757 1254 c
+2764 1277 2732 1290 2730 1314 c
+2728 1333 2747 1348 2735 1366 c
+2714 1394 2675 1398 2652 1422 c
+2636 1437 2640 1452 2631 1468 c
+2618 1492 2602 1511 2574 1516 c
+2533 1524 2516 1455 2472 1483 c
+2466 1488 2459 1499 2454 1506 c
+2421 1476 l
+2405 1422 l
+2352 1362 l
+2337 1339 l
+2316 1329 l
+2244 1267 l
+2178 1233 l
+2157 1183 l
+2103 1128 l
+2097 1062 l
+2070 1008 l
+2048 936 l
+2019 840 l
+1988 820 l
+1956 775 l
+1916 799 l
+1880 852 l
+1877 888 l
+1857 936 l
+1830 1002 l
+1806 1104 l
+1767 1182 l
+1731 1213 l
+1725 1266 l
+1700 1332 l
+1694 1416 l
+1713 1488 l
+1680 1531 l
+1644 1533 l
+1587 1602 l
+1560 1644 l
+1632 1674 l
+1620 1683 l
+1608 1684 1557 1681 1575 1709 c
+1579 1716 1589 1715 1596 1719 c
+1604 1723 1608 1732 1614 1740 c
+1590 1758 l
+1603 1778 1614 1800 1578 1806 c
+1555 1809 1533 1798 1512 1800 c
+1491 1803 1480 1820 1458 1818 c
+1443 1816 1431 1801 1416 1803 c
+1392 1805 1373 1832 1350 1835 c
+1334 1836 1324 1815 1309 1821 c
+1299 1824 1292 1836 1284 1842 c
+1274 1847 1263 1848 1254 1854 c
+1219 1879 1187 1917 1162 1950 c
+1152 1961 1138 1967 1129 1980 c
+1111 2003 1104 2045 1080 2063 c
+1047 2087 1018 2012 985 2046 c
+935 2094 918 2168 897 2232 c
+888 2255 889 2284 868 2303 c
+857 2313 847 2306 834 2307 c
+805 2312 734 2355 726 2298 c
+722 2271 736 2244 743 2220 c
+746 2207 739 2190 747 2178 c
+754 2166 767 2161 774 2148 c
+779 2136 777 2123 781 2112 c
+785 2095 796 2078 804 2064 c
+812 2068 823 2076 834 2076 c
+852 2076 886 2047 886 2028 c
+886 2014 868 2006 871 1992 c
+873 1977 900 1958 912 1952 c
+945 1932 979 1925 1014 1947 c
+1029 1957 1056 1996 1078 1977 c
+1089 1969 1088 1948 1083 1938 c
+1066 1903 1043 1890 1050 1848 c
+1054 1817 1084 1812 1102 1793 c
+1129 1762 1137 1724 1176 1704 c
+1168 1679 1151 1671 1134 1655 c
+1125 1646 1119 1636 1110 1629 c
+1103 1624 1093 1624 1086 1619 c
+1064 1603 1054 1569 1030 1557 c
+1019 1550 1008 1561 996 1557 c
+989 1554 984 1547 978 1545 c
+964 1539 950 1543 936 1542 c
+923 1540 912 1532 900 1531 c
+876 1529 863 1557 840 1553 c
+810 1546 786 1521 756 1513 c
+722 1505 692 1524 660 1521 c
+638 1518 621 1500 600 1495 c
+579 1491 560 1495 540 1498 c
+516 1502 495 1491 474 1494 c
+448 1496 421 1510 396 1516 c
+366 1524 348 1520 333 1554 c
+326 1568 334 1581 336 1596 c
+338 1621 333 1648 336 1674 c
+338 1696 350 1723 346 1746 c
+340 1776 328 1807 316 1836 c
+305 1860 286 1887 283 1914 c
+281 1928 292 1937 297 1950 c
+301 1961 300 1974 300 1986 c
+299 2008 281 2024 282 2046 c
+282 2059 295 2068 295 2082 c
+294 2090 286 2098 283 2106 c
+277 2123 274 2141 276 2160 c
+277 2176 287 2191 286 2208 c
+286 2224 285 2252 279 2268 c
+270 2291 248 2308 246 2334 c
+242 2365 253 2383 262 2412 c
+266 2427 261 2444 265 2460 c
+267 2472 277 2483 279 2496 c
+282 2515 277 2550 270 2568 c
+260 2561 254 2552 246 2544 c
+189 2488 187 2595 156 2616 c
+144 2589 153 2565 156 2538 c
+157 2522 153 2505 156 2490 c
+157 2478 164 2470 167 2460 c
+171 2442 169 2417 168 2400 c
+166 2381 155 2368 150 2352 c
+147 2337 147 2313 150 2298 c
+154 2267 176 2238 180 2208 c
+183 2179 163 2152 162 2124 c
+161 2106 174 2093 174 2076 c
+173 2059 156 2044 159 2028 c
+160 2015 172 2008 177 1998 c
+183 1982 177 1965 180 1950 c
+185 1933 194 1919 196 1902 c
+197 1889 191 1878 192 1866 c
+194 1824 199 1781 205 1740 c
+210 1712 226 1693 232 1668 c
+243 1626 245 1586 268 1548 c
+282 1526 313 1513 321 1488 c
+327 1466 309 1461 294 1458 c
+328 1416 l
+373 1303 l
+396 1300 l
+456 1297 l
+492 1308 l
+528 1297 l
+588 1302 l
+636 1297 l
+660 1315 l
+699 1290 l
+681 1242 l
+675 1219 l
+648 1188 l
+584 1090 l
+420 922 l
+360 859 l
+264 814 l
+198 738 l
+116 695 l
+64 612 l
+44 576 l
+58 516 l
+30 402 l
+42 288 l
+72 282 l
+0 108 l
+0 2748 l
+36 2721 l
+84 2729 l
+138 2714 l
+168 2712 l
+252 2664 l
+288 2699 l
+318 2712 l
+354 2760 l
+416 2820 l
+431 2850 l
+366 2880 l
+333 2910 l
+306 2978 l
+282 2976 l
+228 2976 l
+174 3003 l
+162 2994 l
+145 3032 177 3043 182 3078 c
+184 3095 165 3107 180 3124 c
+186 3131 196 3132 202 3139 c
+224 3167 278 3208 258 3252 c
+248 3272 227 3271 210 3279 c
+192 3286 176 3300 162 3312 c
+147 3299 134 3284 120 3271 c
+113 3266 103 3265 99 3256 c
+84 3230 147 3207 102 3187 c
+90 3190 l
+83 3192 78 3195 72 3198 c
+78 3168 l
+49 3160 l
+30 3102 l
+0 3150 l
+0 3666 l
+3858 3666 l
+3858 3654 l
+S
+0 3078 m
+9 3067 15 3054 24 3044 c
+43 3024 65 3016 54 2988 c
+0 3036 l
+0 3078 l
+S
+4824 540 m
+4802 511 4766 509 4734 525 c
+4719 531 4709 546 4692 546 c
+4662 546 4656 506 4632 506 c
+4616 506 4616 524 4606 531 c
+4596 539 4582 532 4575 546 c
+4562 569 4596 569 4608 578 c
+4627 591 4639 614 4632 636 c
+4593 624 4584 569 4542 600 c
+4560 630 l
+4530 624 l
+4509 652 4528 664 4554 680 c
+4579 695 4599 711 4632 704 c
+4654 698 4662 681 4686 690 c
+4662 714 l
+4680 741 4731 720 4741 690 c
+4751 656 4707 647 4710 618 c
+4712 594 4749 578 4770 587 c
+4797 598 4815 636 4830 660 c
+4836 660 l
+4836 540 l
+4824 540 l
+S
+4626 0 m
+4632 6 l
+4638 6 l
+4644 6 l
+4662 54 l
+4758 36 l
+4798 49 l
+4830 120 l
+4836 120 l
+4836 0 l
+4626 0 l
+S
+4062 3630 m
+4087 3614 4092 3600 4074 3576 c
+4050 3593 4044 3605 4062 3630 c
+S
+4266 3420 m
+4280 3395 4309 3361 4332 3343 c
+4347 3331 4368 3325 4377 3306 c
+4384 3289 4366 3273 4350 3277 c
+4339 3279 4332 3292 4326 3300 c
+4320 3286 4330 3255 4314 3250 c
+4296 3244 4280 3269 4275 3282 c
+4263 3310 4258 3343 4245 3372 c
+4226 3410 4188 3433 4165 3468 c
+4155 3484 4121 3533 4141 3550 c
+4158 3567 4179 3532 4194 3523 c
+4222 3507 4253 3504 4278 3480 c
+4288 3470 4302 3459 4294 3444 c
+4288 3433 4275 3426 4266 3420 c
+S
+642 3306 m
+606 3270 l
+672 3270 l
+720 3268 l
+738 3288 l
+712 3305 667 3307 696 3348 c
+786 3316 l
+810 3315 l
+846 3285 l
+900 3264 l
+877 3232 844 3215 804 3222 c
+788 3224 768 3259 753 3238 c
+739 3220 755 3193 768 3180 c
+802 3143 905 3053 822 3011 c
+809 3004 788 2998 774 2994 c
+737 2985 692 3013 666 3038 c
+659 3045 656 3056 648 3063 c
+638 3072 627 3077 618 3085 c
+608 3093 600 3104 588 3109 c
+565 3116 538 3114 516 3123 c
+498 3129 480 3146 462 3148 c
+439 3151 414 3127 390 3136 c
+357 3147 352 3201 312 3174 c
+298 3189 284 3214 307 3232 c
+315 3238 326 3233 334 3241 c
+345 3249 347 3264 360 3271 c
+367 3276 375 3271 382 3277 c
+394 3285 396 3310 414 3310 c
+426 3310 436 3290 444 3282 c
+486 3328 l
+534 3355 l
+576 3385 l
+630 3388 l
+624 3336 l
+642 3306 l
+S
+4518 3270 m
+4502 3305 4508 3330 4522 3366 c
+4526 3378 4536 3399 4554 3393 c
+4569 3387 4573 3368 4570 3354 c
+4566 3325 4546 3278 4518 3270 c
+S
+3162 3369 m
+3169 3369 3172 3371 3180 3367 c
+3216 3345 3175 3322 3174 3294 c
+3172 3275 3183 3245 3172 3229 c
+3161 3213 3141 3210 3127 3201 c
+3115 3193 3111 3184 3096 3186 c
+3079 3187 3075 3201 3079 3216 c
+3085 3233 3102 3243 3112 3258 c
+3126 3279 3126 3307 3136 3330 c
+3139 3338 3150 3369 3162 3369 c
+S
+4344 3090 m
+4326 3110 4317 3127 4305 3150 c
+4297 3164 4282 3179 4293 3198 c
+4299 3208 4315 3214 4326 3220 c
+4335 3227 4350 3237 4362 3238 c
+4381 3241 4406 3223 4428 3222 c
+4449 3220 4475 3246 4494 3237 c
+4515 3226 4512 3202 4498 3187 c
+4478 3166 4461 3142 4441 3120 c
+4429 3105 4415 3093 4425 3072 c
+4441 3036 4481 3016 4504 2987 c
+4522 2966 4515 2928 4533 2904 c
+4541 2894 4554 2894 4558 2880 c
+4562 2868 4565 2843 4563 2832 c
+4560 2823 4551 2816 4549 2808 c
+4542 2785 4540 2763 4528 2742 c
+4519 2727 4504 2719 4497 2706 c
+4491 2696 4494 2685 4489 2676 c
+4481 2662 4467 2654 4461 2640 c
+4449 2610 4471 2572 4450 2544 c
+4438 2528 4420 2530 4404 2523 c
+4382 2515 4362 2491 4351 2472 c
+4339 2452 4366 2418 4368 2394 c
+4370 2356 4335 2342 4308 2328 c
+4294 2321 4281 2312 4266 2316 c
+4237 2325 4257 2351 4245 2369 c
+4239 2377 4226 2374 4221 2382 c
+4215 2391 4218 2403 4218 2412 c
+4215 2440 4210 2469 4227 2496 c
+4232 2505 4245 2509 4249 2520 c
+4250 2525 4247 2532 4249 2538 c
+4255 2559 4271 2592 4285 2610 c
+4294 2619 4304 2618 4312 2625 c
+4322 2632 4319 2645 4332 2652 c
+4345 2659 4361 2656 4372 2670 c
+4390 2693 4354 2724 4363 2754 c
+4365 2762 4373 2769 4375 2778 c
+4377 2789 4375 2797 4381 2808 c
+4398 2834 4426 2853 4444 2880 c
+4463 2910 4431 2927 4410 2943 c
+4384 2964 4346 2995 4330 3024 c
+4326 3033 4318 3049 4321 3060 c
+4323 3072 4335 3081 4344 3090 c
+S
+1164 2802 m
+1179 2795 1198 2806 1212 2799 c
+1227 2790 1222 2774 1224 2760 c
+1227 2733 1239 2716 1206 2703 c
+1178 2691 1156 2718 1128 2706 c
+1162 2646 l
+1143 2621 l
+1114 2577 l
+1062 2586 l
+973 2646 l
+970 2682 l
+960 2748 l
+967 2744 979 2734 988 2739 c
+1000 2744 999 2761 1009 2769 c
+1024 2783 1053 2776 1042 2805 c
+1032 2814 l
+1036 2820 1047 2829 1048 2838 c
+1052 2861 1019 2887 1015 2910 c
+1011 2929 1033 2940 1036 2958 c
+1039 2972 1028 2985 1033 3000 c
+1038 3017 1066 3051 1081 3063 c
+1087 3068 1097 3067 1104 3073 c
+1115 3081 1120 3094 1134 3102 c
+1164 3118 1184 3081 1212 3073 c
+1221 3070 1238 3065 1248 3068 c
+1258 3070 1266 3082 1278 3079 c
+1287 3077 1295 3066 1302 3060 c
+1318 3043 1345 3025 1344 3000 c
+1342 2981 1328 2969 1326 2952 c
+1324 2937 1333 2917 1324 2904 c
+1315 2893 1273 2871 1260 2874 c
+1247 2878 1241 2889 1230 2895 c
+1216 2901 1201 2897 1188 2894 c
+1181 2892 1171 2891 1167 2885 c
+1157 2869 1179 2857 1180 2844 c
+1182 2830 1167 2815 1164 2802 c
+S
+126 3018 m
+120 2982 l
+107 2999 107 3006 126 3018 c
+S
+1626 2970 m
+1615 2929 1593 2895 1560 2868 c
+1551 2862 1539 2861 1530 2855 c
+1509 2841 1483 2812 1458 2808 c
+1445 2807 1442 2818 1432 2823 c
+1420 2829 1404 2826 1392 2832 c
+1486 2946 l
+1524 2993 l
+1584 2976 l
+1626 2970 l
+S
+1866 2844 m
+1889 2853 1912 2841 1938 2844 c
+1948 2846 1964 2848 1974 2853 c
+1990 2860 2002 2880 2022 2880 c
+2037 2880 2059 2869 2076 2865 c
+2096 2861 2156 2829 2139 2802 c
+2127 2781 2108 2794 2094 2802 c
+2083 2806 2074 2806 2064 2810 c
+2049 2815 2038 2827 2022 2826 c
+2008 2824 1990 2809 1988 2796 c
+1985 2781 1996 2767 1979 2757 c
+1959 2745 1953 2765 1943 2775 c
+1915 2803 1877 2801 1866 2844 c
+S
+4002 2340 m
+4004 2349 4005 2360 4009 2370 c
+4014 2384 4038 2397 4045 2376 c
+4055 2348 4021 2332 4002 2340 c
+S
+4320 2310 m
+4320 2274 l
+4300 2286 4300 2297 4320 2310 c
+S
+4194 2016 m
+4187 2024 4182 2028 4182 2040 c
+4181 2053 4182 2066 4194 2075 c
+4205 2083 4221 2079 4225 2064 c
+4227 2053 4216 2041 4212 2034 c
+4206 2024 4202 2021 4194 2016 c
+S
+3984 1905 m
+4044 1918 4030 1836 4029 1800 c
+4028 1784 4031 1773 4027 1758 c
+4024 1741 4028 1717 4008 1710 c
+3949 1690 3902 1781 3919 1830 c
+3924 1845 3943 1853 3952 1866 c
+3961 1877 3967 1901 3984 1905 c
+S
+1164 1614 m
+1122 1578 l
+1110 1607 1136 1632 1164 1614 c
+S
+4200 1290 m
+4209 1276 4223 1267 4234 1254 c
+4249 1234 4263 1209 4284 1195 c
+4299 1183 4320 1178 4336 1167 c
+4349 1158 4357 1145 4369 1135 c
+4385 1122 4403 1113 4413 1092 c
+4420 1075 4414 1055 4416 1038 c
+4417 1025 4423 1014 4420 1002 c
+4414 982 4397 972 4383 990 c
+4379 994 4376 1008 4374 1014 c
+4368 1014 l
+4354 961 l
+4284 940 l
+4254 939 l
+4218 973 l
+4158 945 l
+4135 954 l
+4188 1018 l
+4260 1035 l
+4297 1084 l
+4324 1116 l
+4302 1138 l
+4254 1167 l
+4231 1177 l
+4218 1218 l
+4206 1213 l
+4176 1211 4189 1229 4180 1248 c
+4170 1266 4152 1285 4140 1302 c
+4134 1302 l
+4127 1293 4119 1278 4110 1273 c
+4070 1248 4056 1325 4044 1344 c
+4038 1335 4033 1322 4024 1317 c
+4006 1305 3987 1325 3991 1344 c
+3996 1361 4028 1381 4023 1398 c
+4016 1418 3991 1430 3985 1452 c
+3977 1475 3991 1492 4000 1512 c
+4011 1538 4012 1574 4044 1587 c
+4077 1600 4073 1556 4083 1542 c
+4088 1534 4102 1534 4110 1528 c
+4129 1515 4155 1488 4159 1464 c
+4165 1428 4116 1372 4147 1339 c
+4157 1328 4170 1332 4182 1333 c
+4188 1334 4199 1333 4206 1336 c
+4227 1345 4241 1367 4266 1372 c
+4295 1377 4290 1346 4272 1335 c
+4261 1328 4251 1327 4242 1320 c
+4228 1308 4214 1299 4200 1290 c
+S
+3564 1545 m
+3637 1538 3572 1446 3522 1459 c
+3502 1464 3491 1487 3501 1506 c
+3510 1525 3526 1532 3546 1536 c
+3550 1538 3559 1545 3564 1545 c
+S
+804 1321 m
+823 1323 842 1329 858 1314 c
+875 1296 866 1267 840 1266 c
+826 1265 801 1272 795 1284 c
+789 1292 789 1320 804 1321 c
+S
+4020 1269 m
+4034 1264 4052 1256 4060 1242 c
+4067 1227 4054 1210 4038 1213 c
+4027 1214 4002 1231 3999 1242 c
+3995 1251 4008 1272 4020 1269 c
+S
+4290 1263 m
+4308 1261 4331 1252 4344 1236 c
+4353 1224 4351 1202 4332 1201 c
+4319 1201 4286 1224 4281 1236 c
+4278 1242 4278 1263 4290 1263 c
+S
+4098 1227 m
+4109 1228 4129 1232 4140 1227 c
+4157 1218 4176 1185 4152 1174 c
+4130 1164 4105 1175 4093 1194 c
+4088 1201 4082 1224 4098 1227 c
+S
+4032 1182 m
+4085 1150 4053 1084 4008 1062 c
+3987 1091 4003 1104 4014 1134 c
+4020 1151 4020 1166 4032 1182 c
+S
+4200 1164 m
+4209 1154 4221 1145 4227 1134 c
+4238 1110 4237 1060 4200 1063 c
+4151 1068 4183 1145 4200 1164 c
+S
+4266 1134 m
+4272 1134 l
+4284 1115 4283 1111 4266 1098 c
+4254 1114 4254 1117 4266 1134 c
+S
+2658 1044 m
+2670 978 l
+2673 948 l
+2658 924 l
+2626 958 2626 1008 2658 1044 c
+S
+2100 849 m
+2147 846 2204 789 2187 738 c
+2175 698 2127 676 2088 678 c
+2052 681 2021 728 2037 762 c
+2044 777 2058 789 2067 804 c
+2073 811 2088 849 2100 849 c
+S
+3894 474 m
+3898 468 3912 458 3913 450 c
+3913 436 3901 427 3901 414 c
+3900 403 3910 394 3909 384 c
+3907 368 3893 364 3883 357 c
+3858 339 3841 326 3810 324 c
+3783 321 3769 345 3744 346 c
+3731 347 3707 344 3696 339 c
+3685 334 3678 324 3666 324 c
+3639 324 3647 361 3624 364 c
+3604 368 3600 342 3582 343 c
+3549 343 3562 368 3544 381 c
+3532 389 3518 375 3505 381 c
+3479 392 3458 442 3463 468 c
+3465 476 3473 484 3478 492 c
+3493 519 3492 543 3528 528 c
+3537 541 3535 563 3547 573 c
+3557 583 3576 587 3588 594 c
+3599 602 3602 613 3613 621 c
+3626 631 3646 633 3660 644 c
+3673 654 3688 671 3699 684 c
+3704 691 3705 699 3714 705 c
+3733 716 3765 707 3784 726 c
+3793 736 3794 751 3804 762 c
+3814 773 3828 779 3838 792 c
+3848 806 3851 827 3865 840 c
+3882 856 3919 843 3942 847 c
+3953 849 3966 855 3976 849 c
+4012 826 3956 808 3951 792 c
+3945 775 3967 766 3964 750 c
+3961 736 3947 708 3940 696 c
+3934 686 3922 677 3919 666 c
+3914 636 3965 631 3973 606 c
+3979 584 3964 564 3957 546 c
+3953 538 3955 529 3952 522 c
+3940 494 3918 485 3894 474 c
+S
+4050 486 m
+4073 478 4115 493 4132 512 c
+4143 522 4154 543 4170 546 c
+4179 547 4192 538 4200 534 c
+4182 498 l
+4194 489 l
+4203 480 l
+4203 454 4167 453 4171 432 c
+4172 419 4185 412 4191 402 c
+4199 387 4203 369 4210 354 c
+4217 341 4225 331 4216 318 c
+4207 306 4193 307 4183 298 c
+4174 290 4170 278 4158 273 c
+4113 252 4142 351 4098 333 c
+4083 327 4086 305 4080 294 c
+4064 265 4035 259 4008 270 c
+4011 287 4035 319 4029 334 c
+4015 367 3969 342 3961 378 c
+3958 396 3986 410 3994 426 c
+4003 447 4018 474 4020 498 c
+4020 512 4012 525 4014 540 c
+4015 557 4032 575 4044 588 c
+4064 609 4085 614 4110 627 c
+4121 632 4127 643 4140 647 c
+4167 653 4197 651 4224 666 c
+4251 681 4271 723 4302 731 c
+4326 737 4337 709 4330 690 c
+4321 658 4289 651 4266 636 c
+4250 627 4235 613 4218 606 c
+4203 599 4184 600 4171 594 c
+4158 589 4152 573 4140 567 c
+4127 560 4111 564 4098 558 c
+4069 544 4060 513 4050 486 c
+S
+2706 720 m
+2727 704 2738 685 2730 660 c
+2702 668 2695 694 2706 720 c
+S
+4404 678 m
+4422 654 l
+4416 648 l
+4392 666 l
+4404 678 l
+S
+4380 636 m
+4391 632 4399 625 4410 621 c
+4420 618 4430 623 4438 612 c
+4447 599 4441 556 4426 549 c
+4420 547 4410 550 4404 552 c
+4373 562 4368 609 4380 636 c
+S
+2910 444 m
+2899 449 2883 452 2877 462 c
+2867 478 2877 494 2862 510 c
+2840 531 2806 528 2790 558 c
+2781 573 2768 616 2796 618 c
+2807 618 2820 611 2832 608 c
+2891 591 2955 542 2993 492 c
+3011 467 3015 436 3036 414 c
+3051 398 3061 404 3078 398 c
+3088 394 3099 383 3108 376 c
+3134 353 3151 321 3180 301 c
+3199 287 3224 278 3246 267 c
+3277 249 3283 230 3289 198 c
+3292 183 3298 164 3291 150 c
+3285 139 3273 136 3265 129 c
+3258 125 3254 116 3246 114 c
+3205 106 3181 146 3150 161 c
+3120 174 3100 201 3072 216 c
+3060 221 3047 221 3036 228 c
+3026 233 3020 243 3011 249 c
+2994 258 2978 257 2966 276 c
+2952 296 2934 330 2928 354 c
+2926 363 2930 374 2927 384 c
+2923 395 2912 398 2907 408 c
+2900 420 2906 432 2910 444 c
+S
+4254 522 m
+4254 516 l
+4218 510 l
+4224 533 4234 535 4254 522 c
+S
+4470 513 m
+4484 513 4518 520 4528 509 c
+4550 486 4496 468 4482 462 c
+4474 458 4466 451 4458 452 c
+4417 454 4440 515 4470 513 c
+S
+4398 465 m
+4437 448 4396 394 4368 411 c
+4338 428 4373 474 4398 465 c
+S
+2832 441 m
+2871 420 l
+2850 379 l
+2820 420 l
+2832 441 l
+S
+4686 312 m
+4693 326 4702 340 4711 354 c
+4719 367 4729 384 4746 390 c
+4760 394 4779 382 4779 366 c
+4778 357 4770 349 4767 342 c
+4749 306 4723 288 4686 312 c
+S
+2880 336 m
+2904 276 l
+2866 270 2849 311 2880 336 c
+S
+3312 310 m
+3333 311 3356 306 3370 288 c
+3387 265 3363 248 3342 246 c
+3323 244 3294 254 3283 270 c
+3265 292 3291 308 3312 310 c
+S
+4626 294 m
+4596 264 l
+4591 269 4580 279 4579 288 c
+4577 323 4611 307 4626 294 c
+S
+3486 276 m
+3462 242 3440 241 3408 264 c
+3429 301 3454 304 3486 276 c
+S
+4392 204 m
+4372 184 4351 170 4326 186 c
+4341 212 4367 224 4392 204 c
+S
+4470 220 m
+4510 213 4488 185 4471 167 c
+4461 156 4456 142 4446 132 c
+4422 109 4395 112 4368 102 c
+4353 96 4337 68 4321 75 c
+4290 87 4314 112 4327 125 c
+4338 135 4349 151 4362 159 c
+4382 171 4402 175 4422 192 c
+4431 199 4455 222 4470 220 c
+S
+4296 168 m
+4292 164 4287 154 4282 152 c
+4270 143 4237 146 4237 168 c
+4237 188 4264 192 4278 185 c
+4284 181 4291 172 4296 168 c
+S
+3456 144 m
+3478 164 3515 176 3546 165 c
+3556 162 3564 153 3576 150 c
+3589 147 3604 150 3618 147 c
+3636 144 3653 134 3672 132 c
+3710 126 3749 140 3780 114 c
+3764 91 3741 68 3714 61 c
+3695 55 3673 58 3654 52 c
+3643 50 3634 42 3624 42 c
+3599 42 3572 60 3546 60 c
+3527 60 3511 52 3492 54 c
+3472 55 3456 66 3438 70 c
+3424 74 3409 71 3396 73 c
+3378 77 3364 84 3348 88 c
+3336 92 3322 88 3316 102 c
+3312 113 3335 159 3348 164 c
+3361 168 3370 151 3384 152 c
+3394 152 3399 161 3408 165 c
+3431 173 3443 161 3456 144 c
+S
+4104 164 m
+4118 164 4167 168 4155 138 c
+4146 117 4098 112 4080 114 c
+4065 114 4050 128 4059 144 c
+4063 152 4094 163 4104 164 c
+S
+3888 138 m
+3900 102 l
+3918 121 3935 147 3966 150 c
+3988 151 4030 134 4000 108 c
+3993 102 3986 106 3978 102 c
+3969 99 3962 89 3954 87 c
+3945 84 3938 88 3930 88 c
+3914 87 3840 73 3861 114 c
+3865 123 3879 131 3888 138 c
+S
+3810 116 m
+3817 116 3826 120 3832 113 c
+3843 100 3841 76 3822 73 c
+3799 69 3789 114 3810 116 c
+S
+4686 90 m
+4668 74 4663 70 4644 84 c
+4657 105 4666 105 4686 90 c
+S
+3996 60 m
+4050 94 l
+4077 88 l
+4056 51 l
+3996 60 l
+S
+grestore
+% 
+
+} bd
+% 
+
+% 
+/InternalOutline {
+
+% 
+gsave
+1 6 div dup scale
+726 3666 m
+726 3660 l
+777 3628 l
+804 3571 l
+868 3528 l
+907 3469 l
+984 3448 l
+1068 3396 l
+1060 3372 l
+1110 3346 l
+1152 3312 l
+1095 3270 l
+1074 3205 l
+978 3166 l
+930 3084 l
+S
+1680 3666 m
+1680 3660 l
+1672 3636 1665 3610 1655 3588 c
+1647 3571 1631 3552 1628 3534 c
+1625 3522 1634 3514 1634 3504 c
+1633 3493 1624 3476 1617 3469 c
+1599 3448 1578 3470 1560 3454 c
+1540 3436 1570 3420 1557 3403 c
+1552 3394 1539 3396 1531 3388 c
+1504 3362 1473 3337 1470 3294 c
+1497 3286 l
+1512 3267 l
+1566 3247 l
+1614 3255 l
+1644 3234 l
+S
+2946 3666 m
+2946 3660 l
+2940 3636 l
+2988 3600 l
+2958 3552 l
+2910 3576 l
+2898 3552 2894 3524 2892 3498 c
+2890 3483 2892 3463 2879 3453 c
+2842 3423 2847 3485 2831 3495 c
+2819 3501 2793 3484 2784 3478 c
+2752 3461 2761 3420 2751 3390 c
+2744 3366 2733 3330 2717 3312 c
+2708 3302 2697 3299 2688 3292 c
+2676 3282 2672 3265 2679 3252 c
+2703 3202 2748 3210 2790 3192 c
+2763 3172 2771 3161 2772 3132 c
+S
+3642 3666 m
+3642 3660 l
+3591 3622 l
+3598 3594 l
+3660 3528 l
+3636 3463 l
+3576 3444 l
+3541 3436 l
+3541 3402 l
+3498 3366 l
+3534 3342 l
+3504 3326 3479 3296 3498 3264 c
+3414 3199 l
+3373 3180 l
+3370 3138 l
+3360 3108 l
+S
+4572 3372 m
+4830 3432 l
+4836 3432 l
+S
+4212 3330 m
+4266 3294 l
+S
+4512 3288 m
+4494 3240 l
+S
+246 3264 m
+306 3279 l
+348 3258 l
+S
+4302 3252 m
+4314 3216 l
+S
+4128 3216 m
+4143 3202 4146 3199 4164 3210 c
+S
+1866 3210 m
+1862 3174 l
+1881 3132 l
+1862 3078 l
+1884 3036 l
+1824 2979 l
+1752 2898 l
+S
+4074 3186 m
+4128 3216 l
+S
+4374 3084 m
+4374 3026 4435 3009 4461 2964 c
+4469 2949 4486 2914 4486 2898 c
+4486 2889 4479 2882 4477 2874 c
+4472 2853 4470 2834 4470 2814 c
+4470 2805 4467 2792 4473 2784 c
+4479 2776 4490 2779 4500 2775 c
+4512 2771 4522 2763 4536 2760 c
+S
+1326 2940 m
+1464 2922 l
+S
+2364 2916 m
+2442 2894 l
+2484 2901 l
+2537 2862 l
+2534 2808 l
+2574 2762 l
+2676 2729 l
+2700 2688 l
+2703 2646 l
+2664 2598 l
+2586 2577 l
+2544 2538 l
+2468 2519 l
+2454 2490 l
+2481 2477 l
+2514 2442 l
+2567 2427 l
+2583 2400 l
+2610 2370 l
+2590 2345 2564 2341 2592 2310 c
+2604 2298 l
+2550 2289 l
+2508 2282 l
+2466 2294 l
+2436 2274 l
+2376 2246 l
+2316 2253 l
+2262 2223 l
+2196 2241 l
+2118 2193 l
+2052 2213 l
+2028 2196 l
+S
+426 2856 m
+468 2841 l
+510 2847 l
+624 2792 l
+684 2793 l
+726 2769 l
+810 2760 l
+S
+2682 1884 m
+2691 1926 l
+2690 1968 l
+2738 2046 l
+2709 2130 l
+2723 2196 l
+2736 2226 l
+2787 2213 l
+2799 2172 l
+2850 2145 l
+2892 2148 l
+2946 2115 l
+2988 2133 l
+3029 2127 l
+3048 2151 l
+3090 2165 l
+3115 2202 l
+3133 2226 l
+3118 2262 l
+3138 2304 l
+3162 2292 l
+3186 2328 l
+3145 2364 l
+3126 2400 l
+3113 2393 3086 2377 3073 2388 c
+3062 2398 3060 2417 3048 2427 c
+3026 2446 2990 2455 2979 2484 c
+2975 2492 2981 2499 2979 2508 c
+2978 2518 2971 2526 2972 2538 c
+2973 2554 2983 2569 2987 2586 c
+2989 2598 2984 2616 2991 2628 c
+3007 2656 3059 2630 3084 2628 c
+3109 2627 3131 2651 3156 2655 c
+3183 2661 3208 2633 3234 2637 c
+3257 2640 3277 2666 3300 2673 c
+3334 2685 3363 2680 3396 2702 c
+3402 2706 3413 2711 3417 2718 c
+3423 2733 3406 2746 3405 2760 c
+3403 2774 3418 2791 3427 2802 c
+3459 2837 3489 2811 3528 2808 c
+S
+4560 2826 m
+4597 2822 4618 2784 4633 2754 c
+4654 2709 4669 2653 4674 2604 c
+4678 2560 4667 2514 4675 2472 c
+4681 2442 4670 2417 4668 2388 c
+4664 2352 4659 2313 4648 2280 c
+4640 2259 4630 2242 4627 2220 c
+4618 2161 4607 2097 4588 2040 c
+4575 2003 4558 1968 4546 1932 c
+4534 1899 4507 1874 4495 1842 c
+4483 1805 4490 1764 4480 1728 c
+4470 1694 4443 1674 4429 1644 c
+4421 1624 4418 1602 4408 1584 c
+4403 1573 4394 1567 4387 1559 c
+4368 1534 4355 1502 4341 1476 c
+4321 1440 4307 1402 4284 1368 c
+S
+2142 2814 m
+2196 2781 l
+2262 2808 l
+S
+4368 2766 m
+4377 2765 4383 2764 4392 2760 c
+4438 2739 4417 2692 4416 2652 c
+4414 2625 4411 2599 4386 2583 c
+4371 2573 4357 2570 4345 2555 c
+4330 2534 4326 2498 4296 2490 c
+4279 2486 4262 2502 4248 2508 c
+S
+258 2670 m
+270 2574 l
+S
+264 2436 m
+324 2501 l
+408 2540 l
+540 2580 l
+S
+552 2580 m
+603 2544 l
+618 2478 l
+660 2436 l
+672 2376 l
+732 2304 l
+S
+4146 2454 m
+4218 2418 l
+S
+4044 2418 m
+4038 2388 l
+S
+2898 1878 m
+2910 1914 l
+2940 1896 l
+2976 1926 l
+2994 1878 l
+3036 1902 l
+3051 1876 3058 1845 3071 1818 c
+3075 1808 3079 1796 3090 1791 c
+3101 1787 3114 1796 3126 1797 c
+3137 1799 3145 1791 3156 1791 c
+3164 1792 3172 1799 3180 1803 c
+3214 1824 3215 1851 3198 1884 c
+3240 1901 l
+3270 1887 l
+3330 1878 l
+3342 1893 3355 1915 3378 1917 c
+3394 1919 3399 1903 3414 1901 c
+3425 1899 3447 1917 3453 1926 c
+3468 1954 3413 1977 3417 2010 c
+3419 2039 3468 2056 3465 2088 c
+3462 2114 3426 2138 3402 2139 c
+3387 2140 3373 2129 3360 2138 c
+3346 2146 3329 2179 3334 2196 c
+3338 2207 3351 2206 3358 2214 c
+3364 2223 3358 2233 3367 2241 c
+3386 2258 3417 2260 3438 2280 c
+3430 2291 3412 2307 3412 2322 c
+3411 2353 3470 2389 3498 2385 c
+3527 2382 3558 2352 3588 2355 c
+3608 2358 3608 2390 3630 2385 c
+3656 2380 3655 2338 3690 2343 c
+3727 2348 3725 2392 3762 2400 c
+S
+3882 2298 m
+4002 2346 l
+S
+4308 2328 m
+4314 2310 l
+S
+4314 2274 m
+4299 2206 4261 2129 4218 2076 c
+S
+4188 2022 m
+4178 1969 4134 1932 4098 1896 c
+4077 1875 4060 1854 4032 1848 c
+S
+1746 1974 m
+1766 1968 1786 1970 1806 1965 c
+1824 1961 1836 1946 1854 1941 c
+1888 1930 1918 1956 1938 1980 c
+1968 1956 l
+2010 1941 l
+2040 1917 l
+2064 1916 l
+2088 1898 l
+2160 1878 l
+S
+3906 1908 m
+3954 1884 l
+S
+1620 1866 m
+1634 1855 1654 1852 1668 1841 c
+1683 1827 1684 1809 1704 1800 c
+1729 1787 1766 1787 1788 1769 c
+1800 1758 1798 1740 1812 1730 c
+1831 1715 1851 1716 1866 1734 c
+1893 1692 l
+1886 1638 l
+1896 1596 l
+1920 1593 l
+1953 1512 l
+1998 1476 l
+1992 1466 1981 1452 1985 1440 c
+1988 1427 2007 1425 2007 1410 c
+2006 1392 1984 1392 1974 1384 c
+1946 1362 1951 1332 1974 1314 c
+1952 1287 1936 1226 1974 1203 c
+1993 1191 2026 1204 2028 1170 c
+2030 1144 2003 1135 1986 1128 c
+1962 1117 1926 1091 1929 1062 c
+1930 1055 1940 1048 1944 1044 c
+1925 1023 l
+1884 1018 l
+1836 984 l
+S
+2364 1806 m
+2349 1764 l
+2352 1740 l
+2328 1710 l
+2305 1730 2290 1729 2262 1722 c
+2251 1719 2234 1713 2241 1698 c
+2244 1690 2260 1684 2268 1680 c
+2205 1644 l
+2196 1596 l
+2184 1536 l
+2184 1488 l
+2166 1498 2147 1500 2133 1480 c
+2128 1475 2134 1465 2132 1459 c
+2124 1436 2113 1432 2136 1411 c
+2150 1397 2182 1360 2202 1359 c
+2220 1357 2225 1376 2238 1384 c
+2253 1392 2267 1381 2280 1374 c
+2328 1428 l
+2388 1404 l
+S
+2472 1806 m
+2493 1799 2527 1793 2543 1776 c
+2554 1762 2551 1740 2568 1731 c
+2586 1720 2625 1728 2637 1703 c
+2642 1690 2624 1682 2618 1674 c
+2598 1647 2595 1626 2628 1614 c
+2631 1618 2637 1633 2642 1637 c
+2676 1661 2673 1587 2679 1572 c
+2681 1565 2689 1558 2694 1554 c
+S
+1428 1800 m
+1437 1762 1458 1714 1444 1674 c
+1434 1640 1400 1643 1374 1637 c
+1340 1628 1295 1615 1260 1626 c
+1225 1638 1200 1679 1164 1680 c
+S
+3972 1710 m
+3972 1656 4009 1629 4032 1584 c
+S
+846 1548 m
+846 1536 843 1522 849 1512 c
+858 1493 878 1485 886 1464 c
+902 1413 866 1371 852 1326 c
+S
+3186 1518 m
+3228 1446 l
+3241 1417 l
+3279 1384 l
+3307 1326 l
+3334 1290 l
+3355 1176 l
+3378 1080 l
+S
+4836 1494 m
+4830 1494 l
+4728 1435 l
+4518 1270 l
+4356 1152 l
+S
+684 1302 m
+792 1308 l
+S
+870 1296 m
+896 1288 915 1252 930 1230 c
+954 1192 985 1152 1021 1123 c
+1052 1099 1088 1085 1122 1065 c
+1185 1025 1240 979 1314 961 c
+1329 957 1346 961 1362 960 c
+1410 955 1462 949 1512 954 c
+1528 955 1543 964 1560 966 c
+1605 970 1660 977 1698 1006 c
+1709 1015 1717 1027 1728 1038 c
+1757 1065 1779 1083 1794 1122 c
+S
+2658 1044 m
+2662 1066 2670 1101 2682 1122 c
+2687 1131 2697 1137 2703 1147 c
+2714 1167 2707 1175 2736 1176 c
+S
+3402 1038 m
+3468 954 l
+S
+3516 984 m
+3548 980 3559 949 3577 925 c
+3612 878 3612 830 3618 774 c
+3620 744 3628 714 3624 684 c
+3620 661 3607 641 3606 618 c
+S
+4134 954 m
+4032 880 l
+3978 846 l
+S
+2658 930 m
+2658 810 l
+2694 756 l
+2712 714 l
+S
+2016 840 m
+2070 816 l
+S
+3300 804 m
+3300 716 3271 644 3204 588 c
+S
+2190 756 m
+2370 690 l
+2526 684 l
+2598 672 l
+2700 690 l
+S
+2082 678 m
+2046 534 l
+2028 456 l
+2021 378 l
+1992 300 l
+1986 186 l
+1956 120 l
+1956 54 l
+1944 0 l
+S
+2730 666 m
+2733 633 2755 626 2784 618 c
+S
+3516 534 m
+3600 507 l
+3648 537 l
+3720 572 l
+3774 609 l
+3840 614 l
+3883 650 l
+3918 654 l
+S
+4440 606 m
+4524 630 l
+S
+4194 534 m
+4278 564 l
+4374 594 l
+S
+3966 564 m
+4014 540 l
+S
+3006 474 m
+3054 480 l
+S
+4014 270 m
+3942 250 l
+3834 168 l
+3750 132 l
+S
+3294 144 m
+3324 132 l
+S
+3618 42 m
+3612 0 l
+S
+grestore
+% 
+
+% 
+gsave
+1 6 div dup scale
+3588 3444 m
+3604 3401 3646 3374 3690 3396 c
+3704 3403 3713 3427 3732 3424 c
+3762 3420 3752 3373 3769 3355 c
+3815 3303 3860 3377 3894 3402 c
+3912 3378 3903 3379 3898 3354 c
+3895 3343 3905 3334 3901 3324 c
+3896 3305 3877 3289 3870 3270 c
+3930 3225 l
+3984 3231 l
+4056 3183 l
+4084 3166 l
+4080 3138 l
+S
+2442 3330 m
+2478 3268 l
+2550 3292 l
+2640 3261 l
+2676 3270 l
+S
+1644 3234 m
+1680 3264 l
+1700 3234 1726 3182 1770 3189 c
+1784 3191 1796 3201 1812 3204 c
+1827 3206 1852 3205 1866 3213 c
+1878 3220 1881 3236 1896 3241 c
+1915 3248 1937 3224 1955 3232 c
+1967 3237 1967 3254 1976 3262 c
+1990 3278 2042 3296 2064 3298 c
+2095 3302 2128 3278 2160 3277 c
+2191 3275 2224 3296 2256 3292 c
+2273 3291 2299 3290 2316 3282 c
+2324 3277 2330 3266 2340 3268 c
+2350 3269 2361 3280 2370 3286 c
+2393 3301 2418 3315 2442 3330 c
+S
+1152 3312 m
+1195 3312 1251 3313 1290 3289 c
+1306 3278 1303 3235 1326 3237 c
+1347 3238 1347 3274 1362 3286 c
+1389 3308 1435 3312 1470 3312 c
+S
+4014 3102 m
+4022 3129 4043 3124 4068 3132 c
+S
+4338 3084 m
+4422 3090 l
+S
+780 2994 m
+814 2940 l
+810 2910 l
+822 2844 l
+S
+1602 2910 m
+1616 2904 1633 2890 1650 2894 c
+1669 2897 1684 2917 1704 2919 c
+1720 2922 1731 2904 1746 2898 c
+1787 2878 1839 2886 1866 2844 c
+S
+624 2790 m
+528 2747 l
+531 2652 l
+545 2628 l
+546 2580 l
+S
+4470 2784 m
+4416 2736 l
+S
+2706 2658 m
+2808 2649 l
+2874 2625 l
+2910 2613 l
+2934 2625 l
+2994 2634 l
+S
+4302 2490 m
+4350 2472 l
+S
+2508 2280 m
+2511 2238 l
+2505 2208 l
+2544 2166 l
+2562 2196 l
+2610 2174 l
+2676 2157 l
+2706 2136 l
+S
+3132 2220 m
+3168 2175 l
+3234 2178 l
+3283 2145 l
+3342 2160 l
+S
+3456 1956 m
+3484 1998 l
+3516 2043 l
+3562 2043 l
+3636 2073 l
+3702 2027 l
+3762 2073 l
+3846 2049 l
+3876 2055 l
+3912 2046 l
+S
+3300 1878 m
+3253 1788 l
+3262 1746 l
+3252 1710 l
+3281 1691 3302 1681 3336 1698 c
+3355 1663 3328 1669 3306 1653 c
+3289 1642 3283 1627 3282 1608 c
+S
+1992 1476 m
+2052 1471 l
+2088 1479 l
+2124 1440 l
+S
+3336 1296 m
+3378 1314 l
+S
+3264 654 m
+3289 620 l
+3328 576 l
+3373 498 l
+3462 444 l
+S
+2022 384 m
+2088 361 l
+2310 328 l
+2400 306 l
+2598 300 l
+2700 288 l
+2742 282 l
+2862 300 l
+S
+2934 330 m
+2892 318 l
+S
+grestore
+% 
+
+} bd
+% 
+
+% 
+/MountainOutline {
+
+% 
+gsave
+1 6 div dup scale
+2478 1806 m
+2429 1820 2382 1797 2334 1814 c
+2303 1824 2278 1829 2250 1845 c
+2230 1857 2210 1867 2190 1875 c
+2177 1880 2159 1881 2150 1890 c
+2131 1910 2152 1954 2178 1956 c
+2197 1957 2219 1944 2238 1940 c
+2253 1936 2270 1940 2286 1935 c
+2321 1925 2351 1899 2388 1892 c
+2400 1889 2423 1882 2436 1884 c
+2456 1888 2476 1914 2495 1889 c
+2505 1874 2489 1861 2484 1848 c
+2479 1833 2483 1820 2478 1806 c
+S
+grestore
+% 
+
+} bd
+% 
+
+% 
+/NationalOutline {
+
+% 
+gsave
+1 6 div dup scale
+330 3666 m
+330 3648 l
+261 3588 l
+241 3504 l
+249 3474 l
+176 3408 l
+165 3366 l
+183 3342 l
+180 3306 l
+S
+1374 2358 m
+1387 2366 1401 2378 1416 2385 c
+1452 2402 1494 2405 1530 2426 c
+1558 2442 1577 2469 1614 2466 c
+1642 2463 1684 2451 1710 2439 c
+1724 2432 1734 2417 1752 2418 c
+1780 2419 1790 2453 1824 2448 c
+1850 2443 1849 2420 1866 2408 c
+1878 2399 1899 2408 1914 2405 c
+1924 2402 1933 2393 1944 2394 c
+1955 2397 1960 2406 1959 2418 c
+1958 2439 1941 2457 1938 2478 c
+1936 2498 1959 2532 1980 2535 c
+1993 2538 2001 2527 2010 2520 c
+2022 2531 2039 2549 2058 2550 c
+2068 2550 2077 2542 2088 2547 c
+2099 2551 2107 2564 2118 2571 c
+2136 2585 2161 2586 2178 2604 c
+2191 2618 2206 2650 2211 2670 c
+2215 2681 2206 2695 2214 2705 c
+2226 2717 2248 2711 2261 2724 c
+2271 2735 2280 2762 2280 2778 c
+2280 2790 2270 2801 2277 2814 c
+2289 2838 2326 2841 2343 2862 c
+2352 2872 2366 2895 2367 2910 c
+2367 2928 2349 2937 2354 2958 c
+2358 2979 2379 2990 2382 3012 c
+2384 3034 2354 3060 2388 3075 c
+2398 3079 2407 3072 2418 3079 c
+2430 3087 2429 3110 2448 3111 c
+2459 3111 2471 3100 2484 3099 c
+2513 3096 2538 3103 2568 3094 c
+2587 3089 2606 3076 2628 3079 c
+2648 3083 2661 3100 2676 3114 c
+2699 3134 2721 3149 2754 3144 c
+2772 3141 2806 3111 2817 3096 c
+2828 3082 2833 3065 2850 3057 c
+2863 3050 2883 3054 2898 3054 c
+2934 3054 2969 3055 3006 3060 c
+3021 3061 3038 3070 3054 3069 c
+3075 3066 3079 3039 3102 3036 c
+3119 3033 3170 3029 3184 3039 c
+3195 3046 3198 3061 3210 3069 c
+3234 3087 3277 3103 3306 3112 c
+3338 3121 3373 3102 3402 3088 c
+3412 3084 3425 3071 3438 3076 c
+3467 3086 3455 3147 3480 3166 c
+3511 3190 3543 3151 3576 3153 c
+3586 3153 3591 3161 3600 3165 c
+3619 3172 3635 3180 3654 3189 c
+3665 3194 3678 3189 3690 3193 c
+3701 3195 3709 3204 3720 3208 c
+3742 3215 3769 3207 3792 3210 c
+3801 3210 3812 3217 3822 3214 c
+3837 3211 3844 3195 3858 3189 c
+3871 3182 3887 3190 3900 3183 c
+3912 3175 3917 3160 3930 3153 c
+3959 3136 3992 3136 4011 3102 c
+4019 3085 4017 3039 4006 3024 c
+3995 3008 3974 3000 3967 2982 c
+3961 2964 3969 2945 3960 2928 c
+3947 2905 3922 2892 3913 2868 c
+3907 2848 3916 2827 3910 2808 c
+3898 2772 3859 2747 3847 2712 c
+3842 2696 3850 2679 3852 2664 c
+S
+810 3144 m
+888 3124 l
+942 3073 l
+996 3051 l
+1032 3012 l
+S
+786 2328 m
+786 2347 783 2368 787 2388 c
+790 2400 803 2417 799 2430 c
+795 2444 777 2452 771 2466 c
+763 2481 763 2527 769 2544 c
+780 2580 834 2594 840 2634 c
+842 2654 829 2664 823 2682 c
+817 2702 824 2726 822 2748 c
+819 2773 807 2813 825 2837 c
+851 2873 885 2812 895 2796 c
+899 2790 905 2783 912 2781 c
+927 2778 937 2803 952 2793 c
+963 2786 963 2759 966 2748 c
+S
+1278 1848 m
+1283 1857 1287 1869 1296 1877 c
+1303 1884 1315 1884 1318 1896 c
+1325 1917 1306 1934 1321 1956 c
+1331 1968 1357 1973 1354 1992 c
+1353 2004 1340 2013 1332 2022 c
+1309 2045 1248 2100 1290 2135 c
+1323 2162 1376 2116 1404 2103 c
+1431 2089 1481 2085 1512 2082 c
+1521 2081 1532 2083 1542 2079 c
+1557 2070 1559 2051 1572 2040 c
+1582 2029 1611 2014 1626 2010 c
+1641 2007 1649 2018 1662 2025 c
+1716 2052 l
+1731 2059 1758 2058 1767 2076 c
+1773 2090 1757 2102 1770 2115 c
+1777 2120 1786 2121 1794 2124 c
+1821 2139 1860 2167 1875 2196 c
+1882 2211 1872 2227 1878 2244 c
+1894 2282 1937 2292 1974 2271 c
+1992 2260 1989 2241 2000 2226 c
+2009 2211 2027 2207 2037 2195 c
+2050 2176 2048 2144 2058 2124 c
+2069 2103 2094 2087 2099 2064 c
+2103 2041 2072 2030 2081 2010 c
+2085 1999 2096 1995 2106 1991 c
+2133 1978 2161 1965 2190 1956 c
+S
+0 2016 m
+84 1995 l
+156 2034 l
+S
+2496 1884 m
+2509 1886 2524 1896 2538 1893 c
+2560 1889 2579 1870 2604 1872 c
+2625 1873 2648 1891 2670 1887 c
+2683 1886 2690 1873 2706 1874 c
+2735 1875 2752 1903 2778 1911 c
+2793 1915 2816 1904 2832 1901 c
+2848 1896 2872 1906 2886 1899 c
+2896 1893 2900 1881 2906 1872 c
+2923 1843 2946 1808 2955 1776 c
+2967 1736 2927 1686 2909 1656 c
+2900 1641 2885 1619 2895 1602 c
+2917 1557 2946 1612 2976 1608 c
+2995 1605 2998 1589 3012 1578 c
+3021 1571 3031 1574 3041 1569 c
+3050 1563 3063 1546 3069 1536 c
+3082 1508 3069 1468 3079 1440 c
+3084 1424 3112 1420 3112 1404 c
+3112 1389 3093 1384 3085 1374 c
+3069 1351 3083 1311 3096 1290 c
+3105 1298 3120 1318 3132 1323 c
+3154 1331 3178 1291 3198 1285 c
+3211 1280 3234 1292 3243 1278 c
+3246 1272 3242 1265 3244 1260 c
+3247 1247 3255 1241 3261 1230 c
+3266 1218 3261 1205 3265 1194 c
+3273 1173 3312 1158 3304 1134 c
+3295 1100 3251 1100 3228 1089 c
+3216 1083 3208 1070 3198 1063 c
+3169 1041 3151 1022 3150 984 c
+S
+3612 1650 m
+3595 1667 3570 1690 3589 1715 c
+3596 1723 3611 1728 3613 1740 c
+3616 1751 3602 1759 3601 1770 c
+3598 1781 3607 1797 3613 1806 c
+3633 1832 3685 1869 3720 1866 c
+3739 1864 3750 1850 3768 1844 c
+3802 1831 3838 1815 3858 1782 c
+S
+3030 630 m
+3041 669 3077 646 3108 654 c
+3128 661 3139 676 3162 678 c
+S
+grestore
+% 
+
+% 
+gsave
+1 6 div dup scale
+390 3666 m
+390 3654 l
+483 3564 l
+512 3486 l
+564 3390 l
+S
+246 3474 m
+292 3472 295 3433 330 3409 c
+351 3394 374 3403 396 3393 c
+426 3377 448 3344 468 3318 c
+S
+3576 3150 m
+3578 3112 3592 3071 3604 3036 c
+3609 3020 3625 3004 3622 2988 c
+3621 2976 3611 2968 3607 2958 c
+3596 2923 3605 2882 3580 2850 c
+3568 2833 3540 2828 3531 2813 c
+3523 2800 3536 2785 3532 2772 c
+3528 2756 3509 2752 3499 2741 c
+3488 2726 3486 2690 3499 2676 c
+3516 2654 3547 2666 3570 2670 c
+3596 2673 3608 2694 3631 2703 c
+3643 2707 3653 2692 3666 2694 c
+3678 2697 3685 2709 3696 2715 c
+3720 2726 3739 2706 3750 2688 c
+S
+3966 2934 m
+4026 2898 l
+S
+1140 2604 m
+1224 2598 l
+1266 2595 l
+1315 2538 l
+1368 2466 l
+1372 2346 l
+1345 2286 l
+1342 2208 l
+1303 2165 l
+1284 2130 l
+S
+1926 2394 m
+1916 2340 l
+1944 2286 l
+S
+1746 2058 m
+1749 1968 l
+1674 1944 l
+1643 1902 l
+1596 1806 l
+S
+2640 1470 m
+2679 1518 l
+2694 1560 l
+2724 1569 l
+2741 1590 l
+2762 1680 l
+2796 1722 l
+2862 1736 l
+2882 1781 l
+2940 1800 l
+S
+3072 1536 m
+3111 1536 3145 1505 3186 1519 c
+3216 1531 3196 1567 3211 1589 c
+3224 1606 3252 1627 3276 1617 c
+3286 1612 3293 1598 3306 1598 c
+3317 1597 3325 1610 3336 1613 c
+3361 1618 3373 1591 3378 1572 c
+S
+2958 924 m
+2998 936 3008 1000 2997 1038 c
+2992 1057 2978 1073 2972 1092 c
+2966 1107 2964 1135 2964 1152 c
+2964 1175 2979 1206 2967 1230 c
+2955 1250 2907 1270 2907 1296 c
+2907 1316 2937 1321 2946 1338 c
+2956 1357 2934 1373 2948 1392 c
+2957 1404 2974 1405 2988 1408 c
+3018 1416 3048 1424 3078 1434 c
+S
+3288 1110 m
+3303 1085 3337 1076 3366 1081 c
+3378 1084 3408 1097 3417 1084 c
+3424 1073 3410 1042 3400 1035 c
+3378 1017 3351 1005 3330 984 c
+3314 968 3318 952 3309 936 c
+3301 922 3283 920 3270 918 c
+S
+grestore
+% 
+
+} bd
+% 
+
+% 
+/Territories {
+
+% 
+30 543 (BUL/SC) b
+68 543 (BUL/EC) b
+58 456 (DAM/WC) b
+48 420 (DAM/SC) b
+641 317 (CAN/EC) b
+585 266 (CAN/SC) b
+510 146 (SIA/EC) b
+485 122 (SIA/WC) b
+% 
+
+% 
+63 581 (RUM) c
+140 565 (SEV) c
+677 555 (KHA) c
+730 526 (YES) c
+72 497 (CON) c
+684 497 (MAR) c
+150 490 (ARM) c
+626 483 (MAN) c
+761 482 (TOK) c
+731 474 (AKI) c
+112 441 (BAG) c
+726 439 (KYO) c
+740 423 (SHI) c
+678 419 (KOR) c
+564 418 (PEK) c
+16 411 (EGY) c
+715 402 (SAS) c
+180 381 (PER) c
+624 364 (SHA) c
+244 315 (BAL) c
+113 305 (ARA) c
+663 298 (FOR) c
+621 292 (HKO) c
+401 267 (CAL) c
+547 253 (HAN) c
+305 236 (BOM) c
+473 236 (BUR) c
+679 235 (PHI) c
+348 208 (MAD) c
+578 189 (HUE) c
+544 171 (CAM) c
+564 155 (SAI) c
+634 112 (SAR) c
+520 87 (MAL) c
+627 69 (BOR) c
+509 51 (SUM) c
+593 19 (JAV) c
+% 
+
+% 
+370 578 (SIB) l
+530 575 (IRK) l
+203 570 (MOS) l
+49 558 (BUL) l
+607 545 (AMU) l
+248 520 (KIR) l
+363 514 (TOM) l
+509 477 (MON) l
+257 441 (TUR) l
+73 439 (DAM) l
+381 413 (SIN) l
+465 400 (KAN) l
+267 370 (AFG) l
+323 342 (KAS) l
+398 332 (TIB) l
+518 327 (CHU) l
+595 315 (CAN) l
+451 291 (ASM) l
+343 282 (DEL) l
+516 274 (YUN) l
+531 229 (LAO) l
+518 196 (SIA) l
+% 
+
+% 
+395 310 (NEP) m
+% 
+
+% 
+738 580 (SOO) w
+99 531 (BLA) w
+23 474 (MED) w
+698 462 (SOJ) w
+650 401 (YEL) w
+685 369 (ECS) w
+789 348 (CPO) w
+716 302 (PSE) w
+216 284 (PGU) w
+101 229 (RED) w
+229 210 (ASE) w
+628 207 (SCS) w
+401 175 (BOB) w
+466 153 (GOM) w
+773 151 (CSE) w
+526 130 (GOS) w
+571 112 (KAR) w
+395 83 (EIO) w
+187 65 (WIO) w
+557 63 (JSE) w
+730 48 (BAN) w
+440 20 (SIO) w
+% 
+
+} bd
+% 
+
+% 
+
+/DrawMap {
+
+SwitchToMapMode
+
+32 dict begin
+
+/incompound false def
+/m { moveto } bd
+/l { lineto } bd
+/c { curveto } bd
+/F { incompound not {fill} if } bd
+/f { closepath F } bd
+/S { stroke } bd
+/*u { /incompound true def } bd
+/*U { /incompound false def f} bd
+
+/MapScale 6 def
+
+/LandColor { 0.8 0.7 0.4 setrgbcolor } bd
+/SeaColor { 0.1 0.4 0.6 setrgbcolor } bd
+/MountainColor { 0.5 setgray } bd
+/BorderColor { 0.1 setgray } bd
+/NationalBorder { 2.5 MapScale mul setlinewidth [] 0 setdash BorderColor } bd
+/InternalBorder { 1 MapScale mul setlinewidth [6 MapScale mul 2 MapScale mul] 3 MapScale mul setdash BorderColor } bd
+%/InternalBorder { 1 MapScale mul setlinewidth [] 0 setdash BorderColor } bd
+/CoastalBorder { 1 MapScale mul setlinewidth [] 0 setdash BorderColor } bd
+/MountainBorder { 2.5 MapScale mul setlinewidth [] 0 setdash BorderColor } bd
+
+% Continents and seas
+
+SeaColor clippath fill 
+
+/Seas [6 8 10 12 13] def
+/ObjectNr 0 def
+
+% Number the territories to find out which is sea, lake, mountain or land. 
+%MapNumberFont MapNumberFontSize MapScale mul scalefont setfont
+
+/S {
+  % Needed for drawing the territory number.
+  %pathbbox 
+
+  gsave 
+  Seas length 1 ge {
+    Seas 0 get ObjectNr eq {
+      SeaColor
+      /Seas [ Seas aload pop counttomark -1 roll pop ] def
+    }{
+      LandColor
+    } ifelse
+  }{
+    LandColor
+  } ifelse
+  eofill grestore stroke 
+
+  % Draw a number in the middle of the territory.
+  %3 -1 roll add 2 div 3 1 roll add 2 div exch
+  %gsave
+  %1 0 0 setrgbcolor
+  %ObjectNr PrintNumber
+  %grestore 
+
+  /ObjectNr ObjectNr 1 add def
+} bd
+
+2 setlinecap
+CoastalBorder
+
+ContinentalOutline
+
+% Mountains and ice
+
+/S {
+  gsave MountainColor fill grestore stroke
+} bd
+
+MountainBorder
+
+MountainOutline
+
+% National borders
+
+/S { stroke } bd
+
+NationalBorder
+
+NationalOutline
+
+% Internal borders
+
+/S { stroke } bd
+
+InternalBorder
+
+InternalOutline
+
+BorderColor
+
+Frame
+
+end
+
+UNOWNED
+
+DrawCenters
+
+ArrowLineThickness setlinewidth Black OkOrder
+
+} bd
+
+SetUpPage
+
+DefinePowers
+DefineCenters
+

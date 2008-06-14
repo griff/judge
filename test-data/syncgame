@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+
+judge=$1
+game=$2
+data=/home/observer/tmp/syncgame.data
+
+ssh observer@ftp.floc.net "/home/observer/scripts/do.py dump $judge $game > $data"
+scp -C observer@ftp.floc.net:$data $data
+/home/observer/scripts/do.py load < $data

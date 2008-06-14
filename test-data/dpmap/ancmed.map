@@ -1,0 +1,191 @@
+BEGIN   SPRING 1 MOVEMENT
+
+CARTHAGE   (CARTHAGINIAN)   CAR CIR THA
+F THA
+A CAR
+A CIR
+
+EGYPT      (EGYPTIAN)       ALE MEM THE
+F ALE
+A MEM
+A THE
+
+GREECE     (GREEK)          SPA ATH MAC
+F SPA
+A ATH
+A MAC
+
+PERSIA     (PERSIAN)        ANT SID DAM
+F SID
+A ANT
+A DAM
+
+ROME       (ROMAN)          NEA ROM RAV
+F NEA
+A ROM
+A RAV
+
+UNOWNED                     SAG MAS BAL SAD SIC VIN DAL
+UNOWNED                     NUM LEP CYR CRE CYP PET
+UNOWNED                     JER TYE SIP CHE BYZ MIL
+
+Adriatic Sea        = ADR
+Aegean Sea          = AEG
+Alexandria          = ALE
+Antioch             = ANT
+Apulia              = APU
+Arabia              = ARA
+Armenia             = ARM
+Athens              = ATH
+Ausonian Sea        = AUS
+Baleares            = BAL
+Bayuda              = BAY
+Berber Sea          = BER
+Bithynia            = BIT
+Black Sea           = BLA
+Byzantium           = BYZ
+Cappadocia          = CAP
+Carthage            = CAR
+Chersonesus         = CHE
+Cilician Strait     = CIL
+Cirta               = CIR
+Corsica             = COR
+Crete               = CRE
+Cyprus              = CYP
+Cyrene              = CYR
+Dacia               = DAC
+Dalmatia            = DAL
+Damascus            = DAM
+Egyptian Sea        = EGY
+Epirus              = EPI
+Etruria             = ETR
+Galatia             = GAL
+Gaul                = GAU
+Gulf of Pelusium    = GOP
+Gulf of Syrtis      = GOS
+Gulf of Tacape      = GOT
+Iberian Sea         = IBE
+Illyria             = ILL
+Ionian Sea          = ION
+Isauria             = ISA
+Jerusalem           = JER
+Leptis              = LEP
+Libyan Sea          = LIB
+Ligurian Sea        = LIG
+Lusitania           = LUS
+Macedonia           = MAC
+Marmarica           = MAR
+Massilia            = MAS
+Mauretania          = MAU
+Memphis             = MEM
+Messenian Sea       = MES
+Miletus             = MIL
+Minoan Sea          = MIN
+Nabatea             = NAB
+Neapolis            = NEA
+Numidia             = NUM
+Petra               = PET
+Phazania            = PHA
+Punic Sea           = PUN
+Ravenna             = RAV
+Reed Sea            = REE
+Rhaetia             = RHA
+Roma                = ROM
+Saguntum            = SAG
+Sahara              = SAH
+Sardinia            = SAD
+Sarmatia            = SAM
+Sicilia             = SIC
+Sidon               = SID
+Sinai               = SIN SII
+Sinope              = SIP
+Sparta              = SPA
+Syrian Sea          = SYR
+Tarraconensis       = TAR
+Thapsus             = THA
+Thebes              = THE
+Tyre                = TYE
+Tyrrhenean Sea      = TYN
+Venetia             = VEN
+Vindobona           = VIN
+
+WATER  ADR     ABUTS  ION APU RAV VEN DAL EPI
+WATER  AEG     ABUTS  SPA MAC BYZ MIL CRE MIN MES ATH
+COAST  ALE     ABUTS  CYR SIN GOP EGY MEM THE LIB
+COAST  ANT     ABUTS  CAP SID CIL dam
+COAST  APU     ABUTS  ADR RAV NEA ION rom
+LAND   ARA     ABUTS  DAM NAB JER SID TYE
+LAND   ARM     ABUTS  CHE SIP DAM CAP
+COAST  ATH     ABUTS  SPA MAC EPI AEG ION
+WATER  AUS     ABUTS  TYN NEA SIC ION MES LIB GOT PUN
+PORT   BAL     ABUTS  LIG BER Tar Sag
+COAST  BAY     ABUTS  THE MEM pha mar sah
+WATER  BER     ABUTS  IBE LIG PUN SAD BAL SAG MAU CAR
+COAST  BIT     ABUTS  BYZ SIP BLA gal
+WATER  BLA     ABUTS  BYZ DAC CHE SIP BIT
+COAST  BYZ     ABUTS  BLA AEG BIT MIL gal DAC MAC
+COAST  CAP     ABUTS  ISA ANT CIL sip gal arm dam
+COAST  CAR     ABUTS  BER PUN MAU THA cir
+COAST  CHE     ABUTS  BLA DAC SIP sam arm
+WATER  CIL     ABUTS  CYP SYR EGY MIN MIL ISA CAP ANT SID
+LAND   CIR     ABUTS  CAR MAU THA NUM SAH PHA
+COAST  COR     ABUTS  SAD LIG TYN
+COAST  CRE     ABUTS  AEG MIN EGY LIB MES
+COAST  CYP     ABUTS  SYR CIL EGY
+COAST  CYR     ABUTS  LEP ALE mar mem LIB GOS
+COAST  DAC     ABUTS  sam ill mac BLA BYZ CHE
+COAST  DAL     ABUTS  VEN ADR EPI vin ill
+LAND   DAM     ABUTS  ARM CAP ANT SID ARA
+WATER  EGY     ABUTS  ALE LIB CRE CYP MIN CIL GOP SYR
+COAST  EPI     ABUTS  DAL ADR ION mac ill ATH
+COAST  ETR     ABUTS  ven rav rha MAS LIG ROM
+LAND   GAL     ABUTS  BYZ MIL BIT ISA SIP CAP
+LAND   GAU     ABUTS  LUS TAR MAS RHA
+WATER  GOP     ABUTS  JER SIN ALE EGY SYR THE
+WATER  GOS     ABUTS  GOT LIB CYR LEP
+WATER  GOT     ABUTS  GOS NUM LEP THA LIB AUS MES PUN
+WATER  IBE     ABUTS  SAG MAU BER
+LAND   ILL     ABUTS  EPI MAC DAC SAM VIN DAL
+WATER  ION     ABUTS  ADR EPI SPA MES AUS NEA APU ATH
+COAST  ISA     ABUTS  CAP MIL CIL gal
+COAST  JER     ABUTS  TYE SIN pet ara nab SYR GOP
+COAST  LEP     ABUTS  CYR NUM GOS GOT mar pha
+WATER  LIB     ABUTS  MES AUS GOT GOS CYR EGY CRE ALE
+WATER  LIG     ABUTS  BER BAL TAR MAS ETR ROM TYN COR SAD
+LAND   LUS     ABUTS  SAG TAR GAU
+COAST  MAC     ABUTS  AEG BYZ dac ill epi ATH
+LAND   MAR     ABUTS  CYR MEM BAY PHA LEP
+COAST  MAS     ABUTS  TAR gau rha ETR LIG
+COAST  MAU     ABUTS  SAG IBE BER CAR cir sah
+COAST  MEM     ABUTS  BAY ALE THE mar cyr
+WATER  MES     ABUTS  SPA ION AUS GOT LIB CRE AEG
+COAST  MIL     ABUTS  BYZ AEG ISA MIN CIL gal
+WATER  MIN     ABUTS  MIL AEG CRE EGY CIL
+COAST  NAB     ABUTS  PET REE ara jer
+COAST  NEA     ABUTS  APU ROM SIC AUS TYN ION
+COAST  NUM     ABUTS  LEP THA GOT pha cir
+COAST  PET     ABUTS  NAB jer SIN REE
+LAND   PHA     ABUTS  SAH CIR NUM LEP MAR BAY
+WATER  PUN     ABUTS  CAR SAD TYN SIC BER AUS GOT THA
+COAST  RAV     ABUTS  APU VEN ADR rom etr
+WATER  REE     ABUTS  NAB PET SIN THE
+LAND   RHA     ABUTS  GAU MAS ETR VEN SAM VIN
+COAST  ROM     ABUTS  ETR NEA LIG TYN rav apu
+COAST  SAG     ABUTS  MAU TAR IBE Bal BER lus
+LAND   SAH     ABUTS  MAU PHA BAY CIR
+COAST  SAD     ABUTS  COR PUN TYN BER LIG
+LAND   SAM     ABUTS  CHE DAC ILL VIN RHA
+COAST  SIC     ABUTS  NEA TYN AUS PUN
+COAST  SID     ABUTS  TYE ANT dam ara SYR CIL
+COAST  SIN     ABUTS  GOP ALE JER THE PET REE
+COAST  SIP     ABUTS  BIT BLA CHE arm cap gal
+COAST  SPA     ABUTS  AEG ION MES ATH
+WATER  SYR     ABUTS  CIL CYP EGY GOP JER TYE SID
+COAST  TAR     ABUTS  SAG MAS lus gau Bal LIG
+COAST  THA     ABUTS  CAR NUM cir GOT PUN
+COAST  THE     ABUTS  BAY MEM ALE SIN GOP REE
+COAST  TYE     ABUTS  SID JER SYR ara
+WATER  TYN     ABUTS  NEA SIC AUS PUN SAD COR LIG ROM
+COAST  VEN     ABUTS  RAV ADR DAL vin rha etr
+LAND   VIN     ABUTS  RHA VEN ILL SAM DAL
+

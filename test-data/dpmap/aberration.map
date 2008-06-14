@@ -1,0 +1,377 @@
+# DPjudge map data for Aberration
+# by Mario Huys
+
+# Locations
+
+Adriatic Sea          = adr adriatic
+Aegean Sea            = aeg aegean
+Aitolia               = ait
+Alamein               = ala elal el+alamein
+Albania               = alb
+Alcluyd               = alc lvp liverpool
+Algeria               = alg
+Anatolia              = ana ank ankara
+Anglican Sea          = ang anglian
+Apulia                = apu
+Arabia                = ara arab sau saudi
+Arctic Ocean          = arc arctic artic
+Armenia               = arm
+Athens                = ath greece gre
+Austria               = aus vie vienna wien
+Azerbaijan            = aze
+Baltic Sea            = bal baltic
+Barents Sea           = bar barents barent
+Bavaria               = bav munich mun
+Bay of Biscay         = bay bob biscay
+Bohemia               = boh
+Bornholm Sea          = bor bornholm
+Brittany              = bri bre brest
+Brussels              = bru bel belgium
+Budapest              = bud
+Bulgaria              = bul
+Cairo                 = cai
+Carian Sea            = car carian
+Catalonia             = cat
+Cilicia               = cil
+Circassia             = cir
+Clyde                 = cly
+Constantinople        = con ist istanbul
+Cornwall              = cor corn
+Croatia               = cro
+Cymru                 = cym wal wales
+Cyrenaica             = cyr
+Damascus              = dam
+Delta Sea             = del delta
+Denmark               = den
+Dijon                 = dij
+Don                   = don
+Dublin                = dub
+East Black Sea        = ebs east eab ebla easbla eastbla easblack eastblack ebl
+Edinburgh             = edi
+Egypt                 = egy
+Eastern Mediterranean = ems eas eastern eme emed eastmed eam
+English Channel       = eng english channel ech eng+ch
+Estremadura           = est
+Fezzan                = fez
+Finland               = fin
+France                = fra par paris
+Galicia               = gal
+Gascony               = gas
+Gdansk                = gda dan danzig
+Georgia               = geo
+Gibraltar             = gib
+Gulf of Bothnia       = bot gob both gulfofb bothnia
+Gulf of Lyon          = lyo gol gulfofl lyon
+Hague                 = hag thehague holland
+Helgoland Bight       = hel helgoland bight
+Hesse                 = hes
+Holstein              = hol
+Ifni Sea              = ifn ifni
+Indian Ocean          = ind indian
+Ionian Sea            = ion ionian
+Iran                  = ira
+Irish Sea             = iri irish
+Jerusalem             = jer
+Karelia               = kar
+Kazakhstan            = kaz
+Kiev                  = kie
+Kuban                 = kub
+Languedoc             = lan mars marseilles
+Lapland               = lap
+Latvian Sea           = lat latvia latvian
+Lemburg               = lem
+Libyan Sea            = lib libya libyan
+Ligurian Sea          = lig ligurian
+Livonia               = liv lvn livo lvo
+Lorraine              = lor
+Macedonia             = mac fyrom
+Malta Sea             = mal malta
+Mark                  = mar
+Masuria               = mas
+Mesopotamia           = mes iraq
+Mid-Atlantic Ocean    = mao mid mat midatlantic
+Minch                 = min
+Morroco               = mor
+Muscovy               = mus mos moscow moskva
+North Atlantic Ocean  = nao nat natlantic
+Naples                = nap
+Norromark             = nmk norr nmark norro
+Novgorod              = nov stp st+pete st+petersburg stpete
+North Sea             = nth norsea nts nsea nos
+Norwegian Sea         = nwg norws norwegian nrg
+Norway                = nwy nor nway norw
+Odessa                = ode
+Palermo               = pal prm
+Persian Gulf          = per persian
+Picardy               = pic
+Piedmont              = pie
+Pisidia               = pis
+Palma Sea             = plm palma pas
+Podolia               = pod
+Portugal              = por
+Pylos Sea             = pyl pylos
+Red Sea               = red
+Riga                  = rig
+Rome                  = rom
+Ruhr                  = ruh
+Rumania               = rum romania
+Sahara                = sah
+Santander             = san
+Sardinia              = sar
+Saxony                = sax
+Schwyz                = sch swi swiss switzerland
+Serbia                = ser
+Siberia               = sib
+Silesia               = sil
+Sinai                 = sin
+Skagerrak             = ska skag
+Smyrna                = smy
+South Atlantic Ocean  = sao sou sat southatlantic south
+Swabia                = swa
+Sweden                = swe
+Syria                 = syr
+Szeged                = sze
+Taurida               = tau tad
+Thrace                = thr
+Tobruk Sea            = tob tobruk
+Toledo                = tol
+Transylvania          = tra tran trans
+Tripolitania          = tri tripoli
+Tyrol                 = tyr trl tyl tyrolia
+Tunisia               = tun tunis
+Turkestan             = tur turk
+Tuscany               = tus
+Tyrrhenian Sea        = tys tyrr tyrrhenian tyn tyh
+Ulster                = uls belfast
+Umbria                = umb
+Utica Sea             = uti utica
+Valencia              = val
+Venezia               = ven venice
+Volga                 = vol
+Warsaw                = war
+West Black Sea        = wbs west web wbla wesbla westbla wesblack westblack wbl
+Wessex                = wes wesex lon london
+Western Mediterranean = wms western wme wmed westmed wem
+Yalta                 = yal sev sevastopol
+Yorkshire             = yor york yorks yonkers
+Zara                  = zar
+
+# Geography
+
+WATER ADR ABUTS ALB APU CRO ION UMB VEN ZAR
+WATER AEG ABUTS AIT ATH CAR CON LIB PYL SMY THR
+COAST AIT ABUTS AEG CON SMY
+COAST ALA ABUTS CAI CYR egy LIB
+COAST ALB ABUTS ADR ATH ION mac ser ZAR
+COAST ALC ABUTS CLY CYM edi IRI MIN yor
+COAST ALG ABUTS MOR sah TUN UTI WMS
+COAST ANA ABUTS ARM cil CON EBS pis WBS
+WATER ANG ABUTS BRU ENG HAG HEL NTH WES YOR
+COAST APU ABUTS ADR ION MAL NAP rom UMB
+COAST ARA ABUTS dam IND jer MES PER RED SIN syr
+WATER ARC ABUTS BAR NAO NWG
+COAST ARM ABUTS ANA cil EBS GEO ira mes syr
+COAST ATH ABUTS AEG ALB bul ION mac PYL THR
+LAND  AUS ABUTS BOH BUD CRO GAL TYR
+LAND  AZE ABUTS CIR GEO IRA
+WATER BAL ABUTS BOR GDA LAT MAS RIG SWE
+WATER BAR ABUTS ARC KAR LAP NWG SIB
+LAND  BAV ABUTS BOH HES RUH SAX SWA TYR
+WATER BAY ABUTS BRI GAS MAO SAN
+LAND  BOH ABUTS AUS BAV GAL SAX SIL TYR
+WATER BOR ABUTS BAL DEN GDA HOL MAR SWE
+COAST BRI ABUTS BAY ENG fra GAS MAO PIC
+COAST BRU ABUTS ANG ENG HAG lor PIC ruh
+LAND  BUD ABUTS AUS CRO GAL LEM SZE TRA
+COAST BUL ABUTS ath CON mac RUM ser thr WBS
+COAST CAI ABUTS ALA DEL EGY LIB RED SIN
+WATER CAR ABUTS AEG DEL EMS LIB PIS SMY
+COAST CAT ABUTS est gas LYO LAN PLM san tol VAL
+COAST CIL ABUTS ana arm EMS PIS SYR
+COAST CIR ABUTS aze don EBS GEO KUB vol
+COAST CLY ABUTS ALC EDI MIN NWG
+COAST CON ABUTS AEG AIT ANA BUL pis smy THR WBS
+COAST COR ABUTS CYM ENG IRI WES
+COAST CRO ABUTS ADR aus bud ser sze tyr VEN ZAR
+COAST CYM ABUTS ALC COR IRI wes yor
+COAST CYR ABUTS ALA egy fez LIB PYL TOB TRI
+COAST DAM ABUTS ara DEL EMS JER SYR
+WATER DEL ABUTS CAI CAR DAM EMS JER LIB SIN
+COAST DEN ABUTS BOR HEL HOL NTH SKA SWE
+LAND  DIJ ABUTS FRA GAS LAN LOR SCH
+LAND  DON ABUTS CIR KIE KUB MUS ODE TAU VOL
+COAST DUB ABUTS IRI NAO ULS
+WATER EBS ABUTS ANA ARM CIR GEO KUB TAU WBS YAL
+COAST EDI ABUTS alc CLY NTH NWG YOR
+COAST EGY ABUTS ala CAI cyr RED
+WATER EMS ABUTS CAR CIL DAM DEL PIS SYR
+WATER ENG ABUTS ANG BRI BRU COR IRI MAO PIC WES
+LAND  EST ABUTS CAT GIB POR SAN TOL VAL
+LAND  FEZ ABUTS CYR SAH TRI
+COAST FIN ABUTS BOT kar lap LAT NMK NOV
+LAND  FRA ABUTS BRI DIJ GAS LOR PIC
+LAND  GAL ABUTS AUS BOH BUD LEM POD SIL WAR
+COAST GAS ABUTS BAY BRI cat dij fra lan SAN
+COAST GDA ABUTS BAL BOR MAR MAS sax sil war
+COAST GEO ABUTS ARM aze CIR EBS ira
+COAST GIB ABUTS est POR SAO VAL WMS
+WATER BOT ABUTS FIN LAT NMK SWE
+WATER LYO ABUTS CAT LAN LIG PLM SAR TYS UTI
+COAST HAG ABUTS ANG BRU HEL HES ruh
+WATER HEL ABUTS ANG DEN HAG HES HOL NTH
+COAST HES ABUTS bav HAG HEL HOL mar ruh sax
+COAST HOL ABUTS BOR DEN HEL HES MAR
+WATER IFN ABUTS MOR SAO
+WATER IND ABUTS ARA IRA PER RED
+WATER ION ABUTS ADR ALB APU ATH MAL PYL
+COAST IRA ABUTS arm aze geo IND MES PER tur
+WATER IRI ABUTS ALC COR CYM DUB ENG MAO MIN NAO ULS
+COAST JER ABUTS ara DAM DEL SIN
+COAST KAR ABUTS BAR fin LAP mus nov SIB vol
+LAND  KAZ ABUTS SIB TUR VOL
+LAND  KIE ABUTS DON MUS ODE POD
+COAST KUB ABUTS CIR don EBS TAU
+COAST LAN ABUTS CAT dij gas LYO LIG PIE sch
+COAST LAP ABUTS BAR fin KAR nmk NWG NWY
+WATER LAT ABUTS BAL FIN BOT NOV RIG SWE
+LAND  LEM ABUTS BUD GAL POD RUM TRA
+WATER LIB ABUTS AEG ALA CAI CAR CYR DEL PYL
+WATER LIG ABUTS LYO LAN PIE ROM TUS TYS
+LAND  LIV ABUTS MAS MUS NOV RIG WAR
+LAND  LOR ABUTS BRU DIJ FRA PIC RUH SCH SWA
+LAND  MAC ABUTS ALB ATH BUL SER
+WATER MAL ABUTS APU ION NAP PAL PYL TOB TRI TUN TYS
+COAST MAR ABUTS BOR GDA hes HOL sax
+COAST MAS ABUTS BAL GDA liv RIG war
+COAST MES ABUTS ARA arm IRA PER syr
+WATER MAO ABUTS BAY BRI ENG IRI NAO SAN SAO
+WATER MIN ABUTS ALC CLY IRI NAO NWG ULS
+COAST MOR ABUTS ALG IFN sah SAO WMS
+LAND  MUS ABUTS DON KAR KIE LIV NOV POD VOL WAR
+WATER NAO ABUTS ARC DUB IRI MAO MIN NWG ULS
+COAST NAP ABUTS APU MAL ROM TYS
+COAST NMK ABUTS FIN BOT lap nwy SWE
+COAST NOV ABUTS FIN kar LAT liv mus RIG
+WATER NTH ABUTS ANG DEN EDI HEL NWG NWY SKA YOR
+WATER NWG ABUTS ARC BAR CLY EDI LAP MIN NAO NTH NWY
+COAST NWY ABUTS LAP nmk NTH NWG SKA SWE
+COAST ODE ABUTS don kie pod RUM TAU WBS
+COAST PAL ABUTS MAL TYS
+WATER PER ABUTS ARA IND IRA MES
+COAST PIC ABUTS BRI BRU ENG fra lor
+COAST PIE ABUTS LAN LIG sch tyr TUS ven
+COAST PIS ABUTS ana CAR CIL con EMS SMY
+WATER PLM ABUTS CAT LYO UTI VAL WMS
+LAND  POD ABUTS GAL KIE LEM MUS ODE RUM WAR
+COAST POR ABUTS est GIB SAN SAO
+WATER PYL ABUTS AEG ATH CYR ION LIB MAL TOB
+WATER RED ABUTS ARA CAI EGY IND SIN
+COAST RIG ABUTS BAL LAT liv MAS NOV
+COAST ROM ABUTS apu LIG NAP TUS TYS umb
+LAND  RUH ABUTS BAV BRU HAG HES LOR SWA
+COAST RUM ABUTS BUL lem ODE pod ser tra WBS
+LAND  SAH ABUTS ALG FEZ MOR TRI TUN
+COAST SAN ABUTS BAY cat est GAS MAO POR SAO tol
+COAST SAR ABUTS LYO TYS UTI
+LAND  SAX ABUTS BAV BOH GDA HES MAR SIL
+LAND  SCH ABUTS DIJ LAN LOR PIE SWA TYR
+LAND  SER ABUTS ALB BUL CRO MAC RUM SZE TRA ZAR
+COAST SIB ABUTS BAR KAR kaz vol
+LAND  SIL ABUTS BOH GAL GDA SAX WAR
+COAST SIN ABUTS ARA CAI DEL JER RED
+WATER SKA ABUTS DEN NTH NWY SWE
+COAST SMY ABUTS AEG AIT CAR con PIS
+WATER SAO ABUTS GIB IFN MAO MOR POR SAN WMS
+LAND  SWA ABUTS BAV LOR RUH SCH TYR
+COAST SWE ABUTS BAL BOR DEN BOT LAT NMK NWY SKA
+COAST SYR ABUTS ara arm CIL DAM EMS mes
+LAND  SZE ABUTS BUD CRO SER TRA
+COAST TAU ABUTS don EBS KUB ODE WBS YAL
+COAST THR ABUTS AEG ATH bul CON
+WATER TOB ABUTS CYR MAL PYL TRI
+LAND  TOL ABUTS CAT EST SAN
+LAND  TRA ABUTS BUD LEM RUM SER SZE
+COAST TRI ABUTS CYR fez MAL sah TOB TUN
+LAND  TYR ABUTS AUS BAV BOH CRO PIE SCH SWA VEN
+COAST TUN ABUTS ALG MAL sah TRI TYS UTI
+LAND  TUR ABUTS IRA KAZ
+COAST TUS ABUTS LIG PIE ROM umb ven
+WATER TYS ABUTS LYO LIG MAL NAP PAL ROM SAR TUN UTI
+COAST ULS ABUTS DUB IRI MIN NAO
+COAST UMB ABUTS ADR APU rom tus VEN
+WATER UTI ABUTS ALG LYO PLM SAR TUN TYS WMS
+COAST VAL ABUTS CAT est GIB PLM WMS
+COAST VEN ABUTS ADR CRO pie tyr tus UMB
+LAND  VOL ABUTS CIR DON KAR KAZ MUS SIB
+LAND  WAR ABUTS GAL GDA LIV MAS MUS POD SIL
+WATER WBS ABUTS ANA BUL CON EBS ODE RUM TAU YAL
+COAST WES ABUTS ANG COR cym ENG YOR
+WATER WMS ABUTS ALG GIB MOR PLM SAO UTI VAL
+COAST YAL ABUTS EBS TAU WBS
+COAST YOR ABUTS alc ANG cym EDI NTH WES
+COAST ZAR ABUTS ADR ALB CRO ser
+
+# Politics
+
+BURGUNDY  (BURGUNDIAN)  BRU DIJ HAG
+SICILY    (SICILIAN:C)  NAP PAL ROM
+EIRE      (IRISH)       ALC DUB EDI
+HUNGARY   (HUNGARIAN)   BUD SZE ZAR
+ISRAEL    (ISRAELITE)   CAI DAM JER
+POLAND    (POLISH)      GDA RIG WAR
+SPAIN     (SPANISH)     SAN TOL VAL
+UKRAINE   (UKRANIAN)    KIE ODE YAL
+BYZANTIUM (BYZANTINE:Z) ATH CON SMY
+UNOWNED                 ANA ARM AUS BAV BOH BRI BUL CYR DEN GEO HES LAN MOR MUS
+UNOWNED                 NOV NWY PIE POR RUM SAX SWE TUN TUR VEN WES
+
+# Military
+
+BURGUNDY
+A DIJ
+A BRU
+F HAG
+
+SICILY
+A ROM
+F NAP
+F PAL
+
+EIRE
+A ALC
+F DUB
+F EDI
+
+HUNGARY
+A BUD
+A SZE
+F ZAR
+
+ISRAEL
+A DAM
+A JER
+F CAI
+
+POLAND
+A WAR
+A RIG
+F GDA
+
+SPAIN
+A TOL
+F SAN
+F VAL
+
+UKRAINE
+A KIE
+A ODE
+F YAL
+
+BYZANTIUM
+A ATH
+F CON
+F SMY
+
+# Rules
+
+RULE REMOTE_BUILDS

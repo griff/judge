@@ -1,0 +1,1053 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>USDP: DPjudge Status File Format</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+<style type="text/css">
+<!--
+.bodycopy		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000000
+				}
+.fineprint		{
+					font-family:		verdana;
+					font-size:			9px;
+					color:				#000000;
+					background-color:	#CCCCCC
+				}
+.gameheader		{
+					font-family:		verdana;
+					font-size:			18px;
+					color:				#000000;
+					font-weight:		bold
+				}
+.bannerinfo		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#ffffff;
+					background-color:	#777777
+				}
+.bannerinfo2	{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#ffffff;
+					font-weight:		bold
+				}
+TT     			{
+					font-size: 11px
+				}
+TD				{
+					background-color:	#F7F7F7
+				}
+TD.border		{
+					background-color:	#666666
+				}
+TD.grey			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000000;
+					background-color:	#CCCCCC
+				}
+A				{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:ACTIVE		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#990099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:FOCUS			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#666666;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:HOVER			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#0000FF;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:LINK			{	
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:VISITED		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#660099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+.ch				{
+					cursor:				pointer;
+					cursor:				hand
+				}
+.inputSubmit	{	
+					color:				#000000;
+					background-color:	#EEEEEE;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px;
+					font-weight:		bold;
+					cursor:				hand
+				}
+.inputSubmit2	{
+					color:				#000000;
+					background-color:	#EEEEEE;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px;
+					font-weight:		bold;
+					width:				11em;
+					cursor:				hand;
+				}
+.inputBox		{
+					color:				#000000;
+					background:			#FFFFFF;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px
+				}
+.pressBox		{
+					color:				#000000;
+					background:			#FFFFFF;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px
+				}
+//-->
+</style></head><body bgcolor="#ffffff">
+
+<table align="center" bgcolor="#666666" border="0" cellpadding="0" cellspacing="1" width="750">
+<tbody><tr valign="top">
+<td colspan="3">
+	<!--BANNER TABLE BEGINS HERE-->
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr>
+	<td align="center" width="225"><a href="http://www.floc.net/dpjudge"><img src="USDP_%20DPjudge%20Status%20File%20Format_files/dpjudge_logo.gif" border="0" height="43" vspace="10" width="205"></a></td>
+	<td class="border" width="1"></td>
+	<td class="gameheader" align="center">
+		<!--HEADER GOES HERE-->
+		<b>DPjudge Status File Format</b>
+		<!--INFORMATION LINKS TABLE BEGINS HERE-->
+		<table border="0" cellpadding="5" cellspacing="0" width="100%">
+		<tbody><tr>
+		<td class="bodycopy" align="center">
+		<a href="http://www.floc.net/dpjudge?page=About">about the DPjudge</a> |
+		<a href="http://www.floc.net/dpjudge?variant=dppd">the DPPD</a> |
+		<a href="http://www.floc.net/dpjudge?page=Questions">common questions</a></td>
+		</tr>
+		</tbody></table>
+		<!--INFORMATION LINKS TABLE ENDS HERE-->
+		<!--HEADER ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	<!--BANNER TABLE ENDS HERE-->
+</td>
+</tr>
+<tr><td colspan="3" height="5"><!--SPACER--></td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="1"></a><b>1. Information Pertaining to All Games</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dt><center><b>1.1 Game Information</b></center>
+</dt><dl>
+<a name="GAME"></a>
+<p></p><dt><b><tt>GAME <i>name</i></tt></b></dt><dd>
+	This line simply gives the name of the game.  It is optional.  Since
+	all information on a game is contained in a dedicated subdirectory
+	with the same name as the game, the game name is technically known,
+	but is inserted into the status file (if not already present) simply
+	to aid in game identification if the status file is misplaced somehow.
+	The game <tt><i>name</i></tt> <b><u>must</u></b> match the game's
+	subdirectory or an error will be generated.
+
+<a name="PHASE"></a>
+<a name="AWAIT"></a>
+<a name="SKIP"></a>
+<p></p></dd><dt><b><tt>PHASE <i>phaseName</i></tt> -or-<br>
+		  <tt>AWAIT <i>phaseName</i></tt> -or-<br>
+		  <tt>SKIP <i>phaseName</i></tt></b></dt><dd>
+	Specifies the current phase of the game.  If the word <tt>AWAIT</tt>
+	appears, no changes can be made (except by the Master) to the status
+	file, as this signifies either that results of a phase are currently
+	being automatically generated by the judge (or in the case of extra phases
+	unimplemented in the DPjudge code, manually generated by the Master).  The
+	<tt><i>phaseName</i></tt> must either be the single word
+	<tt>FORMING</tt>, the single word <tt>COMPLETED</tt>, or must be
+	exactly three words in length, giving the season,
+	year, and type of the current game-phase.  The year must be numeric.
+	For example:<br> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<tt>SPRING 1901 MOVEMENT</tt><p>
+	If the line begins with <tt>SKIP</tt>, this indicates that no orders
+	are to be solicited for the listed phase.  This is rarely used, but one
+	use for it is in Crystal Ball games that begin with an empty board --
+	this allows players to enter moves (during the previous, "<tt>SKIP</tt>ped"
+	movement phase) and then after locking those moves in, build their
+	units in an adjustment phase.
+	</p><blockquote><font color="red"><b><u>Important:</u>
+	<!--
+	Do not modify the <tt>PHASE</tt> for a game
+	manually unless you are either adjusting a game that is already in
+	progress, or setting up a game that you are about to mark as in progress
+	(during the game preparation stage).
+	-->
+	The DPjudge will <i>automatically</i> change the
+	<tt>PHASE</tt> from <tt>FORMING</tt> to (for example)
+	<tt>SPRING&nbsp;1901&nbsp;MOVEMENT</tt> when the final needed player
+	<tt>JOIN</tt>s,
+	and will also change the <tt>PHASE</tt> to <tt>COMPLETED</tt> when the
+	game completes.  In both these cases, the update to the <tt>PHASE</tt>
+	line is <i><b><u>not</u></b> the only thing that must be done to change
+	the game's status either to or from "active."</i>  Therefore, the
+	<tt>PHASE</tt> should <i>only</i> be manually modified by the GameMaster 
+	when setting up a specific position in a game <i>already in
+	progress</i>.  In all other cases, allow the DPjudge to modify the
+	<tt>PHASE</tt> automatically, or use the "Current Game State" pulldown
+	on the Master's Web page.</b></font></blockquote>
+	
+<a name="FLOW"></a>
+<p></p></dd><dt><b><tt>FLOW <i>season</i>:<i>phase</i>[,<i>phase</i>...] ...</tt></b></dt><dd>
+	This line specifies the sequence of phases through a game year.
+	Each season must be followed by a colon and then immediately (no
+	intervening whitespace) by one or more phase types.  If more than
+	one phase type is given, these should be separated from each other
+	by commas (again, with no intervening whitespace).  This line is optional;
+	if not provided, the <tt>FLOW</tt> from the game's map file is used.
+	Each individual phase type must begin with a unique letter.
+	Additionally, the phase names <tt>MOVEMENT</tt>, <tt>RETREATS</tt>, and
+	<tt>ADJUSTMENTS</tt> are reserved (and therefore, so are the initial
+	letters <tt>M</tt>, <tt>R</tt>, and <tt>A</tt>).
+	<p>
+	The word <tt>NEWYEAR</tt> can be used as a <tt><i>season</i></tt>, and has
+	a special meaning.  A flow may contain one or more <tt>NEWYEAR</tt>
+	directives, which instruct the game when to modify the game-year.  A simple
+	<tt>NEWYEAR</tt> will increment the year game-by one, and
+	<tt>NEWYEAR:5</tt> (for example) will increment it by five.  Any flow that
+	does <i>not</i> include a <tt>NEWYEAR</tt> directive will increase the
+	game-year by one after the final phase in the <tt>FLOW</tt>.
+	</p><p>
+	The word <tt>IFYEARDIV</tt> can also be used as a <tt><i>season</i></tt>,
+	and also has a special meaning.  This word will cause the game's next phase
+	to be set to the first phase in the flow if the game-year is indivisible by
+	a specified number.  For example, the flow descriptor <tt>IFYEARDIV:10</tt>
+	means that the flow will continue normally only if the game-year is
+	divisible by ten.  Otherwise, the initial listed element of the
+	<tt>FLOW</tt> will be next.  The divisor may also include a modulus.
+	For example, <tt>IFYEARDIV:2=1</tt> means that the flow will be reset
+	(to its first listed element) if the game-year is even, and will continue
+	normally if the game-year is odd.
+	</p><p>
+	When any phase that
+	is not supported by the DPjudge code is current, all players will
+	be shown the "waiting for processing" notice on their Webpages, and
+	it will be up to the Master to advance the game to the next phase
+	using the <tt>PROCESS</tt> command sent to the e-mail interface.
+	(Deadlines will still be in force for these phases, however.)
+
+<a name="BEGIN"></a>
+</p><p></p></dd><dt><b><tt>BEGIN <i>phaseName</i></tt></b></dt><dd>
+	This line is used to specify the first phase of the game.  If not
+	provided, the first phase will be taken from the map file being
+	used for the game.  The <tt><i>phaseName</i></tt> must be a valid
+	legal phase, such as <tt>WINTER&nbsp;1897&nbsp;ADJUSTMENTS</tt>.
+
+<a name="ROTATE"></a>
+<p></p></dd><dt><b><tt>ROTATE [CONTROL]</tt> -or-<br>
+		  <tt>ROTATE AFTER [<i>phaseType</i>]...</tt> -or-<br>
+		  <tt>ROTATE BEFORE <i>phaseType</i>...</tt> -or-<br>
+		  <tt>ROTATE FOR <i>phaseType</i>...</tt></b></dt><dd>
+	This is used to specify a rotation of power control for all
+	powers in the game that are controlled by other players.  (See the
+	<tt>CONTROL</tt> directive later in this documentation.)
+	The "<tt>ROTATE</tt>" and "<tt>ROTATE&nbsp;CONTROL</tt>" directives
+	are identical -- they direct that power control will change
+	hands immediately before any phase in which the power will have
+	orders to issue.  The "<tt>ROTATE&nbsp;AFTER</tt>" directive
+	indicates that control will pass to the next player after each
+	and every phase, regardless of whether the power will have orders
+	to issue.  You may also specify a specific phase type by its first
+	initial.  When used with <tt>AFTER</tt>, control will rotate after
+	the specific phase type.  When used with <tt>BEFORE</tt>, control
+	will rotate immediately before the given phase type.  When used with
+	<tt>FOR</tt>, control will rotate before the given phase type if and
+	only if the power will have orders to issue.  For example,<br><tt>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	ROTATE BEFORE MOVE</tt><br>
+	indicates that control will change before each and every movement
+	phase.  As a second example,<br><tt>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	ROTATE BEFORE MOVE FOR RETREAT</tt><br>
+	indicates that control will rotate before each and every movement
+	phase, and also, that control for any power who has a retreat order
+	to issue will be rotated before the retreat phase.
+
+<a name="NEWHOMES"></a>
+<p></p></dd><dt><b><tt>NEWHOMES <i>year...</i></tt></b></dt><dd>
+	This line will cause home supply centers to be completely reassigned to
+	all players during the adjustment phase of the specified game-year(s).
+	Each power's home SC's will be all of the centers he owns at the time.
+	Note that any <tt>NEWHOMES</tt> line in the game status file will
+	<i>completely replace and override</i> any <tt>NEWHOMES</tt> line that
+	may appear in the game's <a href="http://www.floc.net/dpjudge?page=Map">map description file</a>.
+
+<a name="DEADLINE"></a>
+<p></p></dd><dt><b><tt>DEADLINE <i>yyyymmddhhmm</i></tt></b></dt><dd>
+	This line specifies the time and date of the current deadline.  The
+	system will automatically update this line when a move processes,
+	if and only if the game is being run on the DPjudge (if run on the
+	Ken Lowe judge, this line should not appear, and will be ignored).
+	<p>
+	The DPjudge will automatically set the initial deadline of the game when
+	the game begins.  The initial deadline will be twice as long as a normal
+	deadline for its type of phase (see <tt>TIMING</tt>, below).
+	</p><p>
+	The DPjudge will never automatically set a deadline that is earlier than
+	any <i>current</i> value of <tt>DEADLINE</tt> (though of course the GM
+	may manually move the current deadline earlier).
+	</p><p>
+	Note that the deadline should be expressed in the game's local time
+	<tt>ZONE</tt> (see below).
+
+<a name="ZONE"></a>
+</p><p></p></dd><dt><b><tt>ZONE <i>timeZone</i></tt></b></dt><dd>
+	Specifies the time zone for the game, as an alphabetic string recognized
+	by the underlying computing system.  Some example <tt>ZONE</tt>s are:
+	<tt>America/New_York</tt>, <tt>America/Denver</tt>, <tt>Europe/Paris</tt>,
+	<tt>Europe/London</tt>, etc.  Games without a <tt>ZONE</tt> line will run
+	on GMT.
+
+<a name="timing"></a>
+<p></p></dd><dt><b><tt>TIMING <i>key value</i>...</tt></b></dt><dd>
+	This line specifies the timing data used to set deadlines.  It
+	consists of any number of key/value pairs, which are recognized as
+	follows:
+	<dl>
+	<dt><b><tt>AT <i>hh:mm</i></tt></b>
+	</dt><dd>Specifies the time-of-day at which all deadlines should occur.
+		The hour is specified using a 24-hour clock, and based at the
+		DPjudge's timezone.  <i>Note that when a deadline is to be set
+		less than 12 hours in the future, </i><tt>AT</tt><i> is ignored.</i>
+		Otherwise, all deadlines will fall at the next occuring specified
+		time-of-day after the requisite delay period (see below).
+	</dd><dt><b><tt>DAYS <i>dayList</i></tt></b>
+	</dt><dd>Specifies the days of the week on which the deadline could fall.
+		The <tt><i>dayList</i></tt> must be seven characters in length, with
+		the first character representing Sunday and each subsequent
+		letter representing Monday, Tuesday, etc.  The letter at each
+		position must either be the first letter of the day name (that
+		is, <tt>S</tt> for Sunday, etc.), which indicates that the deadline
+		<i>may</i> fall on that day of the week, or a dash (<tt>-</tt>),
+		which indicates that it may not.  If not provided, the game will
+		use <tt>-MTWTF-</tt> as its <tt>DAYS</tt> control.  If the day-letter
+		is in <i>UPPER-CASE</i>, this indicates that deadlines for <i>any</i>
+		phase may be set on that day.  If it is in <i>lower-case</i>, this
+		indicates that movement phase deadlines may <i><u>not</u></i> be
+		set on that day.  <i>(Therefore, at least one of the days must be
+		specified in upper-case.)</i>
+	</dd><dt><b><tt>NEXT <i>delay</i></tt></b>
+	</dt><dd>Specifies the default time period to be used to set the next
+		deadline.  The <tt><i>delay</i></tt> must be some positive whole
+		number followed by either <tt>M</tt> (for minutes), <tt>H</tt>
+		(for hours), <tt>D</tt> (for days), or <tt>W</tt> (for weeks).
+		<i>See below for the default value if no </i><tt>NEXT</tt><i>
+		control is given.</i>
+	</dd><dt><b><tt><i>phaseType delay</i></tt></b>
+	</dt><dd>Specifies a time period to be used (<i>instead of</i> the value
+		from <tt>NEXT</tt>) for any phase whose final word begins with
+		the letters making up <tt><i>phaseType</i></tt>.  For example,
+		to set a game to have one-day deadlines for all phases except
+		movement phases, which should have three-day deadlines (note that
+		these are the default settings for any game not given a <tt>NEXT</tt>
+		or appropriate <tt><i>phaseType</i></tt> control), use:<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<tt>TIMING NEXT 1D MOVE 3D</tt><br>
+	</dd><dt><b><tt>WARN <i>delay</i>[,<i>delay...</i>]</tt></b>
+	</dt><dd>Specifies a time span <i>before</i> the deadline at which time
+		any players who have not yet submitted orders will be sent a "friendly
+		reminder." If this option is not specified, warning is given four
+		hours before the deadline.  To prevent warnings from being given,
+		specify a <tt><i>delay</i></tt> of <tt>0</tt> (or any value
+		greater than the length of the deadline delay).  Multiple warnings
+		may be specified, by separating the time controls from each other
+		using a comma with no whitespace.  For example, to specify that
+		warnings should be given to players without submitted orders one
+		day before the deadline and then again at twelve hours and at six
+		hours before the deadline, use:<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<tt>TIMING WARN 1D,12H,6H</tt><br>
+	</dd><dt><b><tt>GRACE <i>delay</i></tt></b>
+	</dt><dd>Specifies a time span <i>after</i> the deadline.  Whenever that time
+	    span expires before the game-phase processes, any player who still has
+		not submitted orders will either be automatically resigned or (in games
+		using the <tt>CIVIL_DISORDER</tt> rule) declared to be in civil
+		disorder.  In games with<u>out</u> a <tt>GRACE</tt> period set in
+		the <tt>TIMING</tt> line:
+		<ul><li>players are <i>never</i> automatically resigned (note that
+		immediate resignation of late players when the deadline hits can be
+		specified by setting the grace period to zero, such as
+		<tt>GRACE&nbsp;0H</tt>), and
+		</li><li>civil disorder processing (in games using the
+		<tt>CIVIL_DISORDER</tt> rule) occurs at the deadline (no waiting).
+		</li></ul>
+	</dd><dt><b><tt>NOT <i>vacationInfo</i></tt></b>
+	</dt><dd>Specifies one or more upcoming vacations, during which time no
+		deadline should be set.  The format of <tt><i>vacationInfo</i></tt>
+		is the same as the format of the game's <tt>DEADLINE</tt> (that is,
+		<tt><i>yyyymmddhhmm</i></tt> but can be shortened in length to omit
+		days, hours, or minutes).  A vacation spanning more than a single day
+		can be specified by listing the first and last day of the suspension
+		separated by a dash (<tt>-</tt>).  The first day may be omitted,
+		indicating a suspension from the current date.  Multiple vacations
+		can be listed by separating them from each other with a comma (and
+		<b><i>no</i></b> whitespace).  For example:<br><tt>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+			TIMING NOT 20040831,20040920-20040927</tt><br>
+			<!--
+				How totally weird!  The first time this was used
+				in practice was for 19990920-19990927, long AFTER
+				I had written the above example!
+				(Note:  In 2003, I changed the year to 2004
+				to make a more relevant example.)
+			-->
+		specifies that no deadline should occur on 31 August 2004 or between
+		20 September and 27 September (inclusive) of 2004.  Vacations are
+		removed automatically whenever a deadline is set beyond the end
+		of the vacation.
+		<br><tt>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+			TIMING NOT -20020812</tt><br>
+		specifies that the next deadline should not occur until on or after
+		12 August 2002.
+	</dd></dl>
+
+<a name="DELAY"></a>
+<p></p></dd><dt><b><tt>DELAY <i>delayCount</i></tt></b></dt><dd>
+	Specifies the number of deadline checks (which happen automatically
+	every twenty minutes) that should occur <i>without</i> processing this
+	game, despite the fact that the game is ready for processing.
+	The <tt><i>delayCount</i></tt> is decremented once when each
+	such deadline check occurs.  This line is automatically inserted (with
+	a <tt><i>delayCount</i></tt> of <tt>1</tt>) when the last player
+	enters orders for a turn (assuming there is no outstanding "wait for the
+	deadline" request), and is also set to <tt>24</tt> (eight hours)
+	when a late notice is sent out.  Note that a <tt>PROCESS</tt> command
+	sent to the e-mail interface will ignore any <tt>DELAY</tt> and will
+	process the game (if ready for processing) immediately.  Whenever a game
+	is <tt>PREVIEW</tt>ed automatically, the <tt>DELAY</tt> is set to
+	<tt>72</tt>, which is the (one full day) maximum allowable setting.
+
+<a name="JUDGE"></a>
+<p></p></dd><dt><b><tt>JUDGE <i>judgeAddr [otherInfo]</i></tt></b></dt><dd>
+	Specifies the Ken Lowe judge on which the game is being run.  If the
+	game is not being run on a Ken Lowe judge, this line should <i>not</i>
+	appear in the status file.  The <tt><i>judgeAddr</i></tt> is the
+	e-mail address of the judge, and any <tt><i>otherInfo</i></tt> on the
+	line is ignored but will appear on the Web in the description table for
+	the game.
+
+<a name="PRIVATE"></a>
+<p></p></dd><dt><b><tt>PRIVATE <i>privacyWord</i></tt></b></dt><dd>
+	Used to designate a game open only to invited players (who have been
+	given the <tt><i>privacyWord</i></tt> by the GameMaster).  The privacy
+	keyword specified is required after a player's password in a
+	<tt>JOIN</tt>, <tt>TAKEOVER</tt>, or similar command.  By marking a
+	game <tt>PRIVATE</tt> in this way, only invited players should be able
+	to get into the game.
+
+<a name="RULE"></a>
+<p></p></dd><dt><b><tt>RULE <i>rule</i>...</tt></b></dt><dd>
+	Specifies one or more rule that will be in force for the game.  Consult
+	the <a href="http://www.floc.net/dpjudge?page=Rules">complete set of rules</a> for details on the
+	functionality of any specific <tt>RULE</tt>.
+
+<a name="MAP"></a>
+<p></p></dd><dt><b><tt>MAP <i>mapName</i></tt></b></dt><dd>
+	Specifies the game map to be used.  If not given, the
+	<tt><i>mapName</i></tt> will default to <tt>standard</tt>.
+	Map files have the extension <tt>.map</tt> and must be installed
+	in the map directory at the DPjudge site.  
+	The <a href="http://www.floc.net/dpjudge?page=Map">map file syntax description</a> should be
+	consulted to create any new map.  The supported maps are:
+	<center>
+	<table cellspacing="10">
+	<tbody><tr><th><tt>standard</tt></th>
+		<th><tt>fleetRome</tt></th>
+		<th><tt>britain</tt></th>
+		<th><tt>milan</tt></th>
+		<th><tt>1898</tt></th>
+	</tr><tr>
+		<th><tt>shiftleft</tt></th>
+		<th><tt>shiftright</tt></th>
+		<th><tt>shiftaround</tt></th>
+		<th><tt>crowded</tt></th>
+		<th><tt>1897</tt></th>
+	</tr><tr>
+		<th><tt>modern</tt></th>
+		<th><tt>hundred</tt></th>
+		<th><tt>ancmed</tt></th>
+		<th><tt>classical</tt></th>
+		<th><tt>sailho</tt></th>
+	</tr><tr>
+		<th><tt>youngstown</tt></th>
+		<th><tt>1900</tt></th>
+		<th><tt>empire</tt></th>
+		<th><tt>chromatic</tt></th>
+		<th><tt>imperial</tt></th>
+	</tr><tr>
+		<th><tt>pure</tt></th>
+		<th><tt>canton</tt></th>
+		<!-- NOT YET <th><tt>colonial</tt></th> -->
+	</tr>
+	</tbody></table>
+	</center>
+
+<p></p></dd><dt><b><tt><i>terrainType mapSpace</i> [ABUTS [<i>abut...</i>]]</tt></b></dt><dd>
+	Modifies the terrain type and adjacency information of any given
+	space on the map.  The <tt><i>terrainType</i></tt> must be <tt>LAND</tt>,
+	<tt>COAST</tt>, <tt>WATER</tt>, <tt>PORT</tt>, or <tt>SHUT</tt>.
+	If a <tt><i>mapSpace</i></tt> appears in more than
+	one such line in the status file, only the last terrain type modification
+	is obeyed.  Note that the <tt><i>mapSpace</i></tt> must identify
+	a <i>pre-existing</i> space on the map, and that all the rules concerning
+	the use of upper- and lower-case letters in the location abbreviations
+	will apply (see the <a href="http://www.floc.net/dpjudge?page=Map">map file syntax</a> documentation).
+
+<a name="VICTORY"></a>
+<p></p></dd><dt><b><tt>VICTORY <i>supplyCount...</i></tt></b></dt><dd>
+	Specifies a list of the supply center counts which will determine victory,
+	from the first game-year forward (the final listed number is repeated for
+	subsequent years).  If this line is omitted, the victory condition is
+	taken from the <tt>MAP</tt> file.
+
+<a name="MASTER"></a>
+<p></p></dd><dt><b><tt>MASTER <i>dppdData</i></tt></b></dt><dd>
+	Specifies the DPPD (DP Player Database) ID number, e-mail address, and
+	name of the GameMaster.  The <tt><i>dppdData</i></tt> must be in standard
+	DPPD ID format; for example:  <tt>#42|joe@blow.com|Joe_Blow</tt>
+
+<p></p></dd><dt><b><tt>PASSWORD <i>masterPassword</i></tt></b></dt><dd>
+	Specifies the GameMaster's password.  The
+	<tt><i>masterPassword</i></tt> can be used to access all player pages,
+	send press as any player via the e-mail interface, and access the
+	GameMaster's Web page.
+	<!-- Note to myself: when address and password change is allowed,
+		 subordinate masters must not be shown this capability on the Web
+		 pages of the players.  (another pwdFlag == 1 thing)
+	-->
+
+<a name="START"></a>
+<p></p></dd><dt><b><tt>START <i>gameStartDate</i></tt></b></dt><dd>
+	Game start date.  This information is automatically provided
+	when the game starts, or can be manually inserted by the GameMaster.
+
+<a name="FINISH"></a>
+<p></p></dd><dt><b><tt>FINISH <i>endDate</i></tt></b></dt><dd>
+	Day on which the game ended.
+
+<a name="RESULT"></a>
+<p></p></dd><dt><b><tt>RESULT <i>lastPhase victor...</i></tt></b></dt><dd>
+	Game termination information.  The <tt><i>lastPhase</i></tt> is the
+	final phase of the game that was played, and each <tt><i>victor</i></tt>
+	is one of the powers achieving a place in the draw (or, in the case of
+	a single <tt><i>victor</i></tt>, a solo win).  This line is inserted
+	automatically when the game is completed.
+
+<a name="SIGNON"></a>
+<p></p></dd><dt><b><tt>SIGNON <i>kenLoweJudgeSignonParameters</i></tt></b></dt><dd>
+	Parameters to be sent along with the <tt>SIGNON</tt> command to the
+	Ken Lowe judge for the game (for example:  <tt>crowded&nbsp;gunboat</tt>.
+	Completely ignored, but will show up on the
+	Web page in the information table for any forming game that is using a Ken
+	Lowe judge.
+
+<a name="DESC"></a>
+<p></p></dd><dt><b><tt>DESC <i>gameDescription</i></tt></b></dt><dd>
+	Description of the game.  Multiple <tt>DESC</tt> lines may be used if
+	needed.  Completely ignored, but will show up on the Web page in the
+	information table for the game.
+
+<a name="NAME"></a>
+<p></p></dd><dt><b><tt>NAME <i>gameNameOrigin</i></tt></b></dt><dd>
+	Origin of the game's name.  Completely ignored, but will show up on the
+	Web page in the information table for the game.
+
+<a name="RESERVES"></a>
+<p></p></dd><dt><b><tt>RESERVES <i>power...</i></tt></b></dt><dd>
+	Each time the name of a <tt><i>power</i></tt> appears within a
+	<tt>RESERVES</tt> line, the power is eligible to maintain one extra unit,
+	over and above the power's supply center count.  However, this is only
+	true if the power owns at least one of its original home centers.  Note
+	that use of a <tt>RESERVES</tt> line in the game status file will
+	<b>completely <u>override</u></b> any reserves settings that are given
+	in the <a href="http://www.floc.net/dpjudge?page=Map">map file</a> used for the game.
+
+<a name="MILITIA"></a>
+<p></p></dd><dt><b><tt>MILITIA <i>power...</i></tt></b></dt><dd>
+	Militia are similar to <tt>RESERVES</tt> (above), except that the
+	additional unit(s) must be used for home defense.
+	Each time the name of a <tt><i>power</i></tt> appears within a
+	<tt>MILITIA</tt> line, the power is eligible to maintain one extra unit,
+	over and above the power's supply center count <i>for each of the power's
+	own units that is positioned atop one of his home supply centers at
+	the time of the adjustment phase</i>.  Note
+	that use of a <tt>MILITIA</tt> line in the game status file will
+	<b>completely <u>override</u></b> any militia settings that are given
+	in the <a href="http://www.floc.net/dpjudge?page=Map">map file</a> used for the game.
+
+<a name="ALLOW"></a>
+<p></p></dd><dt><b><tt>ALLOW <i>nonMapPowerType...</i></tt></b></dt><dd>
+	Permits players to assume roles other than leaders of map powers.
+	Observers are <tt>ALLOW</tt>ed by default, but other types of players
+	may be allowed into the game and may play various roles as supported
+	by the code.  For example, Exchange variant games <tt>ALLOW INVESTOR</tt>s
+	who can serve as controller of a power.
+
+<a name="PROPOSAL"></a>
+<p></p></dd><dt><b><tt>PROPOSAL <i>result proposingPower</i></tt></b></dt><dd>
+	This line will appear only in games that use the
+	<tt>PROPOSE_DIAS</tt> rule.  It specifies the currently
+	proposed game conclusion.  All players owning supply centers will be
+	permitted to vote on this proposal.  (A "veto" vote will
+	remove the <tt>PROPOSAL</tt>; otherwise, if all players agree to it,
+	the game ends as proposed.)
+
+<a name="NEED"></a>
+<p></p></dd><dt><b><tt>NEED <i>availablePowers</i></tt></b></dt><dd>
+	<b><font color="red"><u>Important:</u> A Master should <i><u>never</u></i>
+	add or modify a <tt>NEED</tt> line!  These should <i>always</i> be
+	left to the DPjudge to add and remove when e-mailed <tt>JOIN</tt>,
+	<tt>RESIGN</tt> and <tt>TAKEOVER</tt> commands are received!</font></b>
+	<br>This type of line is used to specify available (abandoned or otherwise
+	unfilled) positions.  The data given in <tt><i>availablePowers</i></tt>
+	is automatically generated.
+	<!--
+	For a game that is forming, it will consist of a single
+	number (for example, <tt>3</tt> or <tt>4</tt>) that specifies how
+	many powers are yet to <tt>JOIN</tt>.  (The Master may lower this
+	number to cause some of the powers to be unplayed.)
+	-->
+	Each whitespace separated word in <tt><i>availablePowers</i></tt>
+	consists of the name of an abandoned power, followed by its unit and
+	center count -- for example, <tt>GERMANY-(8/9)</tt>.
+
+</dd></dl>
+<p></p><dt><center><b>1.2 Power Information</b></center>
+</dt><dl>
+<a name="POWER"></a>
+<a name="OBSERVER"></a>
+<p></p><dt><b><tt>[POWER] <i>powerName</i></tt> -or-<br>
+		  <tt>[POWER] <i>powerID</i></tt> -or-<br>
+		  <tt>OBSERVER <i>observerName</i></tt> -or-<br>
+		  <tt><i>otherType playerName</i></tt></b></dt><dd>
+	Marks the beginning of data for a particular player.  All lines below
+	(until another line indicating a power or player) will pertain to the
+	power or player listed.  While a game is <tt>FORMING</tt>, players who
+	have <tt>JOIN</tt>ed appear in the file as either the
+	<tt><i>powerName</i></tt> that the player will be assigned,
+	or using a <tt><i>powerID</i></tt> of the form <tt>POWER#1</tt>,
+	<tt>POWER#2</tt>, etc.  Note that the word <tt>POWER</tt> is optional
+	in all cases.
+
+<a name="ADDRESS"></a>
+<p></p></dd><dt><b><tt>ADDRESS <i>playerEmail</i>[,<i>otherEmail</i>...]</tt></b></dt><dd>
+	Specifies the e-mail address or addresses of the current player of
+	the power.  All mail sent to the power (including "press sent" mailings
+	for messages sent from the Web interface) will be sent to all listed
+	addresses.  If an e-mail containing a valid <tt>SIGNON</tt> for a
+	power is received from an e-mail address that is not listed in the
+	power's <tt>ADDRESS</tt> line, the reply to the processed
+	e-mail will be sent to the <tt><i>playerEmail</i></tt> address(es).
+
+<a name="PLAYER"></a>
+<p></p></dd><dt><b><tt>PLAYER <i>playerData</i> [<i>phase priorPlayerData</i>...]</tt> -or-<br>
+		<tt>PLAYER RESIGNED [<i>phase priorPlayerData</i>...]</tt> -or-<br>
+		<tt>PLAYER DUMMY [<i>phase priorPlayerData</i>...]</tt></b></dt><dd>
+	Specifies the history of all players of the power, including the present
+	player.  The <tt><i>playerData</i></tt> is the player's DPPD ID number,
+	e-mail address, and name, given in standard DPPD format.  For example:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;	
+	<tt>PLAYER #42|joe@blow.com|Joe_Blow</tt><br>
+	The <tt><i>phase</i></tt> is the
+	game phase (in the form <tt>S1901M</tt>, etc.) in which the player
+	took over the power (and therefore the phase in which the prior player
+	resigned the power).
+	Any <tt><i>priorPlayerData</i></tt> is similarly formatted, and provides
+	a history of all prior players of a power.  For example:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;	
+	<tt>PLAYER #42|joe@blow.com|Joe_Blow S1911R NO-ID|john@doe.net|</tt>
+	<br>
+	would indicate that <tt>john@doe.net</tt> (who has no DPPD ID number,
+	and therefore his name is not known) played the power
+	until the Spring 1911 Retreat phase, when Joe Blow (DPPD ID number 42)
+	took over.  Before Joe Blow sent in his
+	<tt>TAKEOVER</tt> command, the <tt>PLAYER</tt> line looked like this:<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;	
+	<tt>PLAYER RESIGNED S1911R NO-ID|john@doe.net|</tt><br>
+	If the first word on a <tt>PLAYER</tt> line is <tt>DUMMY</tt> or
+	<tt>RESIGNED</tt>, the player is not e-mailable.
+	<blockquote>
+	<b><font color="red"><u>Important:</u> A Master should <i>never</i>
+	manually add <tt>RESIGNED</tt> to any <tt>PLAYER</tt> line!  The
+	addition and removal of <tt>RESIGNED</tt> must <i>always</i> be
+	left to the DPjudge to do when e-mailed 
+	<tt>RESIGN</tt> and <tt>TAKEOVER</tt> commands are received!</font></b>
+	</blockquote>
+	<ul>
+	<li><tt>DUMMY</tt> is used if the power will or may receive orders without
+	a specific person playing the power (for example, the Master could enter
+	orders for the power, or other players could be responsible for entering
+	the orders, etc.), or no orders will be entered for it at all (civil
+	disorder).
+	A Master
+	may create <tt>DUMMY</tt> powers before game-start (that is, by adding
+	<dd><tt>POWER POWER#1</tt></dd><dd><tt>PLAYER DUMMY</tt><br>
+	(etc., etc.) to the status file to cause a certain number of powers to
+	be unassigned to human players.
+	If the <tt>CD_DUMMIES</tt> rule is in effect, <tt>DUMMY</tt>
+	powers without orders will be considered to be in civil disorder
+	as soon as all other powers either have submitted orders (and not set their
+	<tt>WAIT</tt> flag) or have been declared in civil disorder (by the
+	operation of the <tt>CIVIL_DISORDER</tt> rule).
+	</dd></li><li><tt>RESIGNED</tt> is used when a position is in need of replacement,
+	and a <tt>NEED</tt> line should appear in the status file describing
+	the missing position.
+	If the <tt>CIVIL_DISORDER</tt> rule is in effect, any power without
+	submitted orders (including <tt>DUMMY</tt> powers, but <i><u>not</u></i>
+	including those marked <tt>RESIGNED</tt>), will be considered to be in
+	civil disorder when a deadline occurs, and the phase will process
+	without orders from the power.
+	</li></ul>
+	<i>Note that while a player may change his <tt>ADDRESS</tt> information
+	(through use of the <tt>SET&nbsp;ADDRESS</tt> e-mail directive), except
+	by resignation, a player cannot change the <tt>PLAYER</tt> line information.
+	Only the Master may do so by modification of the status file.</i>
+
+<a name="PASSWORD"></a>
+<p></p></dd><dt><b><tt>PASSWORD <i>password</i></tt></b></dt><dd>
+	Specifies the password for the player.  This line may not appear for any
+	power that has a <tt>CONTROL</tt>.
+
+<a name="CONTROL"></a>
+<p></p></dd><dt><b><tt>CONTROL <i>powerName</i>...</tt></b></dt><dd>
+	Specifies a list of one or more players who may take control (for
+	order entry, press writing, etc.) of the power.  This list is used
+	by the <tt>ROTATE</tt> command to cause power control to be rotated
+	through other players.  The first player in the list is the player
+	currently in control of the power, and the list will rotate from
+	the last power listed back to the first power.
+	This line may not appear for any power that has a
+	<tt>PASSWORD</tt>.  Powers with another player in <tt>CONTROL</tt>
+	are not shown in the list of powers that can be "logged on," but
+	if a player is in <tt>CONTROL</tt> of a power, that player will be
+	able to log in as that power from his own page.  For example:<br><tt>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	CONTROL AUSTRIA FRANCE ITALY RUSSIA</tt><br>
+	indicates that the power is currently controlled by Austria, and that
+	the next time control is <tt>ROTATE</tt>d, it will be controlled by
+	France, and then on the next rotation, by Italy, etc.  The <tt>CONTROL</tt>
+	scheme is used when setting up a "Missing Man" variant game.  In the
+	e-mailed <tt>CREATE</tt> message (or in the status file before the
+	players <tt>JOIN</tt>), the Master would create <tt>POWER</tt> stanzas
+	for any powers not to be played.  For example, if Italy and Germany
+	are to be played missing, controlled by the other players, the status
+	file could contain:<br><tt>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	POWER ITALY<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	CONTROL ENGLAND FRANCE RUSSIA TURKEY AUSTRIA</tt><p>
+<tt>	&nbsp;&nbsp;&nbsp;&nbsp;
+	POWER GERMANY<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+	CONTROL TURKEY AUSTRIA ENGLAND FRANCE RUSSIA</tt>
+
+<a name="VOTE"></a>
+</p><p></p></dd><dt><b><tt>VOTE YES</tt> -or-<br>
+		  <tt>VOTE LOSS</tt> -or-<br>
+		  <tt>VOTE SOLO</tt> -or-<br>
+		  <tt>VOTE <i>n</i>WAY</tt></b></dt><dd>
+	Specifies a player's desired game termination
+	In games using the <tt>PROPOSE_DIAS</tt> (or the <tt>HIDE_PROPOSER</tt>)
+	rule, the vote may only be 
+	<tt>YES</tt>, which indicates that the player is in agreement with
+	the current <tt>PROPOSAL</tt>.  (If any player ever votes otherwise,
+	the proposal and all votes for it will be forgotten.)
+	In games <i>not</i> using the <tt>PROPOSE_DIAS</tt>
+	rule, each player votes either for a solo victory for himself,
+	or a loss (meaning that the votes of the other players will be used
+	to determine any game resolution) or for a maximum size of draw (including
+	his power) that he will accept.  In games not using the <tt>NO_DIAS</tt>
+	rule, the only allowable <tt><i>n</i></tt> value in an <tt><i>n</i>WAY</tt>
+	vote is greater than or equal to the number of players owning supply
+	centers (this signifies a vote for a draw including all survivors).
+
+<a name="OWNS"></a>
+<p></p></dd><dt><b><tt>OWNS <i>center...</i></tt></b></dt><dd>
+	Specifies all supply centers owned by a power.  In the initial phase of
+	the game (only), one or more of the <tt><i>center</i></tt>s may be
+	<tt>SC!</tt> to indicate an ability to build in any unowned home center
+	and thereby gain control of that center.  It may also be <tt>SC?</tt> to
+	indicate an ability to build in any <i>unoccupied</i> home center and
+	<i>not</i> take control of the center.  Finally, it may be <tt>SC*</tt>
+	to indicate an ability to build in one of that power's partisan build
+	sites (see the <a href="http://www.floc.net/dpjudge/?page=Map">map file</a> documentation).
+
+<a name="WAIT"></a>
+<p></p></dd><dt><b><tt>WAIT</tt></b></dt><dd>
+	Specifies that the power wishes that the deadline be reached before
+	the game processes.
+
+<p></p></dd><dt><b><tt><i>unit</i></tt> -or-<br>
+		  <tt><i>unit</i> --&gt; <i>retreatList</i></tt></b></dt><dd>
+	Specifies a unit (type and position) owned by the power.  If a unit
+	is in retreat from a location, it is followed by an arrow and a
+	<tt><i>retreatList</i></tt>, which is a space-separated list of all
+	the possible locations to which the unit may legally retreat.
+
+<a name="RETREAT"></a>
+<p></p></dd><dt><b><tt>RETREAT <i>unit retreatOrder</i></tt></b></dt><dd>
+	Specifies a retreat order to be issued.  A <tt><i>retreatOrder</i></tt> 
+	is either "<tt>DISBAND</tt>" or has the form
+	"<tt>-&nbsp;<i>location</i></tt>".
+
+<a name="BUILD"></a>
+<p></p></dd><dt><b><tt>BUILD <i>unit</i></tt> -or-<br>
+		  <tt>BUILD WAIVED</tt></b></dt><dd>
+	Specifies a build order to be issued.
+
+<a name="REMOVE"></a>
+<p></p></dd><dt><b><tt>REMOVE <i>unit</i></tt></b></dt><dd>
+	Specifies a remove order to be issued.
+
+<a name="MSG"></a>
+<p></p></dd><dt><b><tt>MSG <i>message</i></tt></b></dt><dd>
+	Specifies a <tt><i>message</i></tt> to be shown to the player on his
+	Web page.  Player-specific messages and data can, in this way, be provided
+	and updated at will by the Master.
+
+<a name="OMNISCIENT"></a>
+<p></p></dd><dt><b><tt>OMNISCIENT</tt></b></dt><dd>
+	If this line appears, the power's password can be used
+	for read-only viewing of all other power's Web pages (except the Master),
+	and the player will receive a copy of all press messages.
+
+<a name="HOME"></a>
+<p></p></dd><dt><b><tt>HOME <i>sc...</i></tt></b></dt><dd>
+	Provides a list of home supply centers (using the DPjudge's standard
+	place-name abbreviations), if different from those given in the game's
+	map file.  This line is used in games in which the home supply centers
+	for powers will change during the game.  The line is automatically
+	added on any schedule specified in the <tt>.map</tt> file for the
+	variant.
+
+<a name="FUNDS"></a>
+<p></p></dd><dt><b><tt>FUNDS [<i>fund</i>...]</tt></b></dt><dd>
+	Specifies the funds at the player's disposal.  A
+	<tt><i>fund</i></tt> is either of the form <tt>$<i>num</i></tt>
+	(which specifies the power's cash-on-hand) or <tt><i>numCURRENCY</i></tt>,
+	which specifies his holdings in 
+	some other currency.  For example, a power with thirty-four units of cash,
+	twelve units of stock in England, and twenty-two units of postage (to
+	use in sending press messages) might be written:<br><tt>
+	&nbsp;&nbsp;&nbsp;&nbsp;
+		FUNDS $34 12E 22c</tt><br>
+	Obviously, the <tt>FUNDS</tt> line is variant-specific, and it is
+	not used in the standard game.
+</dd></dl>
+
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="2"></a><b>2. Information Pertaining To Standard Games</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><center><b>2.1 Game Information</b></center>
+<a name="ORDERS"></a>
+<p></p></dt><dt><b><tt>ORDERS</tt></b></dt><dd>
+	Marks the beginning of the player's order list.  All lines after
+	this line are initially presumed to be an order.
+	<!--
+		Note to myself:  strictly, this isn't necessary.
+		I could mess with the code until this one isn't needed
+	-->
+
+<p></p></dd><dt><b><tt><i>order</i></tt></b></dt><dd>
+	A (movement phase) order to be issued by the player.
+</dd></dl>
+
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="3"></a><b>3. Information Pertaining To Payola Games</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><center><b>3.1 Power Information</b></center>
+<a name="TAX"></a>
+<p></p></dt><dt><b><tt>TAX <i>center value</i></tt></b></dt><dd>
+	Specifies a silver piece amount to be awarded annually for
+	possession of a supply center.
+
+</dd></dl>
+<p></p><dt><center><b>3.2 Power Information</b></center>
+</dt><dl>
+<a name="ACCEPT"></a>
+<p></p><dt><b><tt>ACCEPT <i>acceptList</i></tt></b></dt><dd>
+	Specifies the power's current acceptance list.
+
+<p></p></dd><dt><b><tt><i>offer</i></tt></b></dt><dd>
+	A bribe offer.
+
+<a name="SENT"></a>
+<p></p></dd><dt><b><tt>SENT <i>powerName</i></tt></b></dt><dd>
+	Specifies a power to which the current player has transferred funds
+	during the current phase of the game.  This is used only if the game
+	is run under the <tt>SINGLE_TRANSFER</tt> rule.
+
+</dd></dl>
+
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="4"></a><b>4. Information Pertaining To Crystal Ball Games</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><center><b>4.1 Power Information</b></center>
+<a name="SOONER"></a>
+<a name="LATER"></a>
+<p></p></dt><dt><b><tt>SOONER</tt> -or-<br>
+		  <tt>LATER</tt></b></dt><dd>
+	Marks the beginning of one of the two "pipelined" order lists.  All
+	orders after either of these lines will be associated with the
+	appropriate order list.
+
+<p></p></dd><dt><b><tt><i>order</i></tt></b></dt><dd>
+	An order to be added to either the <tt>SOONER</tt> or <tt>LATER</tt>
+	order list.
+</dd></dl>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+<!--MAIN TABLES GO HERE-->
+<hr>
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<b><font color="red"><!--i-->
+In addition to the status file for each game (the lines within which are
+described above), there is also a separate, single "main status
+file" used by the DPjudge to track and control all its games.  Each line
+in this "main status file"
+contains (in a space-separated list) the following information on a
+single game:  the game name, its rule variant (<tt>standard</tt>,
+<tt>payola</tt>, etc.), its general status (<tt>active</tt>,
+<tt>forming</tt>, <tt>waiting</tt>, <tt>completed</tt>),
+and then any number of other flags controllable only by the system
+and/or the judgekeeper (<tt>unlisted</tt>,
+<tt>suspect</tt>, <tt>corrupt</tt>, <tt>held</tt>, etc.).  This
+overall status file is directly editable by the judgekeeper only.
+A game's Master cannot look at or modify the data
+for any game in the "main status file" other than through the supported Web and
+e-mail functionality of the DPjudge.  A "suspect" game will be automatically
+monitored by the judgekeeper, a "corrupt" game will be locked against all
+changes, even by its Master, a "held" game will never be examined by the
+deadline checker (until its "held" status is removed), and an "unlisted" game
+will not show up in any list of games being run on the DPjudge.
+</font></b>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+
+
+		<tr valign="top">
+		<td colspan="3" class="fineprint" align="right" bgcolor="#cccccc">
+		The DPjudge is copyright © 1995-2008 by Manus Hand.
+		All rights reserved.
+		</td>
+		</tr>
+		</tbody></table>
+				
+
+
+</body></html>

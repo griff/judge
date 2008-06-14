@@ -1,0 +1,74 @@
+USE standard.map
+
+Arctic Ocean        = arc arctic
+Catalonia           = cat
+Cordoba             = cor cord
+Corsica             = crs cors
+Iceland             = ice
+Ireland             = ire eire
+Kazakz              = kaz
+Madrid              = mad
+Navarre             = nav
+Sardinia            = sar
+Siberia             = sib
+Sicily              = sic
+
+IN SPRING:          WATER ARC
+
+SHUT  ARC           ABUTS BAR NAO NWG SIB
+COAST CAT           ABUTS COR gas LYO mad MAR nav WES
+COAST COR           ABUTS CAT mad MAO POR WES naf~
+COAST CRS           ABUTS LYO TYS
+COAST ICE           ABUTS NAO NWG
+COAST IRE           ABUTS IRI NAO
+LAND  KAZ           ABUTS MOS SEV SIB
+LAND  MAD           ABUTS CAT COR NAV POR
+COAST NAV           ABUTS cat GAS mad MAO POR
+COAST SAR           ABUTS LYO TYS WES
+COAST SIB           ABUTS ARC BAR kaz mos STP/NC
+COAST SIC           ABUTS ION TYS nap~
+
+DROP  SPA
+
+AMEND BAR           ABUTS ARC SIB
+AMEND GAS           ABUTS cat NAV
+AMEND ION           ABUTS SIC
+AMEND IRI           ABUTS IRE
+AMEND LYO           ABUTS CAT CRS SAR
+AMEND MAO           ABUTS COR NAV
+AMEND MAR           ABUTS CAT
+AMEND MOS           ABUTS KAZ SIB
+AMEND NAF           ABUTS cor~
+AMEND NAP           ABUTS sic~
+AMEND NAO           ABUTS ARC ICE IRE
+AMEND NWG           ABUTS ARC ICE
+AMEND POR           ABUTS COR mad NAV
+AMEND SEV           ABUTS kaz
+AMEND STP/NC        ABUTS SIB
+AMEND stp           ABUTS SIB
+AMEND TYS           ABUTS CRS SAR SIC
+AMEND WES           ABUTS CAT COR SAR
+
+NORWAY  (NORWEGIAN) DEN NWY SWE
+A NWY
+F DEN
+F SWE
+
+RUSSIA
+F STP/NC
+
+SPAIN   (SPANISH)   COR MAD POR
+F POR
+A COR
+A MAD
+
+UNOWNED             IRE PRU SIL
+
+RULE                HIBERNATE
+
+#   City name option for new home SC's
+#
+DEN -> Copenhagen   = cop denmark den
+NWY -> Oslo         = osl norway nwy nor norw
+POR -> Lisbon       = lis portugal por
+SWE -> Stockholm    = sto sweden swe

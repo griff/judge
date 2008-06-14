@@ -1,0 +1,87 @@
+USE standard.geography
+
+#   Powers & Units
+Adriatic+Sea (Adriatic:A)
+F ADR
+Aegean+Sea (Aegean:B)
+F AEG
+Albania (Albanian:C)
+A ALB
+Apulia (Apulian:D)
+A APU
+Armenia (Armenian:E)
+A ARM
+Baltic+Sea (Baltic:F)
+F BAL
+Barents+Sea (Barentian:G)
+F BAR
+Black+Sea (Black:H)
+F BLA
+Bohemia (Bohemian:I)
+A BOH
+Burgundy (Burgundian:J)
+A BUR
+Clyde (Highlander:K)
+A CLY
+English+Channel (English:L)
+F ENG
+Finland (Finnish:N)
+A FIN
+Galicia (Galician:P)
+A GAL
+Gascony (Gascon:Q)
+A GAS
+Gulf+Of+Bothnia (Bothnian:R)
+F BOT
+Gulf+Of+Lyon (Lyonese:S)
+F LYO
+Helgoland+Bight (Helgolander:T)
+F HEL
+Ionian+Sea (Ionian:U)
+F ION
+Livonia (Livonian:V)
+A LVN
+Mid+Atlantic+Ocean (Mid+Atlantic:W)
+F MAO
+North+Sea (Northern:X)
+F NTH
+Norwegian+Sea (Norwegian:Y)
+F NWG
+Picardy (Picardian:Z)
+A PIC
+Piedmont (Piedmontese:0)
+A PIE
+Prussia (Prussian:1)
+A PRU
+Ruhr (Rhinelander:2)
+A RUH
+Silesia (Silesian:3)
+A SIL
+Skagerrak (Skagerraker:4)
+F SKA
+Tuscany (Tuscanian:5)
+A TUS
+Tyrolia (Tyroler:6)
+A TYR
+Tyrrhenian+Sea (Tyrrhenian:7)
+F TYS
+Ukraine (Ukrainian:8)
+A UKR
+Wales (Welsh:9)
+A WAL
+W+Mediterranean+Sea (W+Mediterranean:+)
+F WES
+Yorkshire (Tyke:*)
+A YOR
+
+#   Centers
+UNOWNED ANK BEL BER BRE BUD BUL CON DEN EDI GRE HOL KIE LON LVP MAR MOS MUN
+UNOWNED NAP NWY PAR POR ROM RUM SER SEV SMY SPA STP SWE TRI TUN VEN VIE WAR
+
+BEGIN FALL 1900 MOVEMENT
+
+RULE BUILD_ANY
+
+#   Payola specific RULE:
+#   Eliminated powers may not transfer AgP.
+RULE NO_DONATIONS

@@ -1,0 +1,5589 @@
+%!PS-Adobe-2.0
+%%Title: Diplomacy Map (1900)
+%%Creator: mapit
+%%Pages: (atend)
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%LanguageLevel: 2
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+%   420 172  adr Adriatic Sea
+%   560 44 aeg Aegean Sea
+%   120 40 alg Algeria
+%   260 348 als Alsace
+%   685 177 ank Ankara
+%   360 190 apu Apulia
+%   841 10 ara Arabia
+%   820 180 arm Armenia
+%   420 506 bal Baltic Sea
+%   580 880 bar Barents Sea
+%   209 408 bel Belgium
+%   375 452 ber Berlin
+%   660 236 bla Black Sea
+%   380 370 boh Bohemia
+%   423 223 bos Bosnia
+%   128 342 bre Brest
+%   490 290 bud Budapest
+%   560 200 bul Bulgaria
+%   218 343 bur Burgundy
+%   130 592 cly Clyde
+%   271 409 col Cologne
+%   625 140 con Constantinople
+%   520 -80 cyr Cyrenaica
+%   810 74 dam Damascus
+%   300 520 den Denmark
+%   660 0 eas Eastern Mediterranean
+%   161 559 edi Edinburgh
+%   680 -90 egy Egypt
+%   100 396 eng English Channel
+%   500 720 fin Finland
+%   510 369 gal Galicia
+%   130 280 gas Gascony
+%   -12 102 gib Gibraltar
+%   500 80 gre Greece
+%   450 595 bot Gulf of Bothnia
+%   220 190 lyo Gulf of Lyon
+%   830 -110 hej Hejaz
+%   270 480 hel Helgoland Bight
+%   65 815 ice Iceland
+%   420 20 ion Ionian Sea
+%   60 500 ire Ireland
+%   60 450 iri Irish Sea
+%   300 442 kie Kiel
+%   708 98 kon Konya
+%   140 505 lvp Liverpool
+%   500 520 lvn Livonia
+%   144 431 lon London
+%   490 166 mac Macedonia
+%   536 139 mac/ec Macedonia (east coast)
+%   464 131 mac/wc Macedonia (west coast)
+%   200 248 mar Marseilles
+%   -60 360 mao Mid-Atlantic Ocean
+%   290 264 mil Milan
+%   -80 -8 mor Morocco
+%   680 500 mos Moscow
+%   312 352 mun Munich
+%   400 128 nap Naples
+%   240 445 net Netherlands
+%   -40 565 nao North Atlantic Ocean
+%   220 510 nth North Sea
+%   303 640 nwy Norway
+%   240 740 nwg Norwegian Sea
+%   796 -21 pal Palestine
+%   180 320 par Paris
+%   160 379 pic Picardy
+%   248 252 pie Piedmont
+%   -38 210 por Portugal
+%   435 464 pru Prussia
+%   302 210 rom Rome
+%   582 262 rum Rumania
+%   480 214 ser Serbia
+%   696 296 sev Sevastopol
+%   835 600 sib Siberia
+%   402 404 sil Silesia
+%   300 560 ska Skagerrak
+%   120 -100 sou Southern Algeria
+%   80 200 spa Spain
+%   60 115 spa/ec Spain (east coast)
+%   40 268 spa/nc Spain (north coast)
+%   -30 130 spa/wc Spain (west coast)
+%   630 650 stp St Petersburg
+%   620 760 stp/nc St Petersburg (north coast)
+%   540 608 stp/sc St Petersburg (south coast)
+%   380 630 swe Sweden
+%   245 293 swi Switzerland
+%   381 243 tri Trieste
+%   340 -90 trp Tripolitania
+%   257 -20 tun Tunisia
+%   340 301 tyr Tyrolia
+%   320 120 tys Tyrrhenian Sea
+%   580 380 ukr Ukraine
+%   328 240 ven Venetia
+%   390 304 vie Vienna
+%   113 465 wal Wales
+%   455 405 war Warsaw
+%   150 114 wes Western Mediterranean
+%   169 475 yor Yorkshire
+% MAP
+
+% * modified by George Boyce for use with his mapit program, i.e.
+% * this file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+% * CrossDisband
+%
+
+/secure_atan { /y exch def /x exch def x 0 eq y 0 eq and {0} {x y atan } ifelse } def
+
+% constants:
+/UnitScale .7 def
+/NameOffset {LetterSize UnitScale mul} def % distance below point to draw name
+/UnitOffset 8 def % distance above point to draw unit
+
+/TitleFontSize 40 def % font size (Times-Roman)
+/MessageFontSize 16 def % font size (Times-Roman)
+/NameFontSize 14 UnitScale mul def % font size (Helvetica-Bold)
+/OrderFontSize 20 def % font size (Courier)
+/OwnerFontSize 16 def % font size (Courier)
+
+/HeadLength 20 UnitScale mul def % of a move arrow head
+/HalfHeadThickness 5 UnitScale mul def
+
+/HalfThickness 1 UnitScale mul def % of a move/support/convoy arrow shaft
+
+/HoldCircle 20 UnitScale mul def % of a support hold arrow
+/MoveCircle 8 UnitScale mul def % of a support move arrow
+/ConvoyCircle 12 UnitScale mul def % of a convoy arrow
+
+/DisbandLength 20 UnitScale mul def % of a disband order
+
+/ShowPage /showpage load def % nothing special required
+
+/OrderReport {  % to the right of the map
+  BBurx 10 add BBury 110 sub moveto
+  /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { % below the lower right of the map with a title in slightly larger font
+  BBurx 10 add BBlly 20 sub moveto
+  /Courier-Bold findfont OrderFontSize 4 add scalefont setfont
+  currentpoint OrderFontSize sub 4 sub (Retreat orders:) show moveto
+  /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  % below left half of map
+   BBllx BBlly 20 sub moveto
+   /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { % below right half of map
+  BBurx 380 sub BBlly 20 sub moveto
+  /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { % in upper right corner of map
+  BBurx 200 sub BBury 20 sub moveto
+  /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { WriteOwner } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { 2 UnitScale mul setlinewidth [4] 2 setdash } def
+/OkOrder { 2 UnitScale mul setlinewidth [] 0 setdash } def
+
+/DrawTitle {
+  BBurx 10 add BBury 20 sub moveto
+  /Times-Roman findfont TitleFontSize scalefont setfont
+  currentpoint (DIPLOMACY) show moveto
+  0 TitleFontSize neg rmoveto
+ dup stringwidth pop 460 exch div dup 1 lt
+    { gsave 1 scale show grestore }{ pop show } ifelse
+} def
+
+/DrawMessage {
+  BBllx BBury MessageFontSize add moveto
+  /Times-Roman findfont MessageFontSize scalefont setfont
+  show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx secure_atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx secure_atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  Red
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx secure_atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div secure_atan sub def
+  /b 180 HalfThickness headdiam 2 div secure_atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+  gsave
+  /Helvetica-Bold findfont NameFontSize scalefont setfont
+  3 1 roll translate
+  % mark the spot...
+%  0 0 5 0 360 arc fill
+  dup stringwidth pop
+  -2 div 0 NameOffset sub moveto show
+  grestore
+} def
+
+% Letters for the different countries
+%
+% 0 means "nobody", then 1-7 going clockwise from Britain
+/Countries [
+  (?) (B) (F) (G) (R) (T) (A) (I) (N) (C) (J)
+] def
+
+/country 0 def
+
+/Black { 0 setgray }   bind def
+/White { 0.9 setgray }   bind def
+/Grey  { 0.7 setgray } bind def
+/DarkGrey { 0.5 setgray } bind def
+
+/Red    { 1 0 0   setrgbcolor } bind def
+/Pink   { 0.3 0 0 setrgbcolor } bind def
+/Blue   { 0 0 1   setrgbcolor } bind def
+/Mauve  { 1 0 1   setrgbcolor } bind def
+/Yellow { 1 1 0   setrgbcolor } bind def
+/Orange { 1 0.5 0.3  setrgbcolor } bind def
+/Green  { 0 0.7 0 setrgbcolor } bind def
+/Brown  { 0.6 0.45 0.2 setrgbcolor } bind def
+/Turquoise { 0.2 0.7 0.7 setrgbcolor } bind def
+% /Turquoise { 0.1 0.6 0.6 setrgbcolor } bind def
+% /Brown  { 0.7 0.5 0.2 setrgbcolor } bind def <-- Bruce
+
+
+% Piece colourname, Contrast colourname
+%
+%/UnownedColours [ /Grey  /White ] def <-- Bruce changed to...
+/UnownedColours [ /Brown  /White ] def
+
+/BritainColours [ /Blue  /White ] def
+/FranceColours  [ /Turquoise  /Black ] def
+/GermanyColours [ /Black /White ] def
+/RussiaColours  [ /White /Black ] def
+/TurkeyColours  [ /Yellow /Black ] def
+/AustriaColours [ /Red /Black ] def
+/ItalyColours   [ /Green /Black ] def
+
+/IndiaColours   [ /Mauve /White ] def
+/ChinaColours   [ /Orange /Black ] def
+/JapanColours   [ /Grey /Black ] def
+
+/BalkanColours  [ /Pink /Black ] def
+/LowlandColours [ /Brown /Black ] def
+/NorwayColours  [ /Grey /Black ] def
+/SpainColours   [ /Orange /Black ] def
+
+
+/CountryColours [
+  UnownedColours
+  BritainColours
+  FranceColours
+  GermanyColours
+  RussiaColours
+  TurkeyColours
+  AustriaColours
+  ItalyColours
+] def
+
+/set_country { % N => -
+/country exch store
+} bind def
+
+/UNOWNED { 0 set_country } def
+/BRITAIN { 1 set_country } def
+/FRANCE  { 2 set_country } def
+/GERMANY { 3 set_country } def
+/RUSSIA  { 4 set_country } def
+/TURKEY  { 5 set_country } def
+/AUSTRIA { 6 set_country } def
+/ITALY   { 7 set_country } def
+
+/Offsets 11 array def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0               % maxdx maxdy
+  0 1 10 {
+    /N exch def
+    Countries N get % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy       % llx lly urx ury
+       3 -1 roll add -2 div % llx urx dy
+       3 1 roll add -2 div  % dy dx
+       exch 2 array astore  % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub       % llx urx leny
+    3 1 roll exch sub exch  % lenx leny
+                    % maxdx maxdy lenx leny
+    3 -1 roll max       % maxdx lenx newmaxdy
+    3 1 roll max        % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/PaintArmy { % dict => -
+  begin
+  0 UnitOffset translate
+    gsave
+      newpath
+      LetterSize 14 div dup scale
+      2 setlinewidth [] 0 setdash
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      Contrast stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    Offset aload pop    % dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Country Contrast show   % then a white letter
+  end
+} bind def
+
+% Fleet is a little boat...
+/PaintFleet { % dict => -
+  begin
+    0 UnitOffset translate
+    gsave
+      newpath
+      LetterSize 14 div dup scale
+      2 setlinewidth [] 0 setdash
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast stroke grestore
+      PieceColour fill
+    grestore
+    Offset aload pop    % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Country Contrast show   % then a white letter
+  end
+} bind def
+
+% Center
+/PaintCenter { % dict => -
+  begin
+    newpath
+    PieceColour
+    0 0 4 0 360 arc
+    fill
+  end
+} bind def
+
+/CreateTroops { % BBox PaintProc => [ FormDict ... ]
+  [ 3 1 roll 0 1 7 {
+    <<
+      /BBox 4 index
+      /PaintProc 5 index 
+      6 -1 roll
+      CountryColours 1 index get aload pop
+      /Contrast exch load
+      /PieceColour 4 -1 roll load
+      5 -1 roll
+      Offsets 1 index get /Offset exch 
+      3 -1 roll
+      Countries exch get /Country exch
+      /FormType 1
+      /Matrix matrix
+    >> 3 1 roll
+  } for pop pop ] 
+} bind def
+
+/TroopBBox [ LetterSize 14 div -28 1 index mul exch
+  -11 1 index mul UnitOffset add exch
+  28 1 index mul exch
+  16 exch mul UnitOffset add ] def
+/Armies TroopBBox /PaintArmy load CreateTroops def
+/Fleets TroopBBox /PaintFleet load CreateTroops def
+/Centers [-16 -16 16 16] /PaintCenter load CreateTroops def
+
+/DrawArmy { % x y => -
+  gsave 
+    translate 
+    Armies country get execform 
+  grestore
+} bind def
+
+/DrawFleet { % x y => -
+  gsave 
+    translate 
+    Fleets country get execform 
+  grestore
+} bind def
+
+/DrawMap {
+  8 dict begin
+  /Marginx 30 def
+  /Marginy 30 def
+  currentpagedevice /PageSize get aload pop /PageSizey exch def /PageSizex exch def
+  %/PageSizex 8.5 72 mul def
+  %/PageSizey 11.0 72 mul def
+
+  /MapOriginx BBllx def
+  /MapOriginy BBlly def
+  /MapSizex BBurx BBllx sub def
+  /MapSizey BBury BBlly sub def  
+
+  MapSizex MapSizey gt {
+    PageSizex 0 translate
+    90 rotate
+    Marginx Marginy /Marginx exch def /Marginy exch def
+    PageSizex  PageSizey /PageSizex exch def /PageSizey exch def
+  } if
+
+  Marginx PageSizey .2 mul Marginy sub translate
+  /PageSizex PageSizex .8 mul def
+  /PageSizey PageSizey .8 mul def
+
+  PageSizex MapSizex div PageSizey MapSizey div 2 copy gt {
+    exch pop dup dup scale
+    pop % PageSizex exch div MapSizex sub 2 div 0 translate
+  }{
+    pop dup dup scale
+    pop % PageSizey exch div MapSizey sub 2 div 0 exch translate
+  } ifelse
+
+  MapOriginx neg MapOriginy neg translate
+  end
+
+  MapForm execform
+} bind def
+
+%
+% Supply centers
+%
+
+/supply { % x y supply -
+  gsave 
+    translate
+    Centers country get execform    
+  grestore
+} bind def
+
+/LVP {140 485} def
+/LON {165 422} def
+/EDI {147 540} def
+/BEL {224 400} def
+/NET {232 425} def
+/BRE {82 368} def
+/PAR {183 358} def
+/COL {256 408} def
+/SWI {268 302} def
+/MUN {322 324} def
+/BER {360 434} def
+/KIE {316 464} def
+/DEN {335 505} def
+/NWY {324 614} def
+/SWE {412 612} def
+/MAR {223 230} def
+/MIL {276 264} def
+/ROM {325 185} def
+/NAP {372 156} def
+/TRI {362 265} def
+/ALG {150 66} def
+/POR {-53 186} def
+/SPA {42 196} def
+/MOR {-56 26} def
+/TRP {360 -64} def
+/EGY {724 -73} def
+/DAM {796 28} def
+/ANK {710 166} def
+/CON {614 165} def
+/GRE {524 95} def
+/BUL {518 200} def
+/SER {468 236} def
+/RUM {568 240} def
+/SEV {695 273} def
+/BUD {447 314} def
+/VIE {400 328} def
+/WAR {466 428} def
+/MOS {688 560} def
+/STP {567 622} def
+
+/AUSTRIACENTER { AUSTRIA } def
+/CHINACENTER { CHINA } def
+/BRITAINCENTER { BRITAIN } def
+/FRANCECENTER  { FRANCE } def
+/GERMANYCENTER { GERMANY } def
+/INDIACENTER   { INDIA } def
+/ITALYCENTER   { ITALY } def
+/JAPANCENTER   { JAPAN } def
+/RUSSIACENTER  { RUSSIA } def
+/TURKEYCENTER  { TURKEY } def
+/UNOWNEDCENTER { UNOWNED } def
+
+% Map setup.
+-263 -149 875 916 /BBury exch def /BBurx exch def /BBlly exch def /BBllx exch def
+
+32 dict begin
+
+/LandColor { 0.8 0.7 0.4 setrgbcolor } bind def
+/SeaColor { 0.1 0.4 0.6 setrgbcolor } bind def
+/MountainColor { 0.5 setgray } bind def
+/NationalBorder { 2.5 setlinewidth [] 0 setdash 0 setgray } bind def
+/InternalBorder { 1 setlinewidth [6 2] 3 setdash 0 setgray } bind def
+/CoastalBorder { 1 setlinewidth [] 0 setdash 0 setgray } bind def
+
+% Definitions to overrule CorelDraw's setup.
+/bd{bind def}bind def/ld{load def}bd/xd{exch def}bd
+/m/moveto ld/C/curveto ld/@c/closepath ld/S{stroke}bd
+/j{pop}bd/J{pop}bd/d{pop pop}bd/R{pop}bd/@G{1 eq{pop pop pop}if}bd
+/K{pop pop pop pop}bd/@w{pop pop pop 1 eq{pop}if}bd
+/@E{/Bbury xd/Bburx xd/Bblly xd/Bbllx xd}bd
+/@rax{}bd
+
+% Connection
+
+/ConnectionHeadLength 3 def
+/ConnectionHalfHeadWidth 2 def
+/ConnectionHalfWidth 0.5 def
+/ConnectionHalfWaveHeight 3 def
+
+/DrawConnection { % x0 y0 x1 y1 DrawConnection -
+  gsave
+  12 dict begin
+  /y1 exch def
+  /x1 exch def
+  /y0 exch def
+  /x0 exch def
+  x0 y0 translate
+  /dx x1 x0 sub def
+  /dy y1 y0 sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx secure_atan def
+  angle rotate
+  0 0 moveto 
+  ConnectionHeadLength ConnectionHalfHeadWidth lineto
+  ConnectionHeadLength ConnectionHalfWidth lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfWidth lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfHeadWidth lineto
+  arrowlength 0 lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfHeadWidth neg lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfWidth neg lineto
+  ConnectionHeadLength ConnectionHalfWidth neg lineto
+  ConnectionHeadLength ConnectionHalfHeadWidth neg lineto
+  closepath fill
+  end
+  grestore
+} bind def
+
+/DrawSingleConnection { % x0 y0 x1 y1 DrawSingleConnection -
+  gsave
+  12 dict begin
+  /y1 exch def
+  /x1 exch def
+  /y0 exch def
+  /x0 exch def
+  x0 y0 translate
+  /dx x1 x0 sub def
+  /dy y1 y0 sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx secure_atan def
+  angle rotate
+  ConnectionHalfWidth neg ConnectionHalfWidth moveto
+  arrowlength ConnectionHeadLength sub ConnectionHalfWidth lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfHeadWidth lineto
+  arrowlength 0 lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfHeadWidth neg lineto
+  arrowlength ConnectionHeadLength sub ConnectionHalfWidth neg lineto
+  ConnectionHalfWidth neg ConnectionHalfWidth neg lineto
+  closepath fill
+  end
+  grestore
+} bind def
+
+/DrawConnectionWave { % x y DrawConnectionWave -
+  gsave
+  translate
+  0 ConnectionHalfWaveHeight moveto
+  ConnectionHalfWaveHeight 3 div neg dup 2 mul neg
+  ConnectionHalfWaveHeight 3 div neg dup neg
+  0 0 curveto
+  ConnectionHalfWaveHeight 3 div dup neg
+  ConnectionHalfWaveHeight 3 div dup 2 mul neg
+  0 ConnectionHalfWaveHeight neg curveto
+  stroke
+  grestore
+} bind def
+
+/DoConnections {
+  gsave
+  Black ConnectionHalfWidth 2 mul setlinewidth [] 0 setdash 2 setlinecap
+  % IRE - CLY
+  90 530 125 530 DrawConnection
+  % EGY - HEJ
+  780 -90 798 -97 DrawConnection
+  % GIB - MOR
+  -15 103 -15 81 DrawConnection
+  % HEJ - MAO
+  -250 -140 -250 -10 DrawSingleConnection
+  235 ConnectionHeadLength sub ConnectionHalfWidth add -140 DrawConnectionWave
+  235 ConnectionHeadLength sub -140 moveto -250 -140 lineto stroke
+  235 ConnectionHeadLength add ConnectionHalfWidth sub -140 DrawConnectionWave
+  235 ConnectionHeadLength add -140 850 -140 DrawSingleConnection
+  % EGY - MAO
+  -245 -135 -245 -10 DrawSingleConnection
+  155 ConnectionHeadLength sub ConnectionHalfWidth add -135 DrawConnectionWave
+  155 ConnectionHeadLength sub -135 moveto -245 -135 lineto stroke
+  155 ConnectionHeadLength add ConnectionHalfWidth sub -135 DrawConnectionWave
+  155 ConnectionHeadLength add -135 680 -135 DrawSingleConnection
+  grestore
+} bind def
+
+% Frivolities
+
+/Frame {
+  gsave
+  BBllx BBlly moveto
+  BBllx BBury lineto
+  BBurx BBury lineto
+  BBurx BBlly lineto
+  closepath
+  [] 0 setdash 0 setgray
+  gsave 8 setlinewidth stroke grestore
+  clip 4 setlinewidth Grey stroke
+  grestore
+} bind def
+
+/TitleBox {
+  gsave
+  5 dict begin
+  2 setlinewidth [] 0 setdash
+  -220 600 320 160 /h exch def /w exch def /y exch def /x exch def
+  /mg 10 def
+  x y w h White rectfill
+  x y moveto w 0 rlineto 0 h rlineto mg neg mg neg rlineto 0 h mg sub mg sub neg rlineto
+  w mg sub mg sub neg 0 rlineto closepath DarkGrey fill
+  x y w h Black rectstroke
+  .5 setlinewidth
+  x mg add y mg add w mg sub mg sub h mg sub mg sub Grey rectfill
+  x mg add y mg add w mg sub mg sub h mg sub mg sub Black rectstroke
+  Black (Times-Bold) findfont 120 scalefont setfont
+  (1900) dup 0 0 moveto true charpath pathbbox newpath
+  x w 4 -1 roll 6 -1 roll sub sub 2 div add y h add mg sub mg sub 4 2 roll sub add moveto show
+  (Times-Roman) findfont 18 scalefont setfont
+  (A Diplomacy variant by B.M. Powell) dup 0 0 moveto true charpath pathbbox newpath
+  x w 4 -1 roll 6 -1 roll sub sub 2 div add y mg add 24 add 4 2 roll pop pop moveto show
+  (Ver 2.6.1 May 99) dup 0 0 moveto true charpath pathbbox newpath
+  x w 4 -1 roll 6 -1 roll sub sub 2 div add y mg add 6 add 4 2 roll pop pop moveto show
+  end
+  grestore
+} bind def
+
+/Credits {
+  gsave
+  /Times-Roman findfont 12 scalefont setfont
+  BBllx 24 add BBlly 96 add moveto
+  currentpoint (Electronic map design by Mario Huys after B.M. Powell) show
+  moveto 0 -24 rmoveto
+  currentpoint (Map drawn by dpmap, public domain software) show
+  moveto 0 -12 rmoveto
+  currentpoint (written by Manus Hand after mapit by George Boyce, 1992) show
+  moveto 0 -24 rmoveto
+  currentpoint (Diplomacy is a trademark of Avalon Hill Games, Inc.,) show
+  moveto 0 -12 rmoveto
+  (a Hasbro affiliate. All rights reserved.) show
+  end
+  grestore
+} bind def
+
+/DoCenters {
+UNOWNEDCENTER
+LVP supply
+LON supply
+EDI supply
+BEL supply
+NET supply
+BRE supply
+PAR supply
+COL supply
+SWI supply
+MUN supply
+BER supply
+KIE supply
+DEN supply
+NWY supply
+SWE supply
+MAR supply
+MIL supply
+ROM supply
+NAP supply
+TRI supply
+ALG supply
+POR supply
+SPA supply
+MOR supply
+TRP supply
+EGY supply
+DAM supply
+ANK supply
+CON supply
+GRE supply
+BUL supply
+SER supply
+RUM supply
+SEV supply
+BUD supply
+VIE supply
+WAR supply
+MOS supply
+STP supply
+} bind def
+
+% First part: coloring land, water and mountains.
+
+/Part1 {
+
+/Seas [ 0 45 51 57 60 61 69 71 72 73 74 75 76 77 78 79 80 81 82 83 84 86 87 88 89 94 97 ] def
+/ObjectNr 0 def
+/S { 
+  gsave 
+  Seas length 1 ge {
+    Seas 0 get ObjectNr eq {
+      SeaColor
+      /Seas [ Seas aload pop counttomark -1 roll pop ] def
+    }{
+      LandColor
+    } ifelse
+  }{
+    LandColor
+  } ifelse
+  /ObjectNr ObjectNr 1 add def
+  fill grestore stroke 
+} bd
+
+CoastalBorder
+
+-264 -151 875 916 @E
+-264 -151 m
+-264 204 -264 560 -264 916 C
+115 916 495 916 875 916 C
+875 560 875 204 875 -151 C
+495 -151 115 -151 -264 -151 C
+@c
+S
+
+-261 -148 788 92 @E
+-261 -148 m
+-261 -147 -261 -145 -261 -144 C
+-257 -139 -253 -134 -249 -129 C
+-249 -128 -249 -127 -249 -126 C
+-247 -124 -245 -122 -243 -120 C
+-243 -118 -243 -116 -243 -114 C
+-246 -109 -246 -109 -246 -106 C
+-243 -101 -239 -95 -236 -90 C
+-236 -87 -236 -85 -236 -82 C
+-230 -72 -230 -69 -228 -67 C
+-228 -66 -228 -65 -228 -64 C
+-219 -54 -209 -43 -199 -33 C
+-185 -24 -171 -16 -156 -7 C
+-155 -7 -153 -7 -152 -7 C
+-149 -5 -146 -2 -143 -0 C
+-142 -0 -141 -0 -140 -0 C
+-138 1 -136 3 -134 5 C
+-133 5 -132 5 -131 5 C
+-127 8 -123 11 -119 14 C
+-110 14 -108 16 -104 16 C
+-103 17 -102 18 -101 19 C
+-98 19 -96 20 -93 20 C
+-92 22 -89 22 -84 25 C
+-83 25 -81 25 -80 25 C
+-75 28 -72 28 -71 29 C
+-70 29 -69 29 -68 29 C
+-66 31 -65 32 -63 34 C
+-62 34 -61 34 -60 34 C
+-54 42 -47 51 -41 59 C
+-41 62 -33 74 -33 77 C
+-29 85 -29 88 -27 89 C
+-23 89 -21 91 -18 91 C
+-17 92 -17 92 -12 92 C
+-11 90 -9 88 -8 86 C
+-8 80 -6 79 -6 76 C
+-5 74 -3 73 -2 71 C
+3 71 5 70 8 70 C
+9 69 10 68 11 67 C
+15 67 15 67 18 65 C
+20 66 22 67 24 68 C
+28 65 32 62 36 59 C
+42 59 44 58 54 58 C
+60 62 65 66 71 70 C
+73 70 76 70 78 70 C
+79 69 80 68 81 67 C
+83 67 85 67 87 67 C
+92 70 96 73 101 76 C
+104 76 105 77 110 77 C
+111 79 111 79 122 79 C
+123 77 135 77 137 76 C
+140 76 141 74 156 74 C
+158 76 158 76 170 76 C
+171 74 179 74 180 73 C
+182 73 183 73 185 73 C
+187 71 189 69 191 67 C
+197 67 198 68 207 68 C
+209 70 209 70 215 70 C
+216 68 216 68 225 68 C
+227 70 227 70 230 70 C
+237 65 240 65 243 62 C
+246 62 248 62 251 62 C
+255 65 259 67 263 70 C
+265 70 267 70 269 70 C
+270 69 271 68 273 67 C
+274 67 275 68 276 68 C
+278 66 280 64 282 62 C
+282 55 282 55 281 53 C
+282 52 282 52 288 52 C
+290 53 293 53 295 55 C
+296 54 297 54 297 53 C
+297 52 297 50 297 49 C
+296 48 294 47 292 46 C
+289 42 286 38 282 34 C
+282 32 282 30 282 28 C
+286 23 290 19 294 14 C
+294 11 297 7 297 4 C
+296 2 296 2 296 -0 C
+288 -7 281 -15 273 -22 C
+273 -24 273 -26 273 -28 C
+276 -31 279 -33 282 -36 C
+283 -36 284 -36 285 -36 C
+289 -33 293 -31 297 -28 C
+298 -29 299 -30 300 -31 C
+301 -31 301 -30 302 -29 C
+301 -28 301 -27 300 -26 C
+302 -24 302 -24 305 -24 C
+308 -28 308 -31 311 -36 C
+311 -37 311 -38 311 -39 C
+314 -42 317 -45 320 -48 C
+326 -48 327 -49 332 -49 C
+333 -51 336 -51 338 -52 C
+344 -52 345 -51 350 -51 C
+352 -52 357 -52 359 -54 C
+362 -54 363 -55 368 -55 C
+370 -57 372 -57 378 -60 C
+379 -62 381 -64 383 -66 C
+384 -66 386 -66 388 -66 C
+392 -69 397 -72 402 -75 C
+402 -79 404 -81 404 -87 C
+408 -90 413 -93 418 -96 C
+431 -96 433 -97 438 -97 C
+439 -98 441 -99 442 -100 C
+443 -100 445 -100 446 -100 C
+455 -106 458 -106 460 -108 C
+463 -108 463 -108 467 -111 C
+471 -111 476 -111 481 -111 C
+483 -108 486 -105 488 -102 C
+488 -100 488 -98 488 -96 C
+482 -87 482 -84 481 -82 C
+481 -79 479 -78 479 -73 C
+484 -67 484 -67 494 -57 C
+497 -57 497 -57 503 -52 C
+508 -52 509 -51 523 -51 C
+524 -52 530 -52 532 -54 C
+533 -54 534 -54 535 -54 C
+536 -55 538 -57 539 -58 C
+539 -61 539 -61 541 -63 C
+544 -63 545 -64 551 -64 C
+553 -66 553 -66 562 -66 C
+563 -64 563 -64 569 -64 C
+571 -66 578 -66 580 -67 C
+581 -67 582 -67 583 -67 C
+584 -69 585 -70 586 -72 C
+589 -72 593 -72 596 -72 C
+597 -71 598 -70 599 -69 C
+606 -69 612 -69 619 -69 C
+619 -69 620 -70 620 -70 C
+626 -70 632 -70 638 -70 C
+640 -69 644 -69 646 -67 C
+649 -67 650 -69 655 -69 C
+656 -67 659 -67 661 -66 C
+668 -66 675 -66 682 -66 C
+685 -62 689 -59 692 -55 C
+695 -55 700 -52 703 -52 C
+704 -51 706 -50 707 -49 C
+712 -49 713 -48 724 -48 C
+725 -49 731 -49 739 -54 C
+740 -54 741 -54 742 -54 C
+742 -56 742 -59 742 -61 C
+745 -68 749 -74 752 -81 C
+752 -85 752 -90 752 -94 C
+769 -112 769 -112 772 -117 C
+772 -119 772 -121 772 -123 C
+782 -139 782 -139 788 -145 C
+788 -146 788 -147 788 -148 C
+438 -148 88 -148 -261 -148 C
+@c
+S
+
+-69 -148 874 913 @E
+872 -148 m
+860 -148 847 -148 835 -148 C
+835 -147 835 -146 835 -145 C
+826 -136 826 -136 802 -115 C
+800 -112 799 -110 797 -108 C
+790 -108 790 -108 788 -106 C
+788 -100 790 -99 790 -94 C
+791 -93 791 -88 793 -86 C
+792 -85 792 -85 791 -84 C
+788 -87 788 -90 787 -91 C
+787 -94 784 -99 784 -102 C
+782 -103 782 -106 778 -112 C
+773 -108 769 -103 764 -99 C
+764 -98 764 -97 764 -96 C
+761 -92 758 -89 755 -85 C
+755 -83 755 -81 755 -79 C
+752 -73 748 -66 745 -60 C
+745 -58 745 -56 745 -54 C
+749 -54 751 -52 755 -52 C
+760 -49 760 -49 772 -37 C
+772 -34 773 -33 773 -22 C
+774 -22 774 -21 775 -20 C
+773 -18 773 -18 773 -1 C
+774 -1 774 -0 775 0 C
+773 2 773 2 773 10 C
+775 11 775 20 776 22 C
+776 28 778 29 778 32 C
+779 34 779 34 779 38 C
+778 40 776 41 775 43 C
+775 46 773 47 773 50 C
+772 52 772 59 770 61 C
+770 70 770 70 772 72 C
+770 74 770 74 770 80 C
+768 82 765 84 763 86 C
+764 88 766 90 767 92 C
+766 93 764 94 763 95 C
+760 92 757 89 754 86 C
+753 87 752 87 751 88 C
+749 86 749 86 745 86 C
+744 87 743 87 742 88 C
+740 85 737 82 734 79 C
+733 77 731 74 730 71 C
+728 71 727 71 725 71 C
+723 70 721 68 719 67 C
+715 67 713 65 710 65 C
+709 66 709 66 708 67 C
+706 65 706 65 700 65 C
+695 69 691 72 686 76 C
+680 76 679 77 671 77 C
+670 76 669 75 668 74 C
+668 70 668 70 670 68 C
+668 67 668 62 665 59 C
+664 60 663 61 662 62 C
+659 62 659 62 655 59 C
+655 60 654 60 653 61 C
+652 60 651 59 650 58 C
+644 58 643 59 637 59 C
+635 61 634 63 632 65 C
+631 64 631 64 625 64 C
+623 65 623 65 616 65 C
+614 64 614 64 608 64 C
+607 62 606 61 605 59 C
+602 59 601 61 595 61 C
+594 61 594 62 593 62 C
+595 64 599 64 602 67 C
+607 67 607 67 608 68 C
+607 70 607 70 598 70 C
+596 68 596 68 592 68 C
+591 69 591 69 590 70 C
+592 71 593 72 595 73 C
+593 74 593 74 590 74 C
+588 76 586 78 584 80 C
+586 81 587 82 589 83 C
+589 86 589 86 587 88 C
+583 88 583 88 577 91 C
+577 90 576 90 575 89 C
+574 90 572 91 571 92 C
+574 95 574 98 575 100 C
+577 98 577 95 579 94 C
+580 94 580 95 581 96 C
+581 97 580 98 580 99 C
+580 100 581 100 581 101 C
+586 101 586 101 587 103 C
+586 104 583 104 581 106 C
+582 107 582 108 583 109 C
+582 111 581 112 580 114 C
+582 116 584 118 586 121 C
+584 122 584 122 577 122 C
+575 121 575 121 571 121 C
+569 122 569 122 569 125 C
+571 127 571 127 571 130 C
+569 131 569 131 569 134 C
+574 137 578 140 583 143 C
+589 143 590 142 593 142 C
+595 143 596 145 598 146 C
+604 146 605 145 617 145 C
+619 146 623 146 625 148 C
+623 149 619 149 617 151 C
+618 152 619 153 620 154 C
+623 154 625 155 631 155 C
+631 156 632 156 632 157 C
+631 158 626 158 623 161 C
+623 166 623 166 625 167 C
+631 167 632 169 637 169 C
+638 170 641 170 644 173 C
+652 173 653 175 656 175 C
+660 178 663 181 667 184 C
+667 185 667 186 667 187 C
+670 189 674 191 678 193 C
+685 200 685 200 691 203 C
+694 203 695 205 698 205 C
+700 206 703 206 704 208 C
+707 208 709 209 712 209 C
+713 210 715 211 716 212 C
+718 212 719 212 721 212 C
+722 213 723 214 724 215 C
+729 212 734 209 739 206 C
+742 208 745 208 746 209 C
+748 209 749 209 751 209 C
+753 207 755 204 757 202 C
+759 203 760 204 762 205 C
+764 203 769 203 770 202 C
+775 202 776 203 790 203 C
+791 205 796 205 797 206 C
+800 206 806 211 809 211 C
+811 209 811 209 814 209 C
+815 211 818 211 820 212 C
+822 212 824 212 826 212 C
+827 214 829 216 831 218 C
+835 220 839 222 843 224 C
+845 227 846 229 848 232 C
+848 234 848 237 848 239 C
+843 244 838 248 833 253 C
+831 253 829 253 827 253 C
+826 254 825 256 824 257 C
+821 257 821 257 820 256 C
+818 257 818 257 815 257 C
+815 257 814 256 814 256 C
+803 262 800 262 784 272 C
+783 272 782 272 781 272 C
+778 274 776 276 773 278 C
+770 278 770 278 769 277 C
+767 278 767 278 763 278 C
+761 280 759 281 757 283 C
+756 282 756 282 755 281 C
+754 283 751 283 748 286 C
+743 286 742 287 739 287 C
+738 288 738 288 737 289 C
+738 289 738 290 739 290 C
+738 291 738 291 737 292 C
+738 292 739 293 739 293 C
+742 292 742 292 745 292 C
+746 293 748 295 749 296 C
+749 304 751 305 751 310 C
+752 311 752 314 754 316 C
+755 314 757 313 759 311 C
+760 312 760 312 761 313 C
+760 315 758 316 757 318 C
+757 319 758 319 758 320 C
+759 319 761 318 762 317 C
+763 318 763 318 764 319 C
+762 321 760 323 758 325 C
+757 325 755 325 754 325 C
+753 326 752 327 751 329 C
+751 329 752 330 752 331 C
+757 331 757 331 759 332 C
+760 332 760 331 761 331 C
+764 334 767 337 770 340 C
+770 344 770 344 769 346 C
+766 344 764 342 761 340 C
+761 340 760 341 760 341 C
+759 340 758 339 757 338 C
+754 338 751 338 748 338 C
+746 337 745 335 743 334 C
+740 334 740 334 737 331 C
+737 328 737 328 736 326 C
+735 327 734 327 733 328 C
+732 327 730 326 728 325 C
+728 322 728 322 727 320 C
+725 322 725 322 722 322 C
+721 321 719 319 718 318 C
+715 312 712 307 709 301 C
+708 302 707 304 706 305 C
+704 303 703 301 701 299 C
+698 299 697 298 688 298 C
+687 297 687 297 686 296 C
+688 295 688 295 694 295 C
+698 291 703 288 707 284 C
+710 284 710 284 712 286 C
+709 289 706 292 703 295 C
+703 296 704 297 704 298 C
+708 294 712 290 716 286 C
+718 287 718 287 721 287 C
+722 289 724 291 726 293 C
+727 293 727 292 728 292 C
+730 293 730 293 733 293 C
+734 292 734 292 734 287 C
+733 286 732 285 731 284 C
+729 284 726 284 724 284 C
+723 283 722 282 721 281 C
+720 281 719 281 718 281 C
+715 276 715 276 709 271 C
+708 271 707 271 706 271 C
+703 267 700 263 697 259 C
+693 259 690 259 686 259 C
+685 260 684 261 683 263 C
+685 265 685 265 685 271 C
+683 272 682 274 680 275 C
+678 275 676 275 674 275 C
+673 276 672 277 670 278 C
+669 278 668 277 667 277 C
+667 277 666 278 665 279 C
+673 286 673 286 683 292 C
+683 295 683 295 682 296 C
+681 296 680 295 679 295 C
+679 295 678 296 677 296 C
+676 295 676 295 661 295 C
+660 296 659 297 658 298 C
+652 298 652 298 650 299 C
+652 301 655 301 656 302 C
+659 302 659 302 661 304 C
+659 305 658 306 656 307 C
+656 308 656 310 656 311 C
+655 312 654 313 653 314 C
+653 314 652 313 652 312 C
+653 310 653 310 653 305 C
+652 305 652 304 651 304 C
+650 305 648 306 647 307 C
+646 306 645 305 644 304 C
+635 304 635 304 633 305 C
+632 305 631 304 631 303 C
+634 299 634 299 634 296 C
+632 295 632 292 631 290 C
+629 292 627 293 625 295 C
+625 294 624 294 623 293 C
+625 291 627 289 629 286 C
+627 284 625 282 623 280 C
+625 278 625 278 625 275 C
+624 275 624 274 623 274 C
+622 275 621 277 620 278 C
+619 277 619 277 619 274 C
+622 271 622 268 623 266 C
+623 266 622 265 622 264 C
+623 262 623 262 623 257 C
+622 256 621 255 620 254 C
+619 254 617 254 616 254 C
+614 256 613 257 611 259 C
+611 258 610 257 610 257 C
+610 256 611 255 611 254 C
+610 252 608 250 607 248 C
+607 248 608 247 609 247 C
+610 248 612 249 613 250 C
+614 249 615 249 616 248 C
+614 246 612 244 610 242 C
+610 236 608 235 608 221 C
+607 219 605 217 604 215 C
+601 215 601 215 599 214 C
+599 211 598 209 598 206 C
+599 205 601 203 602 202 C
+601 200 601 200 598 200 C
+596 198 595 196 593 194 C
+590 194 590 194 589 193 C
+590 191 590 191 595 191 C
+598 187 601 182 604 178 C
+604 177 604 176 604 175 C
+605 173 607 172 608 170 C
+611 170 613 169 616 169 C
+617 168 619 167 620 166 C
+620 163 620 163 619 161 C
+614 161 613 163 610 163 C
+608 161 602 161 601 160 C
+598 160 598 160 595 161 C
+579 145 579 145 572 140 C
+569 140 569 140 568 142 C
+569 145 572 145 580 149 C
+578 151 578 151 568 151 C
+567 152 566 153 565 154 C
+563 154 561 154 559 154 C
+558 155 557 156 556 157 C
+551 154 551 154 548 154 C
+547 152 545 150 544 148 C
+539 148 538 149 535 149 C
+534 148 534 148 533 147 C
+536 144 540 140 544 137 C
+543 137 542 136 541 136 C
+539 137 536 139 534 140 C
+533 140 532 139 532 139 C
+533 137 535 136 536 134 C
+536 131 536 131 535 130 C
+532 132 530 135 528 137 C
+527 137 526 136 526 136 C
+527 134 529 133 530 131 C
+529 130 529 130 526 130 C
+522 134 522 134 514 139 C
+514 140 515 141 515 142 C
+514 142 514 143 513 143 C
+512 143 511 142 511 142 C
+511 137 509 136 509 133 C
+511 131 511 128 521 115 C
+521 115 520 114 520 113 C
+518 114 517 115 516 116 C
+515 115 514 115 514 114 C
+515 112 517 111 518 109 C
+518 109 517 108 517 107 C
+515 107 514 107 512 107 C
+511 106 509 105 508 104 C
+509 103 515 103 520 100 C
+521 100 523 100 524 100 C
+529 97 529 97 532 97 C
+534 94 537 91 539 88 C
+538 86 538 86 538 83 C
+539 82 540 80 541 79 C
+540 78 539 78 538 77 C
+535 80 531 82 527 85 C
+526 85 524 85 523 85 C
+521 83 520 82 518 81 C
+521 77 521 74 523 73 C
+523 73 524 74 525 74 C
+526 73 527 72 529 71 C
+527 70 526 69 525 68 C
+520 71 517 71 515 73 C
+512 73 512 73 511 70 C
+513 67 516 64 518 61 C
+518 60 518 59 518 58 C
+520 55 522 53 524 50 C
+523 50 523 49 522 49 C
+519 51 517 54 514 56 C
+512 55 512 55 512 52 C
+513 51 513 51 514 50 C
+513 50 512 49 511 49 C
+509 50 509 50 509 53 C
+507 55 505 56 502 58 C
+500 56 498 54 496 52 C
+491 59 491 59 491 62 C
+492 63 493 64 494 65 C
+494 67 494 68 494 70 C
+493 71 491 73 490 74 C
+485 74 485 74 484 76 C
+484 79 484 79 482 80 C
+484 82 486 84 488 86 C
+493 86 494 88 499 88 C
+500 86 505 86 506 85 C
+509 85 509 85 511 83 C
+514 85 517 85 518 87 C
+518 88 517 88 517 89 C
+515 89 514 89 512 89 C
+511 90 509 91 508 92 C
+507 92 507 91 506 91 C
+505 91 505 92 504 92 C
+503 92 502 91 501 91 C
+499 92 499 92 493 92 C
+492 92 491 91 490 91 C
+489 92 488 93 487 94 C
+485 93 484 92 483 91 C
+481 92 481 92 481 95 C
+477 98 473 101 469 104 C
+470 106 479 106 481 107 C
+479 109 479 109 469 109 C
+465 113 465 116 463 121 C
+463 122 463 123 463 124 C
+462 125 461 126 460 127 C
+460 128 460 129 460 130 C
+457 132 454 134 451 136 C
+454 140 454 140 454 143 C
+452 145 452 145 452 149 C
+455 152 455 152 455 155 C
+454 157 454 157 454 160 C
+454 160 455 161 455 161 C
+455 162 454 163 454 163 C
+456 167 456 167 456 170 C
+455 172 453 173 451 175 C
+449 175 448 175 446 175 C
+441 178 436 182 430 185 C
+421 193 412 201 402 209 C
+395 209 393 211 390 211 C
+385 217 380 223 374 229 C
+375 229 375 230 376 230 C
+378 229 380 227 382 226 C
+383 226 384 227 384 227 C
+381 231 378 234 374 238 C
+374 239 374 241 374 242 C
+373 243 371 244 370 245 C
+370 246 370 247 370 248 C
+367 251 365 253 363 256 C
+363 254 362 253 361 251 C
+361 250 361 248 361 247 C
+359 245 357 244 356 242 C
+354 246 351 249 348 253 C
+348 256 348 256 347 258 C
+348 259 350 260 352 262 C
+351 263 349 264 348 265 C
+344 265 342 266 335 266 C
+328 262 328 262 324 257 C
+325 255 326 254 327 252 C
+326 250 325 248 323 246 C
+324 244 324 239 326 238 C
+326 237 326 236 326 235 C
+334 226 342 218 350 209 C
+350 205 352 203 352 199 C
+360 190 360 190 366 185 C
+367 185 369 185 370 185 C
+371 183 373 180 375 178 C
+379 178 383 178 388 178 C
+388 176 389 175 390 174 C
+389 172 388 171 386 169 C
+391 164 395 160 400 155 C
+418 146 420 146 422 145 C
+423 145 424 145 425 145 C
+434 136 434 136 437 131 C
+437 125 437 125 436 124 C
+431 124 431 124 429 125 C
+429 128 429 128 425 134 C
+422 134 419 137 415 137 C
+413 136 411 134 410 133 C
+410 130 407 125 407 122 C
+408 121 410 119 411 118 C
+413 118 415 118 416 118 C
+417 116 419 115 420 113 C
+420 112 420 110 420 109 C
+416 104 412 100 407 95 C
+407 94 407 93 407 92 C
+405 90 402 87 399 85 C
+399 85 398 85 397 85 C
+396 86 394 88 393 90 C
+396 94 398 97 401 101 C
+401 104 399 106 399 109 C
+397 113 394 118 392 122 C
+392 124 392 125 392 127 C
+390 129 388 131 386 133 C
+385 133 384 133 383 133 C
+381 136 378 140 375 143 C
+372 143 372 143 369 146 C
+368 146 367 145 366 145 C
+365 145 364 146 363 146 C
+364 147 364 148 365 148 C
+364 150 363 151 361 152 C
+360 152 359 151 358 151 C
+357 151 357 152 356 152 C
+356 153 357 153 357 154 C
+353 157 347 161 342 164 C
+340 164 338 164 336 164 C
+309 187 309 187 290 205 C
+290 212 288 214 288 220 C
+287 221 287 226 284 231 C
+280 234 275 237 270 241 C
+268 241 266 241 264 241 C
+259 236 253 232 248 227 C
+245 227 243 226 240 226 C
+239 224 237 223 236 221 C
+233 221 228 218 225 218 C
+224 220 219 220 218 221 C
+215 221 215 221 213 223 C
+214 223 214 224 215 225 C
+214 226 213 227 212 229 C
+210 227 208 226 206 224 C
+204 224 203 224 201 224 C
+194 229 191 229 189 230 C
+188 230 186 230 185 230 C
+179 226 176 226 174 224 C
+174 221 173 220 173 208 C
+170 205 170 205 170 202 C
+166 199 163 197 159 194 C
+156 194 156 194 153 191 C
+152 192 151 192 150 193 C
+147 191 144 191 143 190 C
+138 190 137 188 134 188 C
+132 187 128 187 126 185 C
+126 184 126 182 126 181 C
+125 180 124 179 123 178 C
+122 178 121 178 120 178 C
+112 170 104 162 96 154 C
+96 151 98 149 98 145 C
+100 141 103 137 105 133 C
+104 131 104 131 98 131 C
+94 127 91 124 87 120 C
+88 119 88 118 89 118 C
+87 116 87 116 80 116 C
+78 118 78 118 69 118 C
+68 116 65 116 56 109 C
+56 107 56 106 56 104 C
+55 103 54 101 53 100 C
+47 100 45 101 39 101 C
+38 102 36 103 35 104 C
+30 104 29 106 18 106 C
+17 107 14 107 12 109 C
+10 109 7 109 5 109 C
+3 107 2 106 0 104 C
+-2 104 -3 106 -6 106 C
+-9 104 -11 102 -14 100 C
+-15 100 -16 100 -17 100 C
+-26 108 -26 108 -29 113 C
+-29 119 -30 121 -30 124 C
+-29 125 -29 125 -29 128 C
+-30 130 -30 130 -30 133 C
+-33 135 -35 137 -38 139 C
+-44 139 -45 137 -48 137 C
+-54 142 -57 142 -60 145 C
+-68 145 -68 145 -69 146 C
+-65 150 -65 150 -62 155 C
+-62 160 -60 161 -60 166 C
+-58 167 -56 169 -54 170 C
+-54 173 -54 173 -57 176 C
+-62 176 -62 176 -63 178 C
+-63 181 -63 181 -66 184 C
+-60 194 -60 197 -59 199 C
+-59 200 -59 201 -59 202 C
+-54 206 -49 211 -44 215 C
+-44 218 -44 218 -38 227 C
+-38 232 -36 233 -36 239 C
+-35 241 -35 245 -33 247 C
+-33 248 -33 249 -33 250 C
+-32 251 -30 253 -29 254 C
+-29 255 -30 256 -30 257 C
+-30 257 -29 258 -29 259 C
+-29 261 -30 262 -30 263 C
+-29 264 -27 265 -26 266 C
+-27 267 -28 268 -29 269 C
+-28 270 -27 271 -26 272 C
+-29 275 -29 278 -30 280 C
+-29 281 -27 283 -26 284 C
+-23 284 -21 283 -14 283 C
+-12 284 -10 286 -8 287 C
+-8 287 -7 286 -6 286 C
+-5 287 -5 287 -0 287 C
+3 284 8 281 12 278 C
+15 278 17 277 24 277 C
+29 274 33 272 38 269 C
+39 269 41 269 42 269 C
+43 268 44 267 45 266 C
+51 266 53 265 57 265 C
+59 264 60 263 62 262 C
+63 262 65 262 66 262 C
+69 260 71 259 74 257 C
+77 257 80 257 83 257 C
+85 259 88 262 90 264 C
+97 275 97 275 99 277 C
+99 277 98 278 98 279 C
+100 283 102 286 105 290 C
+106 288 108 285 110 283 C
+111 284 111 284 111 287 C
+109 290 107 292 105 295 C
+108 299 111 304 114 308 C
+107 315 107 315 102 322 C
+102 324 102 327 102 329 C
+103 330 104 331 105 332 C
+104 334 103 335 102 336 C
+104 338 107 338 108 340 C
+107 341 107 341 101 341 C
+99 343 97 345 95 347 C
+94 347 93 347 92 347 C
+89 350 86 352 83 355 C
+81 355 79 355 77 355 C
+74 357 72 360 69 362 C
+69 363 69 364 69 365 C
+71 366 72 367 74 368 C
+72 369 71 370 69 371 C
+70 372 71 373 72 374 C
+71 375 70 376 69 377 C
+71 379 71 379 81 379 C
+83 378 85 377 87 376 C
+92 379 92 379 96 379 C
+100 375 103 372 106 368 C
+108 370 108 370 113 370 C
+114 368 114 368 119 368 C
+120 369 120 369 121 370 C
+123 368 123 368 126 368 C
+127 369 127 369 128 370 C
+127 371 126 372 125 374 C
+126 376 128 380 129 383 C
+128 385 128 389 126 391 C
+127 392 128 393 129 394 C
+131 392 135 392 137 391 C
+135 389 135 389 135 385 C
+139 382 143 379 147 376 C
+156 376 156 376 158 377 C
+156 378 155 379 153 380 C
+155 381 156 382 158 383 C
+164 383 165 385 168 385 C
+175 389 175 389 182 397 C
+182 399 182 402 182 404 C
+184 406 187 407 189 409 C
+195 409 197 410 200 410 C
+201 412 201 412 210 412 C
+212 410 212 410 216 410 C
+217 411 217 411 218 412 C
+216 413 213 413 212 415 C
+213 416 218 416 219 418 C
+218 419 216 420 215 421 C
+219 426 223 431 227 436 C
+227 437 227 439 227 440 C
+228 441 229 442 230 443 C
+231 442 231 442 231 439 C
+230 437 230 437 230 434 C
+233 431 233 431 236 431 C
+237 433 239 434 240 436 C
+240 437 240 439 240 440 C
+238 442 235 444 233 446 C
+233 447 233 448 233 449 C
+235 452 237 454 239 457 C
+243 457 243 457 246 455 C
+248 457 248 457 252 457 C
+254 455 255 453 257 451 C
+258 452 258 455 261 458 C
+273 458 273 458 275 457 C
+275 454 275 454 277 452 C
+278 453 279 453 279 454 C
+280 453 280 453 281 452 C
+282 454 282 457 284 458 C
+286 458 288 458 290 458 C
+293 456 295 454 298 452 C
+299 453 300 453 300 454 C
+299 455 297 457 296 458 C
+301 463 306 468 311 473 C
+313 473 315 473 317 473 C
+318 472 320 471 321 470 C
+322 471 323 471 324 472 C
+324 471 325 471 326 470 C
+325 470 325 469 324 469 C
+326 467 328 466 330 464 C
+332 464 333 464 335 464 C
+339 467 343 469 348 472 C
+351 469 355 467 359 464 C
+363 464 365 463 368 463 C
+371 460 374 457 378 454 C
+380 455 380 458 388 467 C
+392 467 393 469 397 469 C
+398 470 401 470 420 482 C
+424 482 425 484 428 484 C
+430 481 432 479 434 476 C
+435 476 436 476 437 476 C
+440 480 443 483 446 487 C
+447 487 448 487 449 487 C
+451 490 453 493 455 496 C
+455 502 454 503 454 509 C
+454 510 455 511 455 512 C
+454 513 453 514 452 515 C
+452 523 454 524 454 532 C
+455 533 455 536 456 538 C
+456 539 456 540 456 541 C
+459 544 462 548 465 551 C
+466 551 468 551 469 551 C
+472 548 475 545 479 542 C
+482 542 484 541 488 541 C
+489 542 490 543 491 544 C
+491 547 493 548 493 568 C
+493 569 493 569 494 570 C
+494 571 493 572 493 572 C
+491 571 489 569 487 568 C
+485 570 483 573 481 575 C
+481 576 481 577 481 578 C
+480 579 479 580 478 581 C
+478 584 478 584 481 588 C
+478 592 478 592 478 595 C
+481 598 484 598 485 599 C
+491 599 493 601 496 601 C
+497 602 509 602 511 604 C
+521 604 521 604 523 602 C
+524 603 525 603 526 604 C
+526 611 526 611 527 613 C
+529 613 531 613 533 613 C
+534 614 535 615 536 616 C
+541 616 542 617 550 617 C
+553 620 556 620 557 622 C
+556 623 556 623 547 623 C
+545 622 545 622 539 622 C
+538 623 535 623 533 625 C
+533 626 533 627 533 628 C
+531 629 530 630 528 631 C
+521 626 518 626 517 625 C
+514 625 514 625 505 619 C
+499 619 497 617 487 617 C
+485 616 485 616 473 616 C
+472 617 472 617 464 617 C
+463 619 462 621 461 623 C
+458 625 454 628 451 631 C
+447 631 447 631 446 632 C
+446 635 445 637 445 641 C
+445 642 446 643 447 644 C
+447 655 446 656 446 659 C
+447 661 447 661 447 674 C
+446 676 446 676 446 680 C
+461 701 461 701 467 706 C
+467 709 470 712 470 715 C
+472 717 475 720 478 722 C
+478 724 478 725 478 727 C
+479 728 480 730 481 731 C
+485 731 485 731 487 733 C
+487 736 485 737 485 740 C
+484 742 484 745 482 746 C
+482 748 482 749 482 751 C
+481 752 480 753 479 754 C
+473 754 472 755 465 755 C
+464 754 461 754 456 751 C
+454 751 454 751 448 748 C
+447 748 446 749 445 749 C
+445 749 444 748 443 747 C
+445 745 445 745 445 742 C
+443 740 442 738 440 736 C
+437 736 437 736 436 734 C
+436 733 436 731 436 730 C
+437 728 438 726 440 724 C
+439 723 437 722 436 721 C
+436 718 436 718 440 712 C
+439 711 437 710 436 709 C
+436 708 436 707 436 706 C
+434 704 433 703 431 701 C
+430 701 429 701 428 701 C
+426 699 424 696 422 694 C
+422 686 422 686 420 685 C
+420 685 419 685 418 685 C
+413 681 409 677 404 673 C
+404 659 402 658 402 646 C
+402 645 401 645 401 644 C
+401 639 401 634 401 629 C
+402 628 403 626 404 625 C
+408 625 408 625 414 622 C
+415 620 417 618 419 616 C
+419 611 420 610 420 602 C
+419 601 419 601 416 601 C
+415 602 415 602 404 602 C
+403 602 402 601 402 601 C
+399 602 399 602 395 602 C
+393 601 386 601 384 599 C
+386 598 386 598 395 598 C
+396 598 396 599 397 599 C
+399 598 399 598 404 598 C
+406 599 406 599 408 599 C
+410 598 410 598 418 598 C
+418 597 418 596 418 595 C
+414 590 410 585 406 580 C
+403 577 400 575 397 572 C
+397 565 397 558 397 551 C
+396 551 396 550 395 550 C
+395 542 395 534 395 526 C
+393 524 393 520 392 518 C
+392 515 392 515 390 514 C
+390 514 389 515 388 515 C
+386 514 386 514 383 514 C
+381 515 381 515 379 515 C
+375 513 372 510 368 508 C
+368 497 368 497 366 496 C
+361 496 359 494 356 494 C
+354 496 347 496 345 497 C
+345 503 347 505 347 509 C
+345 511 345 515 342 518 C
+342 526 342 526 344 527 C
+345 527 346 527 347 527 C
+347 528 348 529 348 530 C
+339 542 339 542 335 550 C
+335 554 333 556 333 563 C
+331 565 329 567 327 569 C
+327 581 327 581 329 583 C
+328 584 327 585 326 586 C
+326 592 324 593 324 604 C
+324 604 324 605 323 605 C
+321 604 321 604 321 593 C
+319 589 316 585 312 581 C
+310 581 307 581 305 581 C
+299 577 293 573 287 569 C
+281 569 279 571 276 571 C
+270 578 270 578 258 587 C
+258 590 255 593 255 598 C
+256 598 256 599 257 599 C
+258 598 259 597 261 596 C
+263 599 266 601 269 603 C
+268 604 268 605 267 605 C
+268 606 268 606 269 607 C
+268 607 267 608 267 608 C
+264 607 262 605 259 604 C
+258 605 257 606 255 607 C
+257 608 258 610 260 611 C
+260 611 261 610 261 610 C
+263 612 264 614 266 616 C
+269 616 273 619 276 619 C
+278 620 279 621 281 623 C
+280 623 280 624 279 625 C
+275 622 272 622 267 619 C
+264 619 264 619 261 616 C
+258 618 256 621 254 623 C
+256 625 258 627 260 629 C
+258 631 255 631 254 632 C
+256 634 258 635 260 637 C
+263 637 263 637 264 635 C
+266 637 269 637 272 640 C
+284 640 285 638 288 638 C
+289 638 290 637 291 637 C
+291 638 292 638 293 639 C
+292 640 292 641 291 641 C
+287 641 285 643 269 643 C
+268 642 267 641 266 640 C
+263 640 263 640 261 641 C
+260 640 260 640 257 640 C
+256 640 256 641 255 641 C
+258 644 258 644 258 647 C
+262 651 266 654 270 658 C
+270 659 270 660 270 661 C
+272 662 273 663 275 664 C
+274 665 274 665 273 666 C
+274 667 275 668 276 668 C
+276 668 277 667 278 667 C
+279 669 281 671 282 673 C
+285 673 285 673 288 671 C
+288 672 289 672 290 673 C
+288 674 286 676 284 677 C
+285 679 291 679 293 680 C
+292 681 291 682 290 683 C
+291 685 296 685 297 686 C
+302 686 302 686 303 685 C
+307 687 311 690 315 692 C
+315 693 314 693 314 694 C
+315 694 315 695 316 695 C
+318 694 320 692 321 691 C
+323 691 325 691 327 691 C
+331 694 335 697 339 700 C
+338 701 338 701 333 701 C
+330 699 327 696 324 694 C
+323 695 323 695 323 700 C
+327 704 332 708 336 712 C
+338 711 339 710 340 709 C
+341 709 342 710 342 710 C
+341 712 339 714 338 716 C
+339 717 340 718 341 719 C
+342 719 342 718 343 718 C
+344 718 345 719 345 719 C
+345 720 344 720 344 721 C
+345 722 346 723 347 724 C
+352 724 352 724 353 725 C
+351 727 349 728 347 730 C
+350 732 353 735 356 737 C
+355 738 355 738 354 739 C
+357 742 361 742 362 744 C
+361 746 359 747 357 749 C
+358 750 360 751 361 752 C
+360 753 360 753 359 754 C
+363 757 366 757 368 758 C
+366 759 365 760 363 761 C
+366 764 370 764 371 766 C
+371 766 370 767 370 767 C
+371 769 374 769 375 770 C
+377 770 379 770 381 770 C
+382 771 383 772 384 773 C
+383 775 383 775 379 775 C
+378 774 377 774 376 773 C
+375 774 375 775 374 776 C
+376 777 377 779 379 781 C
+381 779 381 779 384 779 C
+385 780 385 780 386 781 C
+384 782 382 784 380 785 C
+381 786 382 787 383 788 C
+382 789 382 789 381 790 C
+383 791 386 791 388 793 C
+387 793 387 794 386 794 C
+388 796 390 796 397 800 C
+395 802 395 802 392 802 C
+390 801 389 800 387 799 C
+386 799 385 800 384 800 C
+384 803 384 805 384 808 C
+385 808 386 809 387 809 C
+390 806 390 806 393 806 C
+394 807 394 807 395 808 C
+393 809 391 811 389 812 C
+390 814 390 814 395 814 C
+396 815 397 817 399 818 C
+401 817 401 814 402 812 C
+404 814 404 814 404 818 C
+403 819 403 820 402 821 C
+403 821 403 822 404 823 C
+406 823 409 823 411 823 C
+412 824 414 825 415 826 C
+413 827 413 827 407 827 C
+406 827 406 826 405 826 C
+404 827 403 827 402 828 C
+404 830 406 832 407 833 C
+410 833 420 839 424 839 C
+425 840 426 841 428 842 C
+431 839 431 839 434 839 C
+435 840 435 840 436 841 C
+434 842 433 843 431 844 C
+431 847 431 847 436 853 C
+438 853 441 853 443 853 C
+444 854 444 854 445 855 C
+443 857 442 859 440 860 C
+442 862 442 862 446 862 C
+447 860 449 859 451 857 C
+451 858 452 859 452 860 C
+452 860 451 861 451 862 C
+454 865 454 868 455 869 C
+455 873 455 873 456 874 C
+463 874 463 874 464 873 C
+464 869 463 868 463 860 C
+463 860 464 859 464 859 C
+466 861 468 864 470 866 C
+470 868 470 869 470 871 C
+471 872 472 873 473 874 C
+474 873 475 872 476 871 C
+476 869 476 868 476 866 C
+477 866 477 866 478 865 C
+479 866 481 867 482 868 C
+481 869 481 869 481 873 C
+482 874 482 874 487 874 C
+487 873 488 873 488 872 C
+487 870 486 869 485 867 C
+486 866 487 865 488 864 C
+490 866 492 868 494 871 C
+502 866 505 866 508 864 C
+505 858 505 858 500 855 C
+497 855 497 855 496 853 C
+498 851 500 850 502 848 C
+505 848 508 848 511 848 C
+512 850 514 852 516 855 C
+518 853 520 851 523 850 C
+522 849 521 848 520 847 C
+521 846 530 846 532 844 C
+532 839 532 839 533 838 C
+535 839 535 844 536 846 C
+539 846 541 847 553 847 C
+554 846 557 846 559 844 C
+562 844 563 842 566 842 C
+568 841 571 841 572 839 C
+575 839 577 838 584 838 C
+586 837 587 835 589 833 C
+591 833 593 833 595 833 C
+596 832 598 830 599 829 C
+604 829 605 827 608 827 C
+609 826 610 825 611 824 C
+611 821 611 821 614 818 C
+614 813 614 808 614 803 C
+610 799 606 795 602 791 C
+592 791 590 793 569 793 C
+568 794 562 794 560 796 C
+556 796 554 797 551 797 C
+548 800 545 800 544 802 C
+543 802 542 802 541 802 C
+539 803 538 805 537 806 C
+535 805 535 805 535 802 C
+537 799 540 797 542 794 C
+543 794 544 794 545 794 C
+552 787 552 787 559 782 C
+562 782 562 782 567 779 C
+569 777 570 775 572 773 C
+572 770 572 770 569 765 C
+572 761 574 758 577 754 C
+577 753 577 752 577 751 C
+578 750 580 749 581 748 C
+581 745 581 745 585 740 C
+587 742 587 742 590 742 C
+593 740 595 738 598 736 C
+604 736 605 734 611 734 C
+612 735 612 735 613 736 C
+612 737 611 738 610 739 C
+610 740 611 740 611 741 C
+610 743 608 745 607 746 C
+605 746 604 746 602 746 C
+600 749 597 751 595 754 C
+596 755 597 756 598 757 C
+597 758 597 758 596 759 C
+598 761 598 761 601 761 C
+606 758 606 758 611 752 C
+612 754 613 755 614 757 C
+623 757 625 758 635 758 C
+637 757 637 757 644 757 C
+645 757 645 758 646 758 C
+644 760 638 760 637 761 C
+635 761 633 761 631 761 C
+626 768 626 768 614 782 C
+617 785 619 788 622 791 C
+622 794 622 794 625 800 C
+628 803 631 806 634 809 C
+635 808 636 807 637 806 C
+638 807 639 808 640 809 C
+644 807 647 804 651 802 C
+652 802 652 803 653 803 C
+651 806 649 808 647 811 C
+647 815 646 817 646 827 C
+644 829 643 830 641 832 C
+634 832 634 832 632 833 C
+632 839 631 841 631 847 C
+629 848 629 848 629 855 C
+626 857 622 860 619 864 C
+620 865 626 865 628 866 C
+631 866 632 868 640 868 C
+644 865 648 861 652 857 C
+652 857 652 856 652 855 C
+648 852 645 849 641 847 C
+641 842 641 842 643 841 C
+646 841 650 841 653 841 C
+654 840 655 839 656 838 C
+659 838 661 838 664 838 C
+666 840 668 841 670 843 C
+668 846 668 850 667 851 C
+667 853 667 854 667 856 C
+668 857 669 858 670 859 C
+669 859 669 860 668 860 C
+670 862 670 862 670 869 C
+673 874 673 877 674 878 C
+674 882 674 882 682 894 C
+684 891 686 888 688 886 C
+689 887 689 887 689 891 C
+688 892 686 894 685 896 C
+685 898 685 900 685 901 C
+686 902 687 904 688 905 C
+690 905 692 905 694 905 C
+695 905 696 904 697 903 C
+697 898 698 896 698 891 C
+697 889 697 889 697 882 C
+698 880 698 880 698 877 C
+703 871 708 866 712 860 C
+713 861 714 861 715 862 C
+710 869 710 869 703 877 C
+703 886 704 887 704 896 C
+706 898 706 910 707 913 C
+762 913 817 913 872 913 C
+872 559 872 205 872 -148 C
+S
+
+532 14 587 26 @E
+553 14 m
+551 16 547 16 545 17 C
+533 17 533 17 532 19 C
+532 25 532 25 533 26 C
+534 26 534 25 535 25 C
+535 25 536 26 536 26 C
+537 26 537 25 538 25 C
+539 25 540 26 541 26 C
+542 26 543 25 544 25 C
+543 24 543 24 542 23 C
+544 22 544 22 548 22 C
+549 22 549 23 550 23 C
+556 23 563 23 569 23 C
+571 22 572 21 574 20 C
+581 20 581 20 583 22 C
+583 21 584 21 584 20 C
+585 21 585 21 586 22 C
+587 20 587 20 587 17 C
+587 17 586 16 586 16 C
+580 16 574 16 568 16 C
+566 14 566 14 553 14 C
+@c
+S
+
+595 28 598 34 @E
+596 28 m
+595 29 595 29 595 32 C
+595 33 596 33 596 34 C
+598 32 598 32 598 29 C
+597 29 597 28 596 28 C
+@c
+S
+
+703 28 746 58 @E
+715 28 m
+713 29 713 29 707 29 C
+706 30 704 32 703 33 C
+703 34 704 34 704 35 C
+704 36 703 36 703 37 C
+707 40 710 40 712 41 C
+712 44 712 44 713 46 C
+722 46 724 47 727 47 C
+728 49 731 49 744 58 C
+745 57 745 57 746 56 C
+742 52 738 48 734 44 C
+736 43 737 42 739 40 C
+738 40 738 39 737 38 C
+735 38 733 38 731 38 C
+730 37 729 35 727 34 C
+723 32 719 30 715 28 C
+@c
+S
+
+599 40 614 56 @E
+605 40 m
+603 42 601 44 599 46 C
+609 55 609 55 612 56 C
+613 56 613 55 614 55 C
+613 53 613 53 613 47 C
+610 45 608 42 605 40 C
+@c
+S
+
+517 41 521 46 @E
+518 41 m
+518 42 517 43 517 43 C
+517 44 518 45 518 46 C
+519 45 520 44 521 43 C
+520 42 519 42 518 41 C
+@c
+S
+
+578 46 581 52 @E
+580 46 m
+578 47 578 47 578 50 C
+579 51 579 51 580 52 C
+581 50 581 50 581 47 C
+581 47 580 46 580 46 C
+@c
+S
+
+550 47 553 52 @E
+551 47 m
+551 48 550 49 550 49 C
+550 50 551 51 551 52 C
+552 51 552 50 553 49 C
+552 49 552 48 551 47 C
+@c
+S
+
+330 50 392 88 @E
+372 50 m
+371 52 368 52 366 53 C
+365 53 364 53 363 53 C
+362 56 360 58 357 61 C
+355 61 352 61 348 61 C
+345 65 342 69 338 73 C
+336 73 335 73 333 73 C
+333 74 331 75 330 76 C
+332 79 332 82 333 83 C
+336 83 336 83 339 82 C
+340 82 341 83 342 83 C
+344 82 348 82 350 80 C
+359 80 361 82 366 82 C
+368 83 371 83 373 85 C
+375 83 375 83 380 83 C
+381 85 381 85 388 85 C
+388 86 389 87 390 88 C
+392 86 392 86 392 80 C
+386 70 386 70 386 67 C
+388 65 388 65 388 62 C
+386 61 386 58 383 55 C
+383 52 383 52 381 50 C
+379 50 375 50 372 50 C
+@c
+S
+
+544 53 547 56 @E
+545 53 m
+545 54 544 54 544 55 C
+544 55 545 56 545 56 C
+546 56 546 55 547 55 C
+546 54 546 54 545 53 C
+@c
+S
+
+557 53 563 59 @E
+560 53 m
+559 55 558 56 557 58 C
+559 59 559 59 562 59 C
+563 58 563 58 563 55 C
+562 54 561 54 560 53 C
+@c
+S
+
+568 55 574 59 @E
+569 55 m
+569 55 568 56 568 56 C
+569 57 570 58 571 59 C
+572 58 573 58 574 57 C
+572 55 572 55 569 55 C
+@c
+S
+
+583 59 590 65 @E
+584 59 m
+584 60 583 60 583 61 C
+584 62 586 64 588 65 C
+589 65 589 64 590 64 C
+588 62 586 61 584 59 C
+@c
+S
+
+541 61 544 64 @E
+542 61 m
+542 61 541 62 541 62 C
+541 63 542 63 542 64 C
+543 63 543 63 544 62 C
+543 62 543 61 542 61 C
+@c
+S
+
+536 67 539 70 @E
+538 67 m
+537 67 537 68 536 68 C
+537 69 537 69 538 70 C
+538 69 539 69 539 68 C
+539 68 538 67 538 67 C
+@c
+S
+
+469 74 476 80 @E
+475 74 m
+473 76 470 76 469 77 C
+470 78 471 79 472 80 C
+473 79 475 78 476 76 C
+476 76 475 75 475 74 C
+@c
+S
+
+572 77 580 82 @E
+574 77 m
+573 78 573 79 572 79 C
+573 80 573 81 574 82 C
+578 82 578 82 580 80 C
+577 77 577 77 574 77 C
+@c
+S
+
+553 80 557 86 @E
+556 80 m
+555 81 554 83 553 84 C
+553 85 554 85 554 86 C
+555 85 556 84 557 82 C
+557 82 556 81 556 80 C
+@c
+S
+
+463 85 475 94 @E
+464 85 m
+464 85 463 86 463 87 C
+464 89 465 91 467 94 C
+470 91 472 89 475 86 C
+473 85 473 85 470 85 C
+469 86 468 87 467 88 C
+466 87 465 86 464 85 C
+@c
+S
+
+520 86 551 107 @E
+547 86 m
+542 90 538 95 533 100 C
+530 100 530 100 527 103 C
+521 103 521 103 520 104 C
+520 105 522 106 523 107 C
+524 107 526 107 527 107 C
+533 103 536 103 538 101 C
+539 101 540 101 541 101 C
+544 98 544 95 551 88 C
+550 86 550 86 547 86 C
+@c
+S
+
+563 91 569 100 @E
+566 91 m
+565 92 565 95 563 97 C
+564 98 565 99 567 100 C
+569 98 569 98 569 95 C
+568 94 567 92 566 91 C
+@c
+S
+
+465 97 469 101 @E
+467 97 m
+466 97 466 98 465 99 C
+466 100 466 100 467 101 C
+468 100 468 100 469 99 C
+468 98 468 97 467 97 C
+@c
+S
+
+545 107 550 110 @E
+547 107 m
+546 108 546 108 545 109 C
+546 109 546 110 547 110 C
+548 110 549 109 550 109 C
+549 108 548 108 547 107 C
+@c
+S
+
+565 110 577 118 @E
+571 110 m
+570 111 570 111 569 112 C
+570 112 570 113 571 113 C
+569 115 566 115 565 116 C
+566 118 566 118 571 118 C
+571 117 572 117 572 116 C
+573 117 573 117 574 118 C
+575 116 576 114 577 112 C
+576 112 576 111 575 110 C
+574 110 572 110 571 110 C
+@c
+S
+
+452 115 461 127 @E
+460 115 m
+457 118 455 121 452 124 C
+453 125 454 126 455 127 C
+456 125 458 124 460 122 C
+460 119 460 119 461 117 C
+461 116 460 115 460 115 C
+@c
+S
+
+243 119 270 164 @E
+251 119 m
+250 120 249 121 248 122 C
+248 134 249 136 249 145 C
+248 146 248 146 248 152 C
+246 154 245 156 243 157 C
+244 158 244 159 245 160 C
+247 160 250 160 252 160 C
+255 161 257 163 260 164 C
+262 164 264 164 266 164 C
+267 162 269 160 270 158 C
+270 154 270 150 270 146 C
+269 145 268 144 267 143 C
+267 141 267 139 267 137 C
+268 136 269 135 270 134 C
+270 130 269 128 269 122 C
+267 121 267 121 263 121 C
+261 122 261 122 258 122 C
+257 121 256 120 255 119 C
+254 119 252 119 251 119 C
+@c
+S
+
+553 128 559 133 @E
+554 128 m
+554 129 553 130 553 130 C
+554 133 554 133 557 133 C
+558 132 558 131 559 130 C
+558 130 558 129 557 128 C
+557 129 556 129 556 130 C
+555 129 555 129 554 128 C
+@c
+S
+
+132 136 137 140 @E
+134 136 m
+133 136 133 137 132 137 C
+133 138 134 139 135 140 C
+136 139 136 139 137 138 C
+136 137 135 136 134 136 C
+@c
+S
+
+562 136 566 139 @E
+563 136 m
+563 136 562 137 562 137 C
+562 138 563 138 564 139 C
+564 138 565 138 566 137 C
+565 137 564 136 563 136 C
+@c
+S
+
+550 145 554 151 @E
+551 145 m
+551 145 550 146 550 147 C
+551 148 552 149 553 151 C
+554 149 554 149 554 146 C
+553 146 552 145 551 145 C
+@c
+S
+
+152 146 167 157 @E
+161 146 m
+158 149 155 149 152 152 C
+153 154 155 155 156 157 C
+158 157 160 157 162 157 C
+164 155 165 153 167 151 C
+165 150 163 148 161 146 C
+@c
+S
+
+176 155 182 158 @E
+177 155 m
+177 156 176 156 176 157 C
+177 158 177 158 180 158 C
+181 158 181 157 182 157 C
+180 155 180 155 177 155 C
+@c
+S
+
+255 170 270 200 @E
+261 170 m
+260 172 259 173 258 175 C
+258 179 257 181 257 185 C
+255 187 255 187 255 190 C
+257 191 258 193 260 194 C
+261 194 263 194 264 194 C
+266 196 267 198 269 200 C
+269 200 270 199 270 199 C
+270 192 270 186 270 179 C
+269 178 269 175 266 170 C
+264 170 263 170 261 170 C
+@c
+S
+
+366 233 372 241 @E
+370 233 m
+369 235 367 237 366 239 C
+367 239 367 240 368 241 C
+369 239 371 237 372 235 C
+372 234 371 234 370 233 C
+@c
+S
+
+363 242 366 248 @E
+365 242 m
+363 244 363 244 363 247 C
+364 247 364 248 365 248 C
+366 247 366 247 366 244 C
+366 243 365 243 365 242 C
+@c
+S
+
+137 407 144 412 @E
+140 407 m
+139 408 138 409 137 410 C
+138 412 138 412 143 412 C
+143 411 144 410 144 410 C
+143 407 143 407 140 407 C
+@c
+S
+
+69 410 192 613 @E
+77 410 m
+75 412 71 412 69 413 C
+75 416 75 416 83 424 C
+84 424 85 424 86 424 C
+90 428 94 433 98 437 C
+99 436 102 436 104 434 C
+113 434 114 436 117 436 C
+119 437 125 437 126 439 C
+125 440 125 440 114 440 C
+113 439 113 439 108 439 C
+107 440 107 443 105 445 C
+104 445 103 445 102 445 C
+101 447 99 449 98 451 C
+96 451 95 451 93 451 C
+92 453 90 455 89 458 C
+90 460 93 460 95 461 C
+98 461 101 461 104 461 C
+105 463 107 465 108 467 C
+108 475 108 475 110 476 C
+108 478 108 478 105 478 C
+105 477 104 477 103 476 C
+102 477 102 478 101 479 C
+102 480 104 482 105 484 C
+108 484 113 487 116 487 C
+118 485 121 484 123 482 C
+125 482 126 482 128 482 C
+129 483 130 484 131 485 C
+131 487 131 488 131 490 C
+135 496 135 496 135 499 C
+133 501 130 503 128 505 C
+128 507 128 510 128 512 C
+130 515 133 517 135 520 C
+134 521 123 521 121 523 C
+119 521 119 521 116 521 C
+115 523 114 524 113 525 C
+116 529 119 534 122 538 C
+122 541 122 541 126 547 C
+125 549 123 551 121 553 C
+116 549 111 545 106 541 C
+105 541 105 542 104 542 C
+108 547 112 551 116 556 C
+116 559 117 560 117 563 C
+119 565 119 565 119 568 C
+121 570 123 572 125 574 C
+122 576 120 579 117 581 C
+122 584 122 584 125 584 C
+126 586 127 587 128 588 C
+127 589 126 591 125 592 C
+126 593 128 595 129 596 C
+134 596 134 596 135 598 C
+134 600 132 601 131 603 C
+132 605 135 605 137 607 C
+137 611 137 611 138 613 C
+140 611 141 610 143 608 C
+145 608 147 608 149 608 C
+153 605 156 605 161 602 C
+158 599 155 596 152 593 C
+146 593 146 593 144 592 C
+146 591 147 590 149 589 C
+148 588 147 587 146 586 C
+147 585 147 585 148 584 C
+153 587 153 587 158 587 C
+159 586 164 586 165 584 C
+173 584 173 584 174 583 C
+174 577 173 575 173 571 C
+169 566 166 561 162 556 C
+153 556 153 556 152 554 C
+153 553 159 553 161 551 C
+159 550 159 550 147 550 C
+146 551 145 552 144 553 C
+143 552 142 552 141 551 C
+143 550 144 548 146 547 C
+149 547 153 547 156 547 C
+158 545 160 543 162 541 C
+162 535 164 533 164 527 C
+162 526 162 514 161 512 C
+161 510 161 508 161 506 C
+165 501 169 496 173 491 C
+173 488 173 488 176 483 C
+175 482 174 482 174 481 C
+171 482 171 482 168 482 C
+168 482 167 481 167 481 C
+170 478 173 476 176 473 C
+176 471 176 469 176 467 C
+174 465 173 463 171 461 C
+172 460 173 459 174 458 C
+177 461 177 461 180 461 C
+189 455 189 455 192 451 C
+192 446 191 445 191 442 C
+190 440 189 438 188 437 C
+185 434 182 432 179 430 C
+176 430 176 430 174 428 C
+175 427 176 426 177 425 C
+176 424 174 423 173 422 C
+174 420 176 419 177 418 C
+182 418 182 418 183 416 C
+183 413 183 413 182 412 C
+176 412 174 410 162 410 C
+161 411 160 412 159 413 C
+150 413 149 415 141 415 C
+141 415 140 416 140 416 C
+138 415 134 415 129 412 C
+125 412 123 413 120 413 C
+120 413 119 412 118 412 C
+115 414 112 417 108 419 C
+107 419 106 419 105 419 C
+103 417 101 415 99 413 C
+96 413 92 416 87 416 C
+85 414 82 412 80 410 C
+79 410 78 410 77 410 C
+@c
+S
+
+284 461 321 542 @E
+294 461 m
+293 463 293 463 293 469 C
+294 470 294 470 294 473 C
+291 476 291 476 291 479 C
+293 481 293 481 293 487 C
+291 488 291 488 291 491 C
+292 492 292 493 293 494 C
+291 496 291 499 290 500 C
+289 500 288 500 287 500 C
+286 501 285 502 284 503 C
+284 514 285 515 285 523 C
+284 524 284 524 284 529 C
+285 530 285 533 288 538 C
+291 538 294 538 297 538 C
+298 536 299 535 300 533 C
+302 535 302 539 305 542 C
+312 542 312 542 314 541 C
+314 538 314 538 311 535 C
+312 533 317 533 321 530 C
+321 526 321 526 320 524 C
+319 524 318 524 317 524 C
+315 522 313 519 311 516 C
+312 515 313 513 314 512 C
+313 511 313 510 312 509 C
+308 509 308 509 306 508 C
+306 503 305 502 305 497 C
+306 496 307 495 308 494 C
+308 491 308 491 305 488 C
+307 487 309 485 311 483 C
+310 482 310 482 309 481 C
+310 480 310 480 311 479 C
+306 473 300 467 294 461 C
+@c
+S
+
+372 461 375 464 @E
+374 461 m
+373 462 373 462 372 463 C
+373 463 373 464 374 464 C
+374 464 375 463 375 463 C
+375 462 374 462 374 461 C
+@c
+S
+
+379 463 381 467 @E
+380 463 m
+380 464 379 464 379 465 C
+379 466 380 467 380 467 C
+380 467 381 466 381 465 C
+381 464 381 464 380 463 C
+@c
+S
+
+20 467 104 545 @E
+32 467 m
+30 469 28 470 26 472 C
+23 472 23 472 21 473 C
+23 475 26 475 27 476 C
+26 478 21 478 20 479 C
+21 480 23 481 24 482 C
+23 483 21 484 20 485 C
+21 486 22 487 23 488 C
+29 488 30 490 35 490 C
+35 490 36 491 36 491 C
+38 490 38 490 47 490 C
+47 490 48 491 48 491 C
+47 492 46 493 45 494 C
+42 493 42 493 39 493 C
+38 494 35 494 30 497 C
+32 499 35 499 36 501 C
+35 502 34 504 33 505 C
+35 506 44 506 45 508 C
+42 511 38 513 35 516 C
+36 518 39 518 41 520 C
+40 520 40 521 39 521 C
+41 523 43 525 45 527 C
+45 528 44 529 44 530 C
+44 530 45 531 45 532 C
+48 532 51 532 54 532 C
+55 531 56 530 57 529 C
+60 529 62 529 65 529 C
+66 530 67 531 68 533 C
+66 534 65 536 63 538 C
+65 539 65 539 71 539 C
+73 541 75 543 77 545 C
+80 545 81 544 84 544 C
+85 543 85 543 86 542 C
+85 542 85 541 84 541 C
+85 540 86 540 87 539 C
+88 540 89 540 90 541 C
+95 538 95 538 99 538 C
+101 536 102 534 104 532 C
+104 529 102 527 102 523 C
+104 521 104 521 104 515 C
+102 514 101 513 99 512 C
+95 512 93 511 90 511 C
+89 509 89 506 87 505 C
+88 504 88 503 89 503 C
+87 500 87 487 86 485 C
+86 482 84 481 84 475 C
+84 474 83 474 83 473 C
+83 473 84 472 84 472 C
+82 470 79 469 77 467 C
+68 467 66 469 62 469 C
+60 470 60 470 56 470 C
+54 469 54 469 50 469 C
+49 469 48 470 48 470 C
+45 469 41 469 39 467 C
+37 467 34 467 32 467 C
+@c
+S
+
+353 467 363 479 @E
+361 467 m
+358 469 355 471 353 473 C
+355 475 357 477 359 479 C
+360 477 362 475 363 473 C
+362 472 362 469 361 467 C
+@c
+S
+
+329 470 333 473 @E
+330 470 m
+330 471 329 471 329 472 C
+330 472 330 473 331 473 C
+332 473 333 472 333 472 C
+333 471 331 471 330 470 C
+@c
+S
+
+442 475 449 482 @E
+443 475 m
+443 475 442 476 442 476 C
+443 478 445 480 447 482 C
+448 482 448 481 449 480 C
+447 478 445 477 443 475 C
+@c
+S
+
+330 478 335 484 @E
+332 478 m
+330 479 330 479 330 482 C
+331 483 332 483 333 484 C
+333 483 334 483 335 482 C
+334 481 333 479 332 478 C
+@c
+S
+
+321 481 327 487 @E
+324 481 m
+324 482 322 483 321 485 C
+322 485 322 486 323 487 C
+324 486 326 484 327 483 C
+326 482 325 482 324 481 C
+@c
+S
+
+338 482 342 485 @E
+339 482 m
+339 483 338 483 338 484 C
+339 484 339 485 340 485 C
+341 485 342 484 342 484 C
+342 483 340 483 339 482 C
+@c
+S
+
+323 487 344 517 @E
+332 487 m
+331 487 331 488 330 488 C
+331 489 331 490 332 491 C
+329 493 327 496 324 499 C
+325 499 325 500 326 500 C
+325 502 324 504 323 506 C
+325 508 328 511 330 514 C
+333 514 336 517 339 517 C
+340 516 341 515 342 514 C
+342 509 342 509 344 507 C
+342 505 342 494 341 493 C
+336 493 336 493 335 491 C
+335 491 336 490 336 489 C
+335 487 335 487 332 487 C
+@c
+S
+
+386 487 390 493 @E
+389 487 m
+388 488 387 489 386 491 C
+387 491 387 492 388 493 C
+388 492 389 490 390 489 C
+390 488 390 488 389 487 C
+@c
+S
+
+455 487 461 499 @E
+456 487 m
+456 488 456 488 455 489 C
+458 494 458 497 460 499 C
+461 497 461 497 461 488 C
+460 487 460 487 456 487 C
+@c
+S
+
+309 491 321 502 @E
+314 491 m
+309 497 309 497 309 500 C
+310 501 310 501 311 502 C
+311 501 312 501 312 500 C
+314 502 314 502 317 502 C
+317 501 318 501 318 500 C
+319 501 319 501 320 502 C
+321 500 321 500 321 497 C
+321 497 320 496 320 496 C
+320 495 321 494 321 494 C
+321 493 320 492 320 491 C
+318 491 316 491 314 491 C
+@c
+S
+
+399 514 406 547 @E
+402 514 m
+401 515 400 516 399 517 C
+399 524 401 526 401 545 C
+401 546 402 546 402 547 C
+403 546 403 546 404 545 C
+404 540 404 535 404 530 C
+406 529 406 529 406 523 C
+404 521 404 515 402 514 C
+@c
+S
+
+424 532 434 553 @E
+425 532 m
+425 532 424 533 424 533 C
+424 539 424 544 424 550 C
+425 551 428 551 429 553 C
+433 553 433 553 434 551 C
+433 550 432 549 431 548 C
+431 544 431 540 431 536 C
+429 535 427 533 425 532 C
+@c
+S
+
+111 539 116 544 @E
+113 539 m
+112 540 112 540 111 541 C
+112 542 113 543 114 544 C
+115 543 115 542 116 542 C
+115 541 114 540 113 539 C
+@c
+S
+
+287 541 318 560 @E
+288 541 m
+288 542 287 542 287 543 C
+288 545 290 548 291 550 C
+295 550 299 550 303 550 C
+306 554 306 557 308 559 C
+311 559 312 560 317 560 C
+317 560 318 559 318 559 C
+318 558 317 557 317 557 C
+317 556 318 555 318 554 C
+317 551 315 548 314 545 C
+302 545 300 547 294 547 C
+292 545 290 543 288 541 C
+@c
+S
+
+363 548 372 572 @E
+366 548 m
+365 550 364 551 363 553 C
+363 556 363 559 363 562 C
+366 565 366 568 371 572 C
+372 571 372 571 372 566 C
+371 565 371 559 370 557 C
+370 555 370 552 370 550 C
+369 549 367 549 366 548 C
+@c
+S
+
+96 551 102 559 @E
+99 551 m
+98 552 97 553 96 554 C
+98 556 99 557 101 559 C
+102 557 102 557 102 554 C
+101 553 100 552 99 551 C
+@c
+S
+
+461 557 475 574 @E
+463 557 m
+462 558 462 558 461 559 C
+462 561 464 563 465 565 C
+464 567 463 569 461 571 C
+462 572 463 573 464 574 C
+467 574 470 574 473 574 C
+474 573 474 572 475 572 C
+474 571 474 570 473 569 C
+474 568 474 567 475 566 C
+471 563 467 560 463 557 C
+@c
+S
+
+524 563 542 595 @E
+536 563 m
+535 565 535 569 533 571 C
+533 572 533 573 533 574 C
+531 575 529 577 527 578 C
+527 580 527 582 527 584 C
+526 586 525 588 524 590 C
+525 591 526 593 527 595 C
+529 595 531 595 533 595 C
+535 594 536 593 538 592 C
+538 586 539 584 539 581 C
+540 581 540 580 541 579 C
+540 578 539 577 538 575 C
+538 574 538 572 538 571 C
+539 570 541 569 542 568 C
+542 565 542 565 541 563 C
+540 564 540 564 539 565 C
+538 564 537 564 536 563 C
+@c
+S
+
+347 571 371 596 @E
+354 571 m
+352 573 349 576 347 578 C
+347 581 350 584 350 587 C
+352 590 355 592 357 595 C
+361 595 361 595 363 596 C
+364 595 366 594 368 593 C
+368 591 368 589 368 587 C
+369 586 370 585 371 584 C
+370 583 370 580 368 578 C
+366 578 365 578 363 578 C
+362 576 360 573 357 571 C
+356 571 355 571 354 571 C
+@c
+S
+
+110 574 117 580 @E
+111 574 m
+111 575 110 575 110 576 C
+111 577 112 579 114 580 C
+115 579 116 578 117 577 C
+116 576 115 575 114 574 C
+113 574 112 574 111 574 C
+@c
+S
+
+463 580 470 586 @E
+469 580 m
+467 581 465 583 463 584 C
+464 586 464 586 469 586 C
+470 584 470 584 470 581 C
+470 581 469 580 469 580 C
+@c
+S
+
+120 595 126 605 @E
+123 595 m
+122 596 121 597 120 598 C
+120 604 120 604 122 605 C
+125 605 125 605 126 604 C
+126 602 126 601 126 599 C
+125 598 124 596 123 595 C
+@c
+S
+
+113 599 116 602 @E
+114 599 m
+114 600 113 600 113 601 C
+113 601 114 602 114 602 C
+115 602 115 601 116 601 C
+115 600 115 600 114 599 C
+@c
+S
+
+114 605 119 610 @E
+116 605 m
+115 606 115 606 114 607 C
+115 608 116 609 117 610 C
+118 609 118 608 119 608 C
+118 607 117 606 116 605 C
+@c
+S
+
+120 610 128 619 @E
+122 610 m
+120 611 120 611 120 614 C
+122 616 124 617 126 619 C
+126 618 127 618 128 617 C
+128 616 128 615 128 614 C
+126 613 124 611 122 610 C
+@c
+S
+
+158 610 162 616 @E
+161 610 m
+160 611 159 612 158 614 C
+158 614 159 615 159 616 C
+160 615 161 613 162 612 C
+162 611 161 611 161 610 C
+@c
+S
+
+547 631 584 667 @E
+566 631 m
+565 632 563 633 562 634 C
+562 635 562 636 562 637 C
+559 639 557 642 554 644 C
+554 646 554 647 554 649 C
+552 651 549 653 547 655 C
+551 657 556 660 560 662 C
+560 665 560 665 562 667 C
+563 667 564 667 565 667 C
+571 660 578 653 584 646 C
+584 645 584 644 584 643 C
+583 641 581 640 580 638 C
+577 638 577 638 571 641 C
+571 641 570 640 569 639 C
+571 637 571 637 571 634 C
+569 633 568 632 566 631 C
+@c
+S
+
+189 632 194 637 @E
+191 632 m
+190 633 190 634 189 635 C
+190 635 191 636 192 637 C
+192 636 193 635 194 635 C
+193 634 192 633 191 632 C
+@c
+S
+
+490 637 499 644 @E
+494 637 m
+493 638 491 640 490 641 C
+491 642 492 643 493 644 C
+497 644 497 644 499 643 C
+499 638 499 638 497 637 C
+496 637 495 637 494 637 C
+@c
+S
+
+475 640 488 662 @E
+482 640 m
+480 643 477 645 475 648 C
+478 653 481 658 484 662 C
+485 661 485 661 485 655 C
+486 654 487 653 488 652 C
+488 650 488 648 488 646 C
+486 644 484 642 482 640 C
+@c
+S
+
+514 641 524 650 @E
+517 641 m
+516 642 515 643 514 644 C
+516 646 518 648 520 650 C
+523 650 523 650 524 649 C
+524 647 524 646 524 644 C
+523 643 522 642 521 641 C
+520 641 518 641 517 641 C
+@c
+S
+
+532 641 545 649 @E
+533 641 m
+533 642 532 643 532 644 C
+533 645 535 647 537 649 C
+539 647 544 647 545 646 C
+544 644 543 643 542 641 C
+539 641 536 641 533 641 C
+@c
+S
+
+494 644 511 665 @E
+506 644 m
+504 646 502 647 500 649 C
+496 649 496 649 494 650 C
+494 653 494 653 497 656 C
+497 658 497 660 497 662 C
+500 665 500 665 503 665 C
+506 663 508 660 511 657 C
+510 656 509 654 508 653 C
+509 651 510 650 511 649 C
+509 647 508 646 506 644 C
+@c
+S
+
+539 656 550 674 @E
+541 656 m
+539 658 539 658 539 661 C
+540 662 541 663 542 664 C
+542 666 542 668 542 670 C
+543 671 544 673 545 674 C
+548 674 548 674 550 673 C
+550 670 550 668 550 665 C
+547 662 544 659 541 656 C
+@c
+S
+
+488 659 493 668 @E
+490 659 m
+488 661 488 661 488 664 C
+489 665 490 667 491 668 C
+493 667 493 667 493 661 C
+492 660 491 660 490 659 C
+@c
+S
+
+517 661 527 673 @E
+520 661 m
+519 662 518 663 517 664 C
+517 666 517 669 517 671 C
+517 672 518 672 519 673 C
+520 672 522 671 524 670 C
+524 667 524 667 527 663 C
+527 662 526 662 526 661 C
+524 661 522 661 520 661 C
+@c
+S
+
+532 670 544 680 @E
+533 670 m
+532 671 532 671 532 674 C
+533 676 535 678 536 680 C
+538 680 539 680 541 680 C
+542 679 543 678 544 677 C
+542 675 540 672 538 670 C
+536 670 535 670 533 670 C
+@c
+S
+
+593 671 619 706 @E
+614 671 m
+612 673 610 674 608 676 C
+608 677 608 679 608 680 C
+607 681 605 682 604 683 C
+596 683 596 683 595 685 C
+596 686 597 687 598 688 C
+596 689 595 691 593 692 C
+595 694 595 694 599 694 C
+600 693 601 692 603 691 C
+605 692 605 692 605 695 C
+604 697 604 700 601 704 C
+601 705 602 705 603 706 C
+605 703 607 701 610 698 C
+610 694 610 694 608 692 C
+611 686 611 686 619 676 C
+619 673 619 673 617 671 C
+616 671 615 671 614 671 C
+@c
+S
+
+542 677 554 698 @E
+550 677 m
+547 681 545 684 542 688 C
+542 689 542 691 542 692 C
+544 694 545 696 547 698 C
+548 697 548 697 548 691 C
+550 690 551 689 553 688 C
+553 682 553 682 554 680 C
+553 677 553 677 550 677 C
+@c
+S
+
+511 679 535 695 @E
+523 679 m
+520 681 518 683 515 685 C
+512 685 512 685 511 686 C
+515 689 518 692 523 695 C
+525 695 528 695 530 695 C
+532 694 533 693 535 692 C
+535 691 535 689 535 688 C
+532 685 529 685 527 683 C
+527 680 527 680 526 679 C
+525 679 524 679 523 679 C
+@c
+S
+
+511 697 520 703 @E
+512 697 m
+512 698 511 698 511 699 C
+512 700 514 702 515 703 C
+517 701 518 700 520 698 C
+518 697 518 697 512 697 C
+@c
+S
+
+533 704 542 713 @E
+535 704 m
+533 706 533 706 533 710 C
+535 711 536 712 538 713 C
+539 712 541 710 542 708 C
+541 707 540 706 539 704 C
+538 704 536 704 535 704 C
+@c
+S
+
+141 709 146 713 @E
+143 709 m
+142 710 142 710 141 711 C
+142 712 143 713 144 713 C
+144 713 145 712 146 712 C
+145 711 144 710 143 709 C
+@c
+S
+
+581 716 589 725 @E
+584 716 m
+583 717 582 718 581 719 C
+581 724 581 724 583 725 C
+587 725 587 725 589 724 C
+589 723 589 722 589 721 C
+587 719 586 718 584 716 C
+@c
+S
+
+590 724 605 730 @E
+593 724 m
+592 725 591 726 590 727 C
+591 728 592 729 593 730 C
+604 730 604 730 605 728 C
+604 727 603 725 602 724 C
+599 724 596 724 593 724 C
+@c
+S
+
+538 742 556 752 @E
+539 742 m
+539 743 538 743 538 744 C
+540 746 542 749 544 751 C
+550 751 551 752 554 752 C
+555 752 555 751 556 751 C
+555 749 554 748 553 746 C
+551 746 550 746 548 746 C
+547 745 545 743 544 742 C
+542 742 541 742 539 742 C
+@c
+S
+
+538 764 550 776 @E
+548 764 m
+545 767 542 767 538 772 C
+538 775 538 775 539 776 C
+541 774 542 772 544 770 C
+545 770 546 770 547 770 C
+548 769 549 768 550 767 C
+549 766 549 765 548 764 C
+@c
+S
+
+17 781 120 865 @E
+44 781 m
+41 785 38 789 35 793 C
+35 793 36 794 36 794 C
+35 796 35 796 32 796 C
+29 801 29 801 17 812 C
+17 814 17 815 17 817 C
+18 818 19 819 21 820 C
+23 819 25 817 27 815 C
+27 816 28 816 29 817 C
+28 818 27 819 26 820 C
+27 821 28 822 29 823 C
+28 824 27 825 26 826 C
+27 827 28 828 29 829 C
+26 832 23 834 20 837 C
+20 838 21 839 21 839 C
+29 839 29 839 31 838 C
+33 839 33 839 38 839 C
+39 840 40 841 41 842 C
+40 843 40 843 39 844 C
+41 845 42 846 44 847 C
+32 855 29 855 27 856 C
+27 859 27 859 26 860 C
+27 861 27 861 28 862 C
+30 860 32 859 33 857 C
+34 858 34 859 35 860 C
+34 861 34 862 33 863 C
+34 864 34 864 35 865 C
+36 865 36 864 37 864 C
+39 865 39 865 42 865 C
+44 864 45 862 47 860 C
+47 859 47 857 47 856 C
+48 855 49 854 50 853 C
+50 854 51 854 51 855 C
+50 857 50 857 50 860 C
+51 862 52 864 53 865 C
+55 863 57 861 59 859 C
+57 857 57 857 57 848 C
+56 847 54 844 53 842 C
+53 839 53 839 51 837 C
+52 837 52 836 53 835 C
+54 836 56 838 57 839 C
+59 838 59 838 62 838 C
+65 841 65 844 69 847 C
+69 847 70 846 71 846 C
+71 843 71 841 71 839 C
+72 839 72 838 73 838 C
+75 839 77 841 78 842 C
+81 842 81 842 83 841 C
+83 832 83 832 84 830 C
+87 833 87 837 89 838 C
+91 836 92 834 94 832 C
+95 833 97 834 98 835 C
+99 834 100 833 102 832 C
+103 833 104 834 105 835 C
+105 838 105 838 107 839 C
+108 838 111 838 113 837 C
+113 827 113 827 114 826 C
+119 826 119 826 120 824 C
+118 823 116 821 114 820 C
+115 819 116 818 117 817 C
+116 816 114 815 113 813 C
+114 812 116 811 117 809 C
+117 806 119 805 119 802 C
+117 800 114 800 113 799 C
+114 798 115 797 116 796 C
+115 795 114 795 114 794 C
+113 795 112 795 111 796 C
+106 792 100 787 95 782 C
+94 783 92 784 91 785 C
+90 784 89 783 87 782 C
+86 783 85 784 84 785 C
+83 784 75 784 74 782 C
+73 783 72 783 72 784 C
+71 783 70 783 69 782 C
+68 783 66 784 64 785 C
+62 784 61 783 59 782 C
+45 782 45 782 44 781 C
+@c
+S
+
+365 797 370 803 @E
+366 797 m
+365 799 365 799 365 802 C
+366 802 366 803 367 803 C
+368 803 369 802 370 802 C
+369 801 367 799 366 797 C
+@c
+S
+
+372 803 377 809 @E
+374 803 m
+373 804 373 805 372 806 C
+373 807 374 808 375 809 C
+376 809 376 808 377 807 C
+376 806 375 805 374 803 C
+@c
+S
+
+379 809 383 812 @E
+380 809 m
+380 810 379 810 379 811 C
+379 811 380 812 381 812 C
+381 812 382 811 383 811 C
+382 810 381 810 380 809 C
+@c
+S
+
+532 812 544 827 @E
+538 812 m
+536 814 533 814 532 816 C
+534 819 537 821 539 823 C
+539 823 538 824 538 824 C
+539 825 540 826 541 827 C
+542 826 542 820 544 818 C
+544 817 544 816 544 815 C
+542 814 540 813 538 812 C
+@c
+S
+
+375 815 384 829 @E
+380 815 m
+379 816 377 817 375 818 C
+375 820 375 821 375 823 C
+377 825 379 827 381 829 C
+381 828 382 828 383 827 C
+383 821 384 820 384 817 C
+383 815 383 815 380 815 C
+@c
+S
+
+383 817 399 844 @E
+389 817 m
+388 818 388 821 386 823 C
+386 826 388 827 388 830 C
+387 831 385 832 384 833 C
+384 838 383 839 383 842 C
+384 844 384 844 388 844 C
+389 842 389 842 389 835 C
+390 833 391 832 392 830 C
+393 831 394 832 395 833 C
+397 832 397 829 399 825 C
+394 820 394 820 389 817 C
+@c
+S
+
+487 829 496 842 @E
+490 829 m
+489 830 488 831 487 832 C
+489 835 491 839 494 842 C
+495 842 495 841 496 840 C
+494 838 494 835 493 833 C
+493 833 493 832 494 831 C
+494 831 493 830 493 829 C
+492 829 491 829 490 829 C
+@c
+S
+
+401 837 420 851 @E
+406 837 m
+404 838 402 839 401 841 C
+403 844 406 847 408 850 C
+415 850 415 850 417 851 C
+420 847 420 847 420 844 C
+408 837 408 837 406 837 C
+@c
+S
+
+425 846 429 853 @E
+427 846 m
+425 847 425 847 425 850 C
+426 851 427 852 428 853 C
+428 852 429 852 429 851 C
+429 849 428 847 427 846 C
+@c
+S
+
+431 856 438 860 @E
+433 856 m
+432 856 432 857 431 857 C
+432 858 433 859 435 860 C
+436 859 437 858 438 857 C
+437 856 437 856 433 856 C
+@c
+S
+
+446 865 451 868 @E
+447 865 m
+447 865 447 866 446 866 C
+447 867 447 867 448 868 C
+449 867 450 867 451 866 C
+450 866 448 866 447 865 C
+@c
+S
+
+438 869 449 874 @E
+442 869 m
+441 870 439 871 438 873 C
+440 874 440 874 447 874 C
+448 874 448 873 449 873 C
+445 869 445 869 442 869 C
+@c
+S
+
+456 877 464 883 @E
+461 877 m
+460 878 458 879 456 880 C
+460 883 460 883 463 883 C
+464 882 464 882 464 878 C
+463 878 462 877 461 877 C
+@c
+S
+
+} bind def
+
+% Second part: national borders
+
+/Part2 {
+
+NationalBorder
+/S/stroke ld
+
+-264 -151 875 916 @E
+-264 -151 m
+-264 204 -264 560 -264 916 C
+115 916 495 916 875 916 C
+875 560 875 204 875 -151 C
+495 -151 115 -151 -264 -151 C
+@c
+S
+
+-180 -148 54 58 @E
+-180 -148 m
+-180 -147 -180 -146 -180 -145 C
+-176 -142 -172 -139 -168 -136 C
+-160 -136 -152 -136 -144 -136 C
+-144 -136 -143 -135 -143 -135 C
+-136 -135 -130 -135 -123 -135 C
+-122 -133 -122 -133 -117 -133 C
+-112 -129 -106 -125 -101 -121 C
+-99 -121 -98 -121 -96 -121 C
+-87 -116 -79 -111 -70 -106 C
+-65 -102 -59 -98 -54 -94 C
+-53 -94 -51 -94 -50 -94 C
+-44 -90 -38 -86 -32 -82 C
+-29 -82 -29 -82 -22 -78 C
+-20 -76 -19 -74 -17 -72 C
+-17 -69 -15 -67 -15 -64 C
+-14 -63 -14 -63 -14 -60 C
+-12 -58 -10 -57 -8 -55 C
+-0 -55 0 -54 17 -54 C
+18 -52 24 -52 26 -51 C
+31 -51 36 -51 41 -51 C
+45 -47 50 -44 54 -40 C
+54 -39 54 -37 54 -36 C
+49 -30 44 -23 39 -17 C
+43 -13 46 -10 50 -6 C
+51 -6 52 -6 53 -6 C
+53 -5 54 -4 54 -4 C
+53 -2 52 -1 51 -0 C
+51 4 51 4 53 6 C
+51 8 51 13 47 20 C
+47 29 45 31 45 34 C
+47 35 47 35 47 38 C
+46 39 45 40 44 41 C
+44 47 44 52 44 58 C
+S
+
+257 -148 321 -48 @E
+276 -148 m
+275 -146 274 -144 273 -142 C
+268 -136 263 -130 258 -124 C
+258 -121 257 -120 257 -112 C
+262 -109 266 -106 271 -103 C
+281 -92 281 -92 284 -87 C
+284 -84 285 -82 285 -79 C
+287 -77 289 -75 291 -73 C
+299 -69 302 -69 320 -58 C
+320 -52 321 -51 321 -48 C
+S
+
+524 -148 586 -72 @E
+524 -148 m
+531 -145 537 -140 544 -136 C
+553 -136 554 -135 565 -135 C
+578 -125 578 -125 581 -121 C
+581 -116 581 -110 581 -105 C
+583 -103 583 -90 584 -88 C
+584 -85 586 -84 586 -72 C
+S
+
+812 -112 872 44 @E
+872 -112 m
+871 -112 869 -112 868 -112 C
+863 -109 860 -109 824 -88 C
+824 -79 826 -78 826 -70 C
+827 -69 827 -69 827 -52 C
+826 -51 826 -40 824 -39 C
+824 -25 823 -24 823 -18 C
+821 -16 821 -7 820 -6 C
+820 1 818 2 818 7 C
+817 8 817 13 812 20 C
+812 22 812 23 812 25 C
+822 32 822 32 839 41 C
+842 41 844 43 847 43 C
+848 44 848 44 862 44 C
+863 43 863 43 872 43 C
+S
+
+770 -84 791 -40 @E
+791 -84 m
+770 -43 770 -43 770 -40 C
+S
+
+-21 103 -11 106 @E
+-21 103 m
+-21 104 -20 105 -20 106 C
+-17 106 -15 106 -12 106 C
+-12 105 -11 104 -11 103 C
+S
+
+473 109 511 130 @E
+473 109 m
+473 112 475 113 475 118 C
+483 127 483 127 486 128 C
+487 128 488 127 489 127 C
+490 127 491 128 492 128 C
+495 126 497 123 500 121 C
+501 122 502 123 503 124 C
+503 125 502 126 502 127 C
+502 128 503 129 504 130 C
+505 129 506 129 507 128 C
+508 129 509 129 511 130 C
+S
+
+-39 139 11 256 @E
+-39 139 m
+-39 140 -39 141 -39 142 C
+-29 152 -29 152 -21 159 C
+-24 164 -24 164 -24 169 C
+-22 171 -20 173 -18 175 C
+-18 182 -20 184 -20 190 C
+-21 191 -21 191 -21 199 C
+-20 199 -20 200 -19 200 C
+-17 199 -17 199 -14 199 C
+-7 209 -1 219 5 229 C
+6 229 7 229 8 229 C
+9 230 10 231 11 232 C
+8 237 5 241 2 245 C
+-2 245 -3 247 -12 247 C
+-14 248 -15 249 -17 250 C
+-17 253 -17 253 -20 256 C
+-23 256 -24 254 -29 254 C
+S
+
+494 173 596 193 @E
+596 188 m
+595 187 593 185 592 184 C
+591 185 590 186 589 187 C
+586 184 583 184 575 178 C
+573 179 572 181 570 182 C
+567 180 565 177 562 175 C
+559 178 556 178 553 179 C
+551 178 549 176 547 175 C
+545 177 544 179 542 181 C
+539 178 539 175 538 173 C
+536 174 535 175 534 176 C
+533 176 532 175 532 175 C
+530 177 528 180 526 182 C
+524 181 524 181 521 181 C
+520 182 520 182 515 182 C
+514 181 514 181 508 181 C
+503 185 499 189 494 193 C
+S
+
+442 175 456 214 @E
+447 175 m
+447 178 449 179 449 187 C
+452 190 455 190 456 192 C
+452 196 447 200 442 205 C
+442 206 442 208 442 209 C
+443 211 445 212 447 214 C
+S
+
+389 181 446 253 @E
+437 181 m
+437 182 437 183 437 184 C
+424 194 424 194 410 209 C
+405 216 399 224 393 232 C
+393 235 392 236 392 242 C
+391 243 390 244 389 245 C
+389 247 389 248 389 250 C
+390 251 391 252 393 253 C
+394 251 396 249 398 247 C
+399 248 400 250 401 251 C
+407 251 407 251 409 250 C
+410 250 411 251 412 251 C
+415 250 415 250 419 250 C
+420 248 422 247 424 245 C
+427 248 427 248 429 248 C
+431 247 433 246 435 245 C
+436 246 437 246 438 247 C
+439 246 440 246 441 245 C
+442 246 443 246 444 247 C
+444 246 445 246 446 245 C
+S
+
+447 191 494 214 @E
+494 193 m
+493 192 492 192 491 191 C
+490 192 489 193 488 194 C
+489 195 489 195 490 196 C
+488 197 487 198 486 199 C
+484 197 484 197 481 197 C
+475 201 469 204 463 208 C
+461 206 461 206 458 206 C
+455 209 451 211 447 214 C
+S
+
+494 193 509 233 @E
+494 193 m
+494 196 494 196 497 201 C
+502 205 502 205 505 205 C
+506 206 508 208 509 210 C
+507 213 504 217 502 220 C
+502 223 502 223 499 226 C
+500 227 502 229 505 230 C
+505 231 505 232 505 233 C
+S
+
+844 202 872 224 @E
+872 202 m
+871 202 869 202 868 202 C
+865 204 863 207 860 209 C
+858 209 856 209 854 209 C
+853 210 852 212 851 213 C
+853 215 853 215 853 218 C
+850 220 847 222 844 224 C
+S
+
+438 214 447 245 @E
+447 214 m
+446 216 444 218 442 220 C
+443 221 446 221 447 223 C
+445 225 442 228 438 231 C
+441 234 444 236 446 239 C
+446 241 446 243 446 245 C
+S
+
+81 215 173 257 @E
+173 217 m
+170 215 170 215 159 215 C
+152 220 144 225 137 230 C
+136 230 135 230 134 230 C
+132 232 130 233 128 235 C
+126 233 124 232 123 230 C
+117 233 114 233 94 245 C
+90 249 86 253 81 257 C
+S
+
+505 220 608 233 @E
+608 226 m
+606 226 603 226 601 226 C
+599 227 598 229 596 230 C
+595 229 594 228 593 227 C
+589 227 587 229 583 229 C
+581 230 581 230 575 230 C
+574 229 574 229 568 229 C
+564 226 560 223 556 220 C
+544 220 542 221 533 221 C
+532 220 532 220 529 220 C
+527 221 524 221 523 223 C
+520 223 520 223 517 224 C
+514 221 514 221 511 221 C
+510 222 510 223 509 223 C
+510 225 511 226 512 227 C
+510 229 507 231 505 233 C
+S
+
+230 227 245 277 @E
+245 227 m
+241 231 238 234 234 238 C
+234 240 234 242 234 244 C
+237 248 237 248 237 251 C
+235 254 232 256 230 259 C
+230 260 230 261 230 262 C
+232 264 235 266 237 268 C
+237 270 237 272 237 274 C
+238 275 239 276 240 277 C
+S
+
+502 233 506 245 @E
+505 233 m
+504 234 503 235 502 236 C
+503 237 505 239 506 241 C
+505 242 503 244 502 245 C
+S
+
+446 241 502 250 @E
+502 245 m
+499 244 497 242 495 241 C
+491 244 488 244 484 247 C
+479 247 478 245 472 245 C
+470 247 470 247 467 247 C
+465 245 463 245 461 244 C
+460 244 459 244 458 244 C
+457 245 456 247 455 248 C
+452 248 452 248 450 250 C
+448 248 447 247 446 245 C
+S
+
+502 245 565 338 @E
+502 245 m
+502 247 503 249 503 251 C
+505 253 507 254 509 256 C
+512 256 517 259 520 259 C
+521 260 523 262 525 263 C
+527 262 527 262 530 262 C
+532 263 538 263 539 265 C
+542 265 542 265 544 266 C
+548 263 548 263 551 263 C
+553 265 553 265 559 265 C
+561 266 563 268 565 270 C
+564 272 563 273 562 275 C
+563 277 563 277 563 281 C
+562 283 560 286 559 288 C
+559 289 560 290 560 291 C
+556 297 552 302 548 308 C
+545 308 545 308 542 311 C
+543 312 544 313 545 314 C
+547 314 548 314 550 314 C
+551 316 553 317 554 319 C
+557 319 557 319 559 320 C
+556 322 554 324 551 326 C
+552 327 552 328 553 329 C
+551 330 550 332 548 334 C
+550 335 551 337 553 338 C
+S
+
+553 265 622 338 @E
+622 269 m
+617 269 616 268 613 268 C
+611 267 610 266 608 265 C
+604 265 604 265 602 266 C
+602 280 601 281 601 286 C
+599 287 599 287 599 293 C
+600 294 600 295 601 295 C
+598 301 598 301 598 304 C
+592 311 586 318 580 325 C
+579 325 578 325 577 325 C
+573 329 570 333 566 337 C
+562 337 562 337 559 338 C
+558 338 557 337 556 337 C
+555 337 554 338 553 338 C
+S
+
+288 266 344 287 @E
+342 266 m
+342 272 344 274 344 278 C
+343 280 341 282 339 284 C
+336 284 335 286 327 286 C
+327 286 326 287 325 287 C
+319 284 319 284 314 280 C
+314 278 314 277 314 275 C
+309 272 304 269 300 266 C
+297 269 294 271 291 274 C
+291 275 291 277 291 278 C
+290 279 289 280 288 281 C
+S
+
+240 272 288 286 @E
+288 281 m
+288 281 287 280 286 280 C
+285 280 284 281 283 281 C
+282 281 281 280 280 280 C
+279 281 278 282 276 283 C
+275 282 274 281 273 280 C
+273 278 273 276 273 274 C
+273 273 272 273 271 272 C
+269 274 269 277 261 286 C
+259 284 257 282 255 280 C
+255 277 255 277 252 274 C
+250 274 247 274 245 274 C
+243 275 242 276 240 277 C
+S
+
+222 277 249 311 @E
+240 277 m
+240 279 240 281 240 283 C
+239 284 238 285 237 286 C
+236 286 235 286 234 286 C
+232 283 229 281 227 278 C
+226 278 225 278 224 278 C
+223 279 223 280 222 281 C
+226 284 229 288 233 292 C
+233 293 233 295 233 296 C
+240 301 240 301 249 311 C
+S
+
+281 281 291 307 @E
+288 281 m
+290 283 290 286 291 287 C
+291 288 291 289 291 290 C
+288 293 284 296 281 299 C
+281 302 282 304 282 307 C
+S
+
+282 305 440 400 @E
+440 379 m
+438 376 438 376 435 374 C
+434 375 433 375 432 376 C
+429 374 429 374 427 374 C
+425 376 423 378 420 380 C
+418 380 418 380 414 383 C
+412 382 411 380 410 379 C
+407 379 407 379 404 382 C
+404 385 404 385 406 387 C
+404 389 401 389 399 391 C
+397 391 395 392 392 392 C
+390 394 388 395 385 397 C
+384 396 384 396 383 395 C
+382 397 380 398 379 400 C
+377 398 375 396 374 394 C
+371 394 370 392 366 392 C
+365 391 359 391 357 389 C
+354 389 353 388 348 388 C
+346 386 344 384 341 382 C
+338 382 338 382 335 379 C
+334 380 333 382 332 383 C
+330 382 330 382 330 377 C
+332 376 332 376 332 373 C
+334 371 336 369 338 368 C
+336 365 336 365 336 362 C
+339 359 341 356 344 353 C
+345 353 346 353 347 353 C
+354 346 354 346 361 341 C
+358 339 356 337 354 335 C
+354 332 354 332 353 331 C
+352 331 351 331 350 331 C
+347 328 345 325 342 323 C
+344 321 345 319 347 317 C
+346 317 346 316 345 315 C
+346 314 347 312 348 311 C
+348 310 347 309 347 308 C
+345 310 343 312 341 314 C
+338 314 338 314 336 313 C
+333 314 333 314 330 314 C
+329 313 324 313 317 308 C
+314 308 314 308 309 311 C
+308 311 307 310 306 310 C
+305 310 304 311 303 311 C
+300 309 298 307 295 305 C
+293 307 290 309 288 311 C
+286 310 284 308 282 307 C
+S
+
+249 307 282 311 @E
+282 307 m
+281 308 279 309 278 310 C
+270 310 270 310 268 311 C
+266 310 266 310 261 310 C
+260 311 260 311 257 311 C
+256 311 255 310 255 310 C
+252 311 252 311 249 311 C
+S
+
+240 311 254 373 @E
+249 311 m
+249 316 248 317 248 320 C
+247 321 246 323 245 324 C
+251 336 254 340 254 343 C
+251 347 248 351 245 355 C
+245 356 245 357 245 358 C
+243 359 242 361 240 362 C
+240 366 240 369 240 373 C
+S
+
+440 338 554 392 @E
+553 338 m
+552 340 551 342 550 344 C
+551 346 553 347 554 349 C
+553 351 551 353 550 355 C
+550 359 550 359 551 362 C
+550 364 548 366 547 368 C
+547 369 548 370 548 371 C
+547 372 546 373 545 374 C
+544 373 544 373 541 373 C
+539 374 536 374 529 380 C
+528 380 527 380 526 380 C
+524 382 523 383 521 385 C
+518 385 517 386 514 386 C
+512 388 511 390 509 392 C
+508 392 507 392 506 392 C
+504 390 501 388 499 386 C
+493 386 493 386 490 385 C
+488 387 485 389 482 391 C
+480 391 478 391 476 391 C
+474 388 472 386 470 383 C
+469 383 467 383 465 383 C
+461 380 458 380 456 379 C
+449 379 447 380 442 380 C
+441 380 441 379 440 379 C
+S
+
+197 373 240 410 @E
+240 373 m
+237 373 236 374 233 374 C
+230 377 228 380 225 383 C
+225 386 225 386 224 388 C
+221 385 221 385 218 385 C
+215 388 213 391 210 394 C
+209 394 207 394 206 394 C
+203 399 203 399 197 406 C
+197 407 197 409 197 410 C
+S
+
+240 373 249 401 @E
+240 373 m
+242 373 243 373 245 373 C
+246 375 248 377 249 379 C
+249 380 249 382 249 383 C
+248 385 246 386 245 388 C
+245 397 243 398 243 401 C
+S
+
+419 379 484 511 @E
+440 379 m
+439 381 437 382 436 384 C
+437 386 437 386 437 389 C
+434 392 434 395 427 403 C
+427 409 425 410 425 415 C
+424 416 424 416 424 421 C
+422 423 420 424 419 426 C
+422 432 422 432 432 443 C
+437 447 442 450 447 454 C
+449 452 449 452 452 452 C
+453 453 454 454 455 455 C
+460 455 460 455 461 454 C
+463 456 466 458 469 460 C
+472 460 472 460 474 458 C
+477 462 480 465 484 469 C
+482 470 480 472 478 473 C
+479 475 480 476 481 477 C
+480 479 479 480 478 482 C
+479 483 480 485 481 486 C
+469 494 469 494 458 506 C
+457 507 456 509 455 511 C
+S
+
+209 401 243 412 @E
+243 401 m
+240 401 240 401 239 403 C
+239 404 239 406 239 407 C
+237 409 235 410 233 412 C
+228 412 228 412 226 410 C
+225 411 224 411 223 412 C
+221 410 220 409 218 407 C
+210 407 210 407 209 409 C
+209 410 209 411 209 412 C
+S
+
+242 401 257 451 @E
+243 401 m
+243 404 243 404 242 406 C
+243 407 244 409 245 410 C
+245 418 245 418 243 420 C
+244 421 244 421 245 422 C
+249 422 251 424 254 424 C
+254 425 255 425 255 426 C
+255 427 254 428 254 428 C
+255 430 255 430 255 434 C
+254 436 253 437 252 438 C
+253 439 254 441 255 442 C
+255 448 255 448 257 451 C
+S
+
+293 494 305 499 @E
+293 494 m
+295 496 296 497 298 499 C
+300 498 301 497 303 496 C
+303 496 304 497 305 497 C
+S
+
+434 755 514 851 @E
+467 755 m
+467 758 465 760 465 763 C
+465 764 465 764 464 765 C
+465 767 465 767 465 776 C
+464 778 463 780 461 782 C
+461 787 461 787 460 788 C
+461 789 462 790 463 791 C
+463 794 461 796 461 800 C
+460 801 459 802 458 803 C
+458 808 456 809 456 812 C
+455 815 453 817 451 820 C
+450 820 448 820 447 820 C
+443 824 439 828 434 832 C
+436 835 439 839 442 842 C
+445 838 450 833 454 829 C
+456 829 456 829 462 832 C
+463 830 465 829 467 827 C
+469 829 470 831 472 833 C
+472 838 473 839 473 842 C
+475 845 478 848 481 851 C
+483 851 487 851 490 851 C
+493 849 497 846 500 842 C
+500 839 499 838 499 835 C
+499 834 500 834 500 833 C
+505 838 509 842 514 846 C
+513 847 512 848 511 848 C
+S
+
+} bind def
+
+% Third part: internal borders
+
+/Part3 {
+
+InternalBorder
+/S/stroke ld
+
+-264 -151 875 916 @E
+-264 -151 m
+-264 204 -264 560 -264 916 C
+115 916 495 916 875 916 C
+875 560 875 204 875 -151 C
+495 -151 115 -151 -264 -151 C
+@c
+S
+
+408 -148 440 -99 @E
+408 -148 m
+408 -144 410 -142 410 -138 C
+416 -130 416 -130 431 -114 C
+431 -113 431 -112 431 -111 C
+432 -110 433 -109 434 -108 C
+434 -107 434 -106 434 -105 C
+436 -103 438 -101 440 -99 C
+S
+
+216 -109 260 -37 @E
+260 -109 m
+258 -107 257 -105 255 -103 C
+255 -97 254 -96 254 -81 C
+252 -79 252 -79 252 -70 C
+249 -67 246 -67 242 -64 C
+241 -62 240 -60 239 -58 C
+237 -56 235 -54 233 -52 C
+230 -52 228 -52 225 -52 C
+223 -49 220 -46 218 -43 C
+217 -41 217 -39 216 -37 C
+S
+
+791 -88 824 -84 @E
+824 -88 m
+817 -88 815 -87 809 -87 C
+808 -85 802 -85 800 -84 C
+797 -84 794 -84 791 -84 C
+S
+
+752 -85 755 -84 @E
+752 -85 m
+753 -85 754 -84 755 -84 C
+S
+
+538 -57 565 14 @E
+538 -57 m
+539 -57 540 -57 541 -57 C
+545 -53 549 -49 553 -46 C
+560 -31 560 -28 562 -27 C
+562 -22 563 -21 563 -15 C
+565 -13 565 -13 565 -6 C
+563 -4 563 -0 562 1 C
+562 5 560 7 560 10 C
+559 11 559 11 559 14 C
+S
+
+54 -54 216 -30 @E
+216 -37 m
+212 -37 210 -39 207 -39 C
+206 -40 206 -40 194 -40 C
+189 -43 186 -43 185 -45 C
+182 -45 180 -46 174 -46 C
+172 -48 170 -50 168 -52 C
+156 -52 155 -54 150 -54 C
+145 -50 139 -46 134 -42 C
+132 -42 131 -42 129 -42 C
+124 -38 118 -34 113 -30 C
+105 -30 104 -31 83 -31 C
+78 -34 74 -37 69 -40 C
+64 -40 59 -40 54 -40 C
+S
+
+742 -54 745 -54 @E
+742 -54 m
+743 -54 744 -54 745 -54 C
+S
+
+209 -37 243 62 @E
+216 -37 m
+216 -36 216 -35 216 -34 C
+214 -31 211 -28 209 -25 C
+209 -24 209 -22 209 -21 C
+215 -14 222 -7 228 -0 C
+228 1 228 2 228 4 C
+234 10 234 10 242 16 C
+242 17 242 19 242 20 C
+237 25 233 29 228 34 C
+228 40 230 41 230 44 C
+231 46 231 49 234 52 C
+234 53 234 54 234 55 C
+237 57 240 60 243 62 C
+S
+
+775 2 818 16 @E
+818 2 m
+815 2 805 8 802 8 C
+801 9 800 9 799 10 C
+794 7 791 7 790 5 C
+789 7 788 8 787 10 C
+787 11 787 13 787 14 C
+786 15 785 15 784 16 C
+778 11 778 11 775 11 C
+S
+
+587 20 595 29 @E
+587 20 m
+590 23 592 26 595 29 C
+S
+
+520 25 532 41 @E
+532 25 m
+528 30 524 36 520 41 C
+S
+
+598 32 604 41 @E
+598 32 m
+600 35 602 38 604 41 C
+S
+
+512 44 517 49 @E
+517 44 m
+515 46 514 47 512 49 C
+S
+
+297 53 330 77 @E
+297 53 m
+297 55 297 57 297 59 C
+300 64 300 64 311 74 C
+314 74 315 76 320 76 C
+321 77 321 77 330 77 C
+S
+
+613 56 613 64 @E
+613 56 m
+613 59 613 61 613 64 C
+S
+
+-9 68 27 103 @E
+24 68 m
+24 71 26 73 26 76 C
+27 77 27 77 27 86 C
+26 88 26 91 21 97 C
+18 97 17 98 8 98 C
+6 97 6 97 -2 97 C
+-4 99 -7 101 -9 103 C
+S
+
+213 70 252 119 @E
+213 70 m
+216 73 229 80 240 90 C
+243 94 246 98 249 103 C
+249 107 251 109 251 113 C
+252 115 252 115 252 119 C
+S
+
+392 82 397 85 @E
+392 82 m
+393 83 395 84 397 85 C
+S
+
+-32 88 -24 106 @E
+-29 88 m
+-30 89 -31 91 -32 92 C
+-32 94 -32 95 -32 97 C
+-29 100 -27 103 -24 106 C
+S
+
+581 89 680 125 @E
+680 125 m
+680 116 679 115 679 112 C
+670 104 661 97 652 89 C
+650 89 649 89 647 89 C
+646 90 645 92 644 93 C
+646 96 648 99 650 102 C
+646 106 646 106 643 106 C
+641 104 639 103 637 101 C
+636 103 635 105 634 106 C
+635 109 635 109 635 113 C
+634 115 631 115 629 116 C
+625 116 623 115 613 115 C
+611 116 610 118 608 119 C
+602 119 601 118 598 118 C
+596 116 592 116 590 115 C
+589 115 587 115 586 115 C
+584 114 583 113 581 112 C
+S
+
+767 89 788 139 @E
+782 139 m
+783 138 783 137 784 136 C
+782 134 782 134 782 130 C
+781 128 779 127 778 125 C
+778 122 776 121 776 118 C
+775 116 775 113 773 112 C
+775 110 775 110 778 110 C
+779 112 782 112 784 113 C
+787 113 787 113 788 111 C
+787 109 786 108 785 106 C
+785 100 784 98 784 95 C
+781 93 778 91 775 89 C
+773 91 769 91 767 92 C
+S
+
+782 110 872 142 @E
+872 118 m
+869 118 869 118 856 110 C
+850 113 850 113 847 118 C
+845 118 844 118 842 118 C
+841 120 839 122 838 124 C
+835 124 833 125 830 125 C
+829 127 829 127 823 127 C
+815 122 812 122 811 121 C
+810 121 809 121 808 121 C
+806 122 805 124 803 125 C
+805 127 806 128 808 130 C
+806 131 806 134 805 136 C
+805 137 805 139 805 140 C
+804 141 803 141 802 142 C
+800 141 798 140 796 139 C
+791 142 791 142 788 142 C
+787 140 784 140 782 139 C
+S
+
+680 118 767 143 @E
+766 131 m
+767 130 767 130 767 125 C
+766 124 763 124 761 122 C
+761 119 761 119 759 118 C
+757 119 755 120 754 121 C
+751 121 749 121 746 121 C
+745 122 744 124 743 125 C
+743 128 743 130 743 133 C
+742 134 741 135 740 136 C
+739 135 738 134 736 133 C
+735 134 733 136 732 137 C
+730 136 730 136 722 136 C
+718 138 715 141 711 143 C
+704 136 701 130 695 125 C
+694 125 692 125 691 125 C
+689 126 688 127 687 128 C
+685 127 682 126 680 125 C
+S
+
+596 125 680 190 @E
+680 125 m
+679 125 677 125 676 125 C
+675 127 674 128 673 130 C
+673 134 671 136 671 143 C
+670 145 667 145 662 148 C
+662 160 661 161 661 175 C
+647 182 644 182 643 184 C
+640 184 638 185 635 185 C
+634 187 629 187 628 188 C
+619 188 617 190 604 190 C
+602 188 602 188 596 188 C
+S
+
+731 131 766 206 @E
+766 131 m
+763 133 761 135 758 137 C
+758 139 758 140 758 142 C
+757 143 756 144 755 145 C
+758 149 760 153 763 157 C
+763 164 763 164 761 166 C
+758 166 757 164 754 164 C
+752 166 751 167 750 169 C
+749 168 748 168 747 167 C
+743 172 743 172 743 175 C
+744 176 745 178 746 179 C
+744 180 743 181 741 182 C
+740 182 739 181 738 181 C
+737 181 736 182 736 182 C
+736 183 737 183 737 184 C
+735 186 733 188 731 190 C
+733 192 734 194 736 196 C
+737 196 739 196 740 196 C
+741 197 742 198 743 200 C
+742 202 742 205 740 206 C
+S
+
+105 133 243 163 @E
+105 133 m
+108 135 110 138 112 140 C
+118 144 124 148 129 152 C
+132 152 134 154 138 154 C
+140 155 143 155 144 157 C
+147 157 149 158 153 158 C
+155 160 164 160 165 161 C
+179 161 180 163 201 163 C
+202 162 202 162 203 161 C
+210 161 217 161 224 161 C
+225 160 239 160 240 158 C
+241 158 242 158 243 158 C
+S
+
+766 131 782 139 @E
+782 139 m
+776 137 776 137 766 131 C
+S
+
+347 134 411 173 @E
+411 134 m
+392 150 370 170 365 173 C
+361 173 359 172 353 172 C
+352 173 352 173 347 173 C
+S
+
+569 136 569 140 @E
+569 136 m
+569 137 569 139 569 140 C
+S
+
+434 137 451 137 @E
+434 137 m
+439 137 445 137 451 137 C
+S
+
+566 152 575 178 @E
+566 152 m
+567 153 568 154 569 155 C
+569 160 569 160 571 162 C
+570 163 570 163 569 164 C
+571 166 573 168 575 169 C
+574 171 573 172 572 174 C
+573 175 574 176 575 178 C
+S
+
+269 161 303 191 @E
+269 161 m
+275 165 281 168 288 172 C
+292 176 296 180 300 184 C
+301 187 302 189 303 191 C
+S
+
+342 164 347 173 @E
+342 164 m
+344 166 345 167 347 169 C
+347 170 347 172 347 173 C
+S
+
+338 173 347 184 @E
+347 173 m
+344 177 341 180 338 184 C
+S
+
+294 184 338 251 @E
+338 184 m
+335 184 335 184 328 188 C
+325 191 322 194 318 197 C
+318 202 320 203 320 208 C
+323 212 323 215 324 217 C
+322 219 320 222 318 224 C
+318 226 318 228 318 230 C
+318 231 317 231 316 232 C
+315 231 314 230 312 229 C
+311 230 309 231 307 232 C
+305 230 305 230 302 230 C
+300 231 299 232 297 233 C
+299 235 301 237 303 239 C
+303 242 303 242 306 246 C
+305 248 302 248 300 250 C
+296 250 296 250 294 251 C
+S
+
+333 184 350 205 @E
+338 184 m
+338 185 338 187 338 188 C
+336 190 335 191 333 193 C
+333 194 333 196 333 197 C
+338 200 341 200 347 205 C
+348 205 349 205 350 205 C
+S
+
+135 230 191 272 @E
+135 230 m
+139 232 139 232 143 236 C
+140 238 138 241 135 244 C
+135 245 135 246 135 247 C
+137 248 139 250 141 251 C
+140 253 140 256 138 257 C
+138 260 138 260 140 262 C
+141 260 143 258 144 256 C
+147 256 149 257 152 257 C
+153 259 153 259 156 259 C
+158 257 160 255 162 253 C
+162 251 162 250 162 248 C
+163 248 164 247 165 247 C
+165 247 166 248 167 248 C
+168 248 168 247 169 247 C
+170 247 171 248 171 248 C
+173 247 173 247 176 247 C
+177 248 178 249 179 250 C
+177 253 175 256 173 259 C
+175 262 177 265 179 268 C
+180 268 182 268 183 268 C
+186 269 188 271 191 272 C
+S
+
+281 233 282 239 @E
+282 233 m
+282 235 281 237 281 239 C
+S
+
+263 239 281 274 @E
+281 239 m
+279 240 278 241 276 242 C
+276 244 276 246 276 248 C
+273 251 273 251 270 251 C
+268 254 266 256 264 259 C
+264 262 263 263 263 269 C
+265 271 267 272 269 274 C
+S
+
+281 239 294 251 @E
+281 239 m
+282 240 282 240 283 241 C
+284 240 285 240 286 239 C
+287 240 288 240 288 241 C
+288 241 287 242 287 242 C
+289 245 292 248 294 251 C
+S
+
+401 247 469 278 @E
+469 247 m
+468 248 466 250 465 251 C
+463 251 460 254 456 254 C
+455 256 455 256 443 256 C
+442 257 440 258 438 259 C
+438 262 438 262 437 263 C
+431 263 429 265 425 265 C
+424 266 419 266 410 272 C
+409 272 408 272 407 272 C
+405 274 403 276 401 278 C
+S
+
+293 251 296 269 @E
+294 251 m
+294 256 293 257 293 260 C
+294 262 294 266 296 269 C
+S
+
+191 268 224 278 @E
+224 278 m
+221 276 219 273 216 271 C
+215 272 214 274 213 275 C
+212 275 211 275 210 275 C
+208 273 206 270 204 268 C
+201 268 200 269 197 269 C
+196 269 196 268 195 268 C
+194 269 192 271 191 272 C
+S
+
+374 269 401 278 @E
+401 278 m
+399 277 396 275 393 274 C
+393 274 392 275 392 275 C
+390 274 390 271 389 269 C
+383 269 381 271 377 271 C
+374 274 374 274 374 277 C
+S
+
+191 272 192 289 @E
+191 272 m
+192 274 192 274 192 278 C
+191 280 191 280 191 289 C
+S
+
+344 277 374 283 @E
+374 277 m
+372 277 369 277 366 277 C
+365 278 364 280 363 281 C
+359 281 357 283 352 283 C
+350 281 350 281 345 281 C
+345 280 344 279 344 278 C
+S
+
+354 277 380 337 @E
+374 277 m
+374 278 374 279 374 280 C
+375 281 377 283 379 284 C
+379 287 380 289 380 292 C
+379 293 378 294 377 295 C
+366 295 366 295 364 296 C
+363 295 362 294 361 293 C
+360 294 360 295 359 295 C
+360 296 360 297 361 298 C
+358 299 356 301 354 303 C
+357 307 357 310 359 311 C
+360 311 361 311 362 311 C
+363 310 364 308 365 307 C
+365 307 366 308 366 308 C
+368 307 368 307 371 307 C
+372 308 377 308 379 310 C
+379 312 379 314 379 316 C
+377 317 375 318 374 319 C
+374 323 374 323 375 325 C
+376 324 377 324 378 323 C
+378 324 379 325 380 326 C
+379 327 378 329 377 331 C
+379 332 379 332 379 337 C
+S
+
+398 278 424 340 @E
+401 278 m
+400 279 399 280 398 281 C
+398 286 399 287 399 292 C
+398 293 398 293 398 299 C
+399 300 401 301 402 302 C
+402 305 402 305 401 307 C
+402 308 402 308 402 311 C
+409 317 415 322 422 328 C
+422 332 420 334 420 337 C
+421 338 423 339 424 340 C
+S
+
+146 289 191 304 @E
+191 289 m
+180 295 180 295 175 299 C
+171 295 171 292 170 290 C
+169 290 168 290 167 290 C
+165 292 164 294 162 296 C
+158 296 156 298 153 298 C
+153 297 152 297 152 296 C
+150 298 150 298 150 301 C
+149 302 147 303 146 304 C
+S
+
+191 289 210 373 @E
+191 289 m
+191 289 192 290 192 290 C
+192 291 191 291 191 292 C
+193 293 195 295 197 296 C
+197 299 197 299 194 303 C
+195 304 197 306 198 307 C
+198 310 200 311 200 314 C
+201 316 202 318 203 320 C
+202 321 201 322 200 324 C
+200 325 201 325 201 326 C
+200 328 200 328 195 328 C
+194 329 192 331 191 333 C
+195 340 195 343 197 345 C
+196 346 196 346 195 347 C
+197 349 197 349 197 353 C
+195 356 193 360 191 363 C
+191 364 192 364 192 365 C
+194 364 197 364 198 362 C
+200 364 201 365 202 367 C
+203 366 204 366 204 365 C
+206 367 208 368 210 370 C
+210 371 210 372 210 373 C
+S
+
+114 299 146 311 @E
+146 304 m
+144 302 143 301 141 299 C
+139 301 137 303 135 305 C
+132 305 132 305 129 302 C
+128 304 128 307 123 311 C
+120 311 119 310 116 310 C
+115 309 115 309 114 308 C
+S
+
+146 304 171 359 @E
+146 304 m
+147 305 148 306 149 307 C
+149 311 149 311 150 313 C
+152 313 153 313 155 313 C
+159 320 159 323 161 325 C
+161 327 161 330 161 332 C
+159 333 158 334 156 335 C
+160 340 160 340 168 346 C
+168 350 168 350 167 353 C
+168 354 170 356 171 357 C
+171 358 170 358 170 359 C
+S
+
+596 307 773 406 @E
+596 307 m
+602 316 602 319 607 326 C
+607 331 608 332 608 341 C
+609 342 609 342 610 343 C
+611 342 612 342 613 341 C
+614 342 615 342 616 343 C
+617 342 618 342 619 341 C
+621 342 622 343 623 344 C
+623 349 622 350 622 356 C
+623 358 625 359 626 361 C
+628 361 629 361 631 361 C
+632 362 633 363 634 364 C
+634 365 634 367 634 368 C
+635 369 636 370 637 371 C
+639 371 641 371 643 371 C
+645 373 647 375 649 377 C
+655 377 656 376 662 376 C
+664 374 667 373 669 371 C
+671 374 673 376 676 379 C
+677 379 679 379 680 379 C
+681 380 682 381 683 382 C
+685 382 687 382 689 382 C
+693 379 696 377 700 374 C
+701 374 702 374 703 374 C
+706 377 710 379 713 382 C
+714 382 715 382 716 382 C
+720 379 723 376 727 373 C
+729 373 732 373 734 373 C
+739 376 739 376 742 376 C
+745 380 745 383 747 385 C
+752 382 755 382 757 380 C
+761 385 764 389 768 394 C
+769 393 770 393 771 392 C
+772 393 772 393 773 394 C
+773 395 773 396 773 397 C
+772 398 770 399 769 400 C
+770 401 770 401 770 406 C
+S
+
+438 313 544 364 @E
+544 313 m
+539 320 539 320 529 331 C
+529 332 529 333 529 334 C
+523 338 520 338 518 340 C
+517 340 516 340 515 340 C
+508 344 501 349 494 353 C
+491 353 485 358 482 358 C
+481 359 480 360 479 361 C
+473 361 472 362 469 362 C
+467 361 466 360 465 359 C
+463 361 456 361 454 362 C
+453 361 451 359 450 358 C
+447 359 447 362 445 364 C
+443 362 440 362 438 361 C
+S
+
+805 332 872 460 @E
+872 332 m
+871 332 869 332 868 332 C
+861 336 855 340 848 344 C
+848 353 847 355 847 362 C
+848 364 848 364 848 373 C
+847 374 846 376 845 377 C
+845 383 844 385 844 394 C
+842 395 842 395 842 401 C
+843 402 843 402 844 403 C
+842 404 842 407 841 409 C
+841 421 839 422 839 425 C
+838 427 836 428 835 430 C
+835 433 835 433 832 437 C
+832 440 832 443 832 446 C
+828 451 828 451 823 454 C
+821 454 820 454 818 454 C
+816 456 815 458 813 460 C
+809 457 806 457 805 455 C
+S
+
+361 337 379 341 @E
+379 337 m
+377 338 377 338 374 338 C
+373 338 372 337 372 337 C
+369 338 367 340 365 341 C
+364 341 362 341 361 341 C
+S
+
+379 337 424 349 @E
+379 337 m
+380 339 382 341 384 343 C
+384 344 384 345 384 346 C
+389 349 389 349 392 349 C
+395 346 399 343 402 340 C
+404 340 406 340 407 340 C
+408 341 409 342 410 343 C
+411 341 411 341 419 341 C
+419 342 420 342 420 343 C
+421 342 423 341 424 340 C
+S
+
+424 340 438 361 @E
+424 340 m
+425 341 425 344 427 346 C
+427 349 428 350 428 353 C
+429 354 430 355 431 356 C
+433 356 434 356 436 356 C
+436 358 437 359 438 361 C
+S
+
+126 355 170 368 @E
+170 359 m
+168 359 166 359 164 359 C
+163 358 162 357 161 356 C
+158 356 156 355 152 355 C
+151 355 151 356 150 356 C
+151 357 151 357 152 358 C
+149 361 146 361 144 362 C
+141 362 140 364 137 364 C
+135 365 135 365 132 365 C
+132 365 131 364 131 364 C
+129 365 128 367 126 368 C
+S
+
+170 359 210 377 @E
+170 359 m
+171 361 174 361 180 367 C
+180 368 180 370 180 371 C
+182 373 184 375 186 377 C
+188 376 188 376 194 376 C
+197 373 197 373 200 373 C
+201 374 201 374 206 374 C
+207 373 207 373 210 373 C
+S
+
+434 361 438 374 @E
+438 361 m
+437 363 436 365 434 367 C
+434 369 434 372 434 374 C
+S
+
+210 373 218 385 @E
+210 373 m
+215 379 215 382 218 385 C
+S
+
+60 377 69 418 @E
+69 377 m
+65 385 65 388 63 389 C
+63 395 62 397 62 404 C
+60 406 60 406 60 415 C
+61 416 61 417 62 418 C
+S
+
+500 392 506 407 @E
+506 392 m
+506 394 506 395 506 397 C
+504 400 502 404 500 407 C
+S
+
+770 403 805 455 @E
+805 455 m
+802 454 800 452 797 451 C
+797 448 799 446 799 443 C
+796 441 794 438 791 436 C
+791 434 791 433 791 431 C
+794 429 797 426 800 424 C
+800 421 799 419 799 413 C
+796 410 794 406 791 403 C
+788 403 785 403 782 403 C
+781 404 779 405 778 406 C
+775 406 773 406 770 406 C
+S
+
+500 406 770 431 @E
+770 406 m
+769 406 768 406 767 406 C
+765 408 762 411 760 413 C
+755 413 755 413 753 412 C
+752 413 750 415 749 416 C
+743 416 743 416 742 415 C
+742 410 742 410 743 408 C
+742 407 742 407 741 406 C
+738 408 735 411 733 413 C
+728 413 727 415 722 415 C
+721 416 721 416 712 416 C
+710 415 709 414 708 413 C
+704 415 700 417 697 419 C
+694 419 692 419 689 419 C
+688 420 686 421 685 422 C
+685 423 685 424 685 425 C
+683 427 681 429 679 431 C
+677 431 675 431 673 431 C
+671 429 670 427 668 425 C
+668 422 668 422 667 421 C
+661 421 659 419 647 419 C
+646 418 641 418 640 416 C
+640 412 640 412 638 410 C
+634 410 632 412 629 412 C
+628 410 626 408 625 406 C
+617 418 617 418 617 421 C
+613 423 610 426 606 428 C
+600 424 594 419 589 415 C
+586 415 586 415 582 418 C
+580 416 578 415 577 413 C
+575 413 574 413 572 413 C
+571 414 570 415 568 416 C
+566 414 563 412 561 410 C
+559 412 554 412 553 413 C
+550 413 548 415 545 415 C
+544 416 543 418 541 419 C
+538 417 534 415 531 413 C
+530 414 529 414 528 415 C
+527 414 526 414 525 413 C
+524 414 523 414 523 415 C
+523 419 523 419 521 421 C
+520 421 518 421 517 421 C
+516 419 515 418 514 416 C
+509 416 509 416 508 415 C
+508 410 508 410 506 409 C
+504 408 502 408 500 407 C
+S
+
+479 407 500 478 @E
+500 407 m
+499 409 497 411 496 413 C
+496 418 497 419 497 422 C
+496 424 496 424 496 427 C
+487 433 484 433 479 436 C
+479 437 479 438 479 439 C
+482 441 485 444 488 446 C
+488 447 487 448 487 449 C
+487 449 488 450 488 451 C
+486 453 483 454 481 456 C
+484 458 487 461 490 463 C
+492 462 494 461 496 460 C
+497 461 499 462 500 463 C
+500 466 500 466 499 468 C
+500 470 500 470 500 473 C
+500 474 499 475 499 476 C
+499 476 500 477 500 478 C
+S
+
+185 410 200 433 @E
+200 410 m
+200 418 198 419 198 424 C
+195 427 192 430 189 433 C
+188 433 186 433 185 433 C
+S
+
+32 418 62 467 @E
+62 418 m
+56 421 49 425 43 428 C
+40 432 37 436 33 440 C
+33 445 32 446 32 467 C
+S
+
+62 418 102 445 @E
+102 445 m
+99 445 98 443 95 443 C
+93 442 90 442 89 440 C
+86 440 86 440 78 436 C
+65 423 65 423 62 418 C
+S
+
+122 440 123 446 @E
+122 440 m
+122 445 122 445 123 446 C
+S
+
+122 446 132 473 @E
+123 446 m
+122 448 122 448 122 451 C
+123 452 124 453 125 454 C
+125 458 125 458 126 460 C
+126 460 125 461 125 461 C
+125 462 126 463 126 464 C
+126 464 125 465 125 466 C
+126 467 126 472 128 473 C
+129 473 129 472 130 472 C
+131 472 132 473 132 473 C
+S
+
+123 446 171 460 @E
+171 460 m
+170 458 168 457 167 455 C
+161 455 159 454 155 454 C
+152 452 150 450 147 448 C
+146 449 145 450 144 451 C
+138 451 137 449 132 449 C
+131 448 126 448 123 446 C
+S
+
+752 455 805 653 @E
+805 455 m
+801 462 797 468 793 475 C
+793 476 793 478 793 479 C
+790 484 790 484 790 487 C
+787 489 784 492 781 494 C
+781 494 780 493 779 493 C
+777 496 774 499 772 502 C
+772 509 773 511 773 515 C
+774 516 774 516 775 517 C
+771 521 768 526 764 530 C
+764 533 764 533 761 538 C
+763 540 765 542 767 544 C
+770 544 770 544 776 539 C
+781 539 782 541 787 541 C
+788 542 788 545 790 547 C
+790 548 790 550 790 551 C
+787 555 785 558 782 562 C
+782 563 782 564 782 565 C
+780 569 777 572 775 576 C
+777 578 779 580 781 581 C
+781 583 781 584 781 586 C
+779 588 777 591 775 593 C
+775 594 776 595 776 596 C
+775 597 773 598 772 599 C
+773 601 774 602 775 604 C
+775 605 775 607 775 608 C
+769 614 769 614 764 617 C
+764 618 764 619 764 620 C
+766 622 767 624 769 626 C
+767 628 767 631 766 632 C
+766 635 766 635 764 637 C
+763 637 761 637 760 637 C
+758 638 757 639 755 640 C
+755 643 755 643 752 646 C
+752 652 752 652 754 653 C
+S
+
+240 457 284 506 @E
+240 457 m
+240 466 242 467 242 472 C
+244 476 246 479 248 483 C
+253 488 258 494 264 499 C
+267 501 271 503 275 505 C
+279 505 281 506 284 506 C
+S
+
+294 458 296 461 @E
+296 458 m
+295 459 295 460 294 461 C
+S
+
+500 466 568 512 @E
+568 512 m
+562 506 556 500 550 494 C
+550 490 548 488 548 482 C
+545 480 542 477 539 475 C
+539 469 539 469 538 467 C
+537 467 536 467 535 467 C
+533 469 531 470 529 472 C
+526 469 523 469 521 467 C
+518 467 518 467 517 466 C
+515 467 515 467 515 472 C
+513 474 511 476 509 478 C
+506 478 503 478 500 478 C
+S
+
+128 473 132 482 @E
+132 473 m
+131 475 129 477 128 479 C
+128 480 128 481 128 482 C
+S
+
+132 473 149 524 @E
+144 524 m
+145 523 145 522 146 521 C
+144 520 144 520 144 515 C
+146 514 146 509 147 508 C
+145 505 142 503 140 500 C
+143 496 143 496 143 493 C
+144 491 146 490 147 488 C
+147 482 147 482 149 481 C
+147 479 146 477 144 475 C
+138 475 137 473 132 473 C
+S
+
+309 473 311 476 @E
+311 473 m
+310 474 310 475 309 476 C
+S
+
+470 478 500 497 @E
+500 478 m
+500 484 499 485 499 488 C
+499 489 500 490 500 491 C
+499 492 498 493 497 494 C
+494 494 491 494 488 494 C
+487 495 486 496 485 497 C
+478 497 478 497 476 496 C
+474 495 472 495 470 494 C
+S
+
+326 479 327 481 @E
+327 479 m
+327 480 326 480 326 481 C
+326 480 327 480 327 479 C
+@c
+S
+
+329 479 329 479 @E
+329 479 m
+329 479 329 479 329 479 C
+@c
+S
+
+333 479 339 482 @E
+333 479 m
+336 479 336 479 339 482 C
+S
+
+342 484 347 496 @E
+342 484 m
+344 486 345 489 347 491 C
+347 493 347 494 347 496 C
+S
+
+318 485 321 491 @E
+321 485 m
+320 486 319 487 318 488 C
+318 489 318 490 318 491 C
+S
+
+306 496 309 497 @E
+306 496 m
+307 496 308 497 309 497 C
+S
+
+90 497 135 511 @E
+135 497 m
+125 497 123 499 117 499 C
+116 500 111 500 110 502 C
+107 502 105 503 102 503 C
+101 505 98 505 93 508 C
+92 509 91 510 90 511 C
+S
+
+568 508 754 661 @E
+754 653 m
+751 656 749 658 747 661 C
+745 659 745 659 742 659 C
+739 657 737 654 734 652 C
+733 652 731 652 730 652 C
+729 651 728 650 727 649 C
+722 649 722 649 720 650 C
+718 649 718 649 715 649 C
+713 650 707 650 703 653 C
+701 652 701 652 701 649 C
+698 646 694 644 691 641 C
+691 638 691 634 691 631 C
+689 629 688 627 686 625 C
+683 625 683 625 680 622 C
+681 621 681 620 682 620 C
+681 618 680 617 679 616 C
+678 616 677 617 676 617 C
+675 616 673 614 672 613 C
+670 614 667 614 665 616 C
+662 611 662 611 662 608 C
+658 605 658 605 655 605 C
+653 607 652 608 650 610 C
+649 609 647 608 646 607 C
+646 604 646 604 649 600 C
+647 598 645 597 643 595 C
+641 596 639 598 637 599 C
+635 598 635 598 635 592 C
+634 590 632 589 631 587 C
+632 586 633 585 634 584 C
+634 583 634 581 634 580 C
+631 576 628 573 625 569 C
+622 569 622 569 616 572 C
+615 571 614 570 613 569 C
+613 568 613 567 613 566 C
+611 565 610 564 608 563 C
+608 560 610 559 610 556 C
+611 554 612 553 613 551 C
+610 549 607 547 604 545 C
+605 544 605 541 607 539 C
+607 538 607 537 607 536 C
+602 532 598 527 593 522 C
+595 520 597 519 599 517 C
+598 515 595 515 593 514 C
+591 516 589 519 587 521 C
+586 521 585 521 584 521 C
+582 519 580 516 578 514 C
+578 511 578 511 575 508 C
+574 508 573 508 572 508 C
+571 509 569 511 568 512 C
+S
+
+521 512 568 563 @E
+568 512 m
+568 514 568 516 568 518 C
+565 520 562 522 559 524 C
+551 524 550 523 542 523 C
+541 521 541 521 535 521 C
+531 524 528 526 524 528 C
+523 530 522 531 521 533 C
+523 534 524 536 526 538 C
+526 541 526 541 527 542 C
+530 542 530 542 532 544 C
+532 548 533 550 533 554 C
+534 555 535 556 536 557 C
+536 559 536 561 536 563 C
+S
+
+-261 515 35 580 @E
+35 515 m
+21 515 7 515 -6 515 C
+-7 516 -7 516 -8 517 C
+-13 517 -19 517 -24 517 C
+-26 518 -36 518 -38 520 C
+-50 520 -51 521 -65 521 C
+-66 523 -77 523 -78 524 C
+-86 524 -87 526 -96 526 C
+-98 527 -105 527 -107 529 C
+-114 529 -116 530 -122 530 C
+-123 532 -131 532 -132 533 C
+-137 533 -138 535 -143 535 C
+-144 536 -149 536 -150 538 C
+-153 538 -155 539 -159 539 C
+-161 541 -165 541 -167 542 C
+-170 542 -171 544 -174 544 C
+-176 545 -179 545 -180 547 C
+-183 547 -185 548 -188 548 C
+-189 550 -192 550 -194 551 C
+-197 551 -198 553 -201 553 C
+-206 556 -209 556 -210 557 C
+-213 557 -218 560 -221 560 C
+-222 562 -225 562 -261 580 C
+S
+
+135 520 140 523 @E
+135 520 m
+137 521 138 522 140 523 C
+S
+
+128 523 159 586 @E
+140 523 m
+140 526 140 526 137 529 C
+136 528 136 528 135 527 C
+134 529 134 529 134 533 C
+132 534 131 535 129 536 C
+129 539 129 539 128 541 C
+129 542 129 545 131 547 C
+130 548 129 549 128 550 C
+128 551 128 553 128 554 C
+131 559 131 559 131 562 C
+133 564 135 566 137 568 C
+139 568 142 568 144 568 C
+147 570 149 573 152 575 C
+152 576 152 577 152 578 C
+154 581 157 583 159 586 C
+S
+
+140 523 144 524 @E
+144 524 m
+143 524 141 523 140 523 C
+S
+
+144 524 161 542 @E
+144 524 m
+155 534 155 534 161 542 C
+S
+
+321 527 344 530 @E
+321 527 m
+324 527 329 530 335 530 C
+336 529 338 528 339 527 C
+341 527 342 527 344 527 C
+S
+
+267 533 285 574 @E
+285 533 m
+279 538 279 538 272 545 C
+270 547 269 550 267 553 C
+267 560 269 562 269 565 C
+270 566 270 569 273 574 C
+S
+
+397 551 465 563 @E
+465 551 m
+462 553 459 555 455 557 C
+451 557 449 559 443 559 C
+442 560 434 560 433 562 C
+425 562 424 563 415 563 C
+413 562 402 562 401 560 C
+400 560 398 560 397 560 C
+S
+
+174 583 254 623 @E
+174 583 m
+183 583 185 584 191 584 C
+192 586 198 586 200 587 C
+204 587 206 589 209 589 C
+226 598 226 598 238 607 C
+243 612 249 618 254 623 C
+S
+
+329 583 434 832 @E
+329 583 m
+330 583 332 583 333 583 C
+334 584 335 586 336 587 C
+336 589 336 591 336 593 C
+339 599 339 599 345 604 C
+345 611 345 618 345 625 C
+344 626 344 626 344 634 C
+345 635 345 635 345 638 C
+347 640 349 641 352 643 C
+352 646 350 647 350 662 C
+348 664 348 664 348 676 C
+350 677 350 688 352 689 C
+352 691 352 692 352 694 C
+354 697 354 700 357 703 C
+359 703 361 703 363 703 C
+365 705 367 708 370 710 C
+370 712 370 713 370 715 C
+372 718 375 721 379 724 C
+379 729 379 735 379 740 C
+380 742 380 745 381 746 C
+381 749 381 751 381 754 C
+384 757 384 760 386 761 C
+386 763 386 764 386 766 C
+388 769 391 772 393 775 C
+393 778 395 779 395 782 C
+398 785 398 788 399 790 C
+399 793 399 793 404 800 C
+406 801 408 803 410 805 C
+415 805 415 805 417 803 C
+419 806 422 808 424 811 C
+427 812 430 814 433 815 C
+428 819 428 819 427 822 C
+429 828 429 828 434 832 C
+S
+
+526 595 529 604 @E
+529 595 m
+528 598 527 601 526 604 C
+S
+
+138 613 146 709 @E
+138 613 m
+140 616 140 620 141 622 C
+141 629 143 631 143 637 C
+144 638 144 649 146 650 C
+146 662 146 673 146 685 C
+144 686 144 694 143 695 C
+143 703 141 704 141 707 C
+142 708 142 708 143 709 C
+S
+
+550 623 562 634 @E
+550 623 m
+552 626 555 629 557 632 C
+560 632 560 632 562 634 C
+S
+
+754 653 856 913 @E
+754 653 m
+760 653 760 653 761 655 C
+761 657 761 659 761 661 C
+762 662 763 663 764 664 C
+763 665 760 665 758 667 C
+760 669 761 671 763 673 C
+767 673 767 673 769 674 C
+767 676 766 677 764 678 C
+766 680 766 680 766 683 C
+768 686 771 688 773 691 C
+774 691 775 691 776 691 C
+780 694 783 697 787 700 C
+786 701 785 703 784 704 C
+785 706 785 706 788 706 C
+789 707 790 709 791 710 C
+793 710 794 710 796 710 C
+797 711 799 712 800 713 C
+800 718 802 719 802 722 C
+808 728 815 734 821 740 C
+824 745 824 748 826 749 C
+826 757 824 758 824 761 C
+826 764 827 766 829 769 C
+829 778 827 779 827 782 C
+830 784 832 786 835 788 C
+836 788 837 788 838 788 C
+842 791 847 794 851 797 C
+851 805 850 806 850 817 C
+849 818 848 819 847 820 C
+847 824 845 826 845 829 C
+845 830 844 830 844 831 C
+845 833 845 837 848 841 C
+848 844 848 844 851 848 C
+851 855 851 861 851 868 C
+852 869 853 871 854 873 C
+854 880 856 882 856 913 C
+S
+
+499 659 578 833 @E
+572 659 m
+574 661 574 661 574 664 C
+573 664 573 665 572 665 C
+574 666 575 667 577 668 C
+577 674 578 676 578 679 C
+577 680 577 680 577 685 C
+569 692 562 700 554 707 C
+553 707 552 707 551 707 C
+551 708 550 709 550 710 C
+551 712 551 712 551 718 C
+547 721 542 725 538 728 C
+538 729 538 730 538 731 C
+536 733 535 734 533 736 C
+533 737 533 739 533 740 C
+532 742 530 744 529 746 C
+529 751 529 751 527 753 C
+529 755 532 758 535 760 C
+535 761 535 762 535 763 C
+533 764 532 766 530 767 C
+530 770 527 775 527 778 C
+526 779 526 779 526 784 C
+527 785 527 785 527 790 C
+526 791 526 796 524 797 C
+524 800 524 800 521 806 C
+518 808 514 811 511 814 C
+510 814 509 814 508 814 C
+506 816 504 818 502 820 C
+502 822 502 825 502 827 C
+501 828 500 829 499 830 C
+499 831 500 832 500 833 C
+S
+
+96 712 141 784 @E
+141 712 m
+140 713 139 715 138 716 C
+138 721 137 722 137 725 C
+135 727 135 730 123 753 C
+114 763 105 774 96 784 C
+S
+
+-32 838 20 913 @E
+20 838 m
+13 842 6 847 0 851 C
+-5 858 -11 864 -17 870 C
+-21 877 -25 884 -29 891 C
+-29 895 -30 896 -30 903 C
+-32 904 -32 904 -32 913 C
+S
+
+473 874 473 913 @E
+473 874 m
+473 887 473 900 473 913 C
+S
+
+% Germany internal
+
+255 313 430 481 @E
+258 313 m
+258 316 259 319 259 322 C
+259 325 258 327 258 329 C
+260 335 263 340 265 346 C
+268 349 270 353 273 357 C
+270 357 268 358 265 358 C
+264 360 263 361 262 363 C
+260 363 257 364 255 364 C
+256 367 259 367 261 370 C
+262 372 262 375 264 377 C
+264 379 267 380 268 382 C
+270 385 264 389 267 394 C
+269 399 272 394 275 394 C
+279 395 282 405 284 408 C
+285 406 286 405 288 403 C
+292 406 286 416 293 418 C
+294 418 294 416 296 417 C
+297 417 297 419 299 420 C
+302 421 304 418 306 418 C
+307 417 308 419 309 419 C
+310 419 312 416 312 415 C
+311 411 302 410 300 409 C
+303 402 307 406 312 403 C
+315 401 310 397 313 394 C
+317 396 314 400 317 402 C
+322 405 327 393 330 394 C
+336 396 332 404 335 406 C
+336 407 338 405 339 405 C
+342 405 346 407 350 406 C
+351 406 351 405 353 405 C
+356 405 360 407 365 406 C
+367 406 371 403 375 405 C
+377 406 375 409 378 411 C
+380 412 384 409 387 410 C
+391 412 388 416 390 419 C
+391 423 396 421 399 423 C
+397 424 396 426 396 427 C
+394 429 392 428 391 430 C
+389 434 402 436 403 439 C
+405 442 401 447 405 450 C
+409 452 412 445 415 452 C
+416 454 412 456 414 458 C
+415 461 425 463 426 466 C
+426 467 423 468 424 470 C
+425 472 428 480 430 481 C
+S
+
+309 418 362 467 @E
+343 467 m
+347 463 349 459 352 456 C
+355 456 359 455 362 455 C
+361 453 357 452 357 451 C
+356 449 357 447 354 445 C
+351 444 346 448 343 448 C
+341 448 338 446 336 445 C
+335 445 332 446 330 445 C
+327 443 332 441 329 439 C
+325 437 320 442 318 437 C
+315 433 318 426 316 422 C
+314 418 312 423 309 419 C
+S
+
+256 418 294 435 @E
+256 430 m
+264 431 264 434 270 430 C
+267 426 272 421 276 424 C
+281 427 275 432 280 435 C
+281 434 282 432 282 431 C
+284 432 285 433 286 433 C
+286 430 286 427 286 424 C
+289 423 292 422 294 421 C
+294 420 293 419 293 418 C
+S
+
+399 400 426 423 @E
+399 423 m
+402 420 406 417 409 414 C
+411 412 412 410 414 408 C
+415 408 417 408 418 408 C
+421 405 423 403 426 400 C
+S
+
+375 397 387 406 @E
+375 406 m
+381 405 387 401 387 397 C
+S
+
+246 364 255 373 @E
+246 373 m
+248 371 249 368 250 366 C
+252 365 253 365 255 364 C
+S
+
+} bind def
+
+currentdict end
+
+/MapForm <<
+  /MapDict 4 -1 roll
+  /FormType 1
+  /BBox [ BBllx 4 sub BBlly 4 sub BBurx 4 add BBury 4 add ]
+  /Matrix matrix
+  /PaintProc {
+    /MapDict get begin
+    gsave
+    BBllx BBlly BBurx BBllx sub BBury BBlly sub rectclip
+    Part1 Part2 Part3
+    grestore
+    Frame
+    DoConnections
+    % TitleBox
+    %Credits
+    DoCenters
+    end
+  } bind
+>> def
+

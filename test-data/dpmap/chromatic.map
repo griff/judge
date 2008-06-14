@@ -1,0 +1,159 @@
+#   ----------------------------------
+#   Hope I didn't make any mistakes :)
+#   --Bruce Duewer, 22 June 1999
+#   ----------------------------------
+
+#   --------------------------------------------
+#   Powers, with initial owned centers and units
+#   --------------------------------------------
+BLUE        COB ROY SAP
+A COB
+A ROY
+F SAP
+
+DARK        JET EBO OBS
+A JET
+A EBO
+F OBS
+
+LIGHT       GHO IVO ALA
+A GHO
+A IVO
+F ALA
+
+RED         RUB CRI VER
+A RUB
+A CRI
+F VER
+
+YELLOW      SUN GOL TOP
+A SUN
+A GOL
+F TOP
+
+UNOWNED     GAR MAG MAL BRO SIL CRY
+ 
+#   ---------------------------------------------------------------------
+#   Official names of each location, with all recognized aliases for each
+#   The first listed alias is the official dpjudge name of the location,
+#   and is used down below in the adjacency information, and throughout
+#   the dpjudge.  Upper- and lower-case in this area of the .map file is
+#   completely unimportant.
+#   ---------------------------------------------------------------------
+Alabaster              = ala alab
+Aquatic Sea            = aqu aqua aquatic
+Azure                  = azu azur
+Sea of Butter          = but butter sob
+Bronze                 = bro bron bronz
+Carnation Sea          = car carn carnat carnation
+Cerulean               = cer cerul cerrulean cerrullean cerullean
+Chalk                  = cha chal
+Sea of Cherries        = che cherries cherry soh
+Coal                   = coa
+Cobalt                 = cob cobal cobolt cobol co
+Cold                   = col
+Crimson                = cri crim
+Crystal                = cry xta xtal
+Sea of Cyan            = cya cyan cyanide cyanic
+Ebony                  = ebo ebon
+Bay of Emeralds        = eme emer emerald emeralds boe bayofe
+Fire Engine            = fir eng fire engine fireengine
+Forest Sea             = for fore forest
+Garnet                 = gar garn
+Ghost                  = gho ghostbusters
+Gold                   = gol au
+Gulf of Hazel          = haz hazel hazelnuts goh gulfofh
+Hot                    = hot
+Sea of Ice             = ice iceland iceberg soi h2o
+Indigo Sea             = ind indigo
+Ink                    = ink inkwell inkjet
+Ivory                  = ivo ivor
+Jet                    = jet 747 jumbojet jumbo concorde sst f18
+Sea of Lava            = lav lava sol
+Sea of Lead            = lea lead sop pb
+Lemon                  = lem lemo
+Magenta                = mag mage
+Malachite              = mal malac malach
+Maroon                 = mar
+Gulf of Mauve          = mau mauve gom
+Sea of Mercury         = mer merc mercury mercedes som hg
+Sea of Night           = nig night knight son
+Obsidian               = obs obsid
+Paper                  = pap
+Gulf of Platinum       = pla plat platinum gop gulfofp pl
+Raven                  = rav rave crow
+Bay of Roses           = ros rose roses bor bayofr
+Royal                  = roy ryl
+Ruby                   = rub
+Saffron                = saf saff
+Sapphire               = sap sapp saph saphire
+Sepiatic Sea           = sep sepia
+Silver                 = sil sliver ag
+Snow                   = sno
+Sulphur                = sul sulfur
+Sunshine               = sun sunday
+Topaz                  = top
+Sea of Umber           = umb umber sou cucumber umberhulk
+Vermillion             = ver verm vermin
+Violet Sea             = vio violet
+
+#   ----------------------------------------------------------------
+#   Location adjacency information, keyed off the official DPjudge
+#   name of the location.  Here, upper- and lower-case IS important.
+#   ----------------------------------------------------------------
+LAND    CRY     ABUTS   SAF INK PAP HOT COL
+WATER   FOR     ABUTS   AQU CER COB EME CYA MAL
+COAST   LEM     ABUTS   SUN TOP gol SEP BUT
+WATER   BUT     ABUTS   MAL CYA TOP LEM SEP BRO
+WATER   EME     ABUTS   SAF SUL CYA FOR COB
+COAST   TOP     ABUTS   GOL CYA BUT LEM
+COAST   SAF     ABUTS   SUL sun ink cry col COB EME
+COAST   GOL     ABUTS   SUL TOP CYA lem sun
+COAST   MAL     ABUTS   AQU CYA BUT FOR
+COAST   SUL     ABUTS   sun GOL CYA EME SAF
+WATER   CYA     ABUTS   EME SUL GOL TOP BUT MAL FOR
+COAST   SUN     ABUTS   sul gol saf LEM SEP HAZ INK
+WATER   SEP     ABUTS   BUT LEM SUN HAZ UMB BRO
+COAST   COA     ABUTS   JET MER NIG OBS ebo
+WATER   NIG     ABUTS   BRO UMB OBS COA MER SIL
+WATER   HAZ     ABUTS   INK RAV UMB SEP SUN
+COAST   OBS     ABUTS   EBO UMB NIG COA
+COAST   INK     ABUTS   HAZ RAV SUN jet pap cry saf
+COAST   EBO     ABUTS   RAV UMB OBS jet coa
+COAST   BRO     ABUTS   UMB NIG SEP BUT
+COAST   RAV     ABUTS   EBO UMB HAZ INK jet
+WATER   UMB     ABUTS   HAZ RAV EBO OBS NIG BRO SEP
+COAST   JET     ABUTS   COA MER PLA PAP rav ebo ink
+WATER   MER     ABUTS   NIG COA JET PLA LEA SIL
+COAST   SNO     ABUTS   ALA CHE ICE GHO ivo
+WATER   ICE     ABUTS   SIL LEA ALA SNO CHE GAR
+WATER   PLA     ABUTS   PAP CHA LEA MER JET
+COAST   ALA     ABUTS   IVO LEA ICE SNO
+COAST   PAP     ABUTS   PLA CHA JET gho hot cry ink
+COAST   IVO     ABUTS   CHA LEA ALA gho sno
+COAST   SIL     ABUTS   LEA ICE MER NIG
+COAST   CHA     ABUTS   IVO LEA PLA PAP gho
+WATER   LEA     ABUTS   PLA CHA IVO ALA ICE SIL MER
+COAST   GHO     ABUTS   SNO CHE ROS HOT cha ivo pap 
+WATER   CHE     ABUTS   ICE SNO GHO ROS CAR GAR
+COAST   MAR     ABUTS   RUB VIO LAV VER cri
+WATER   LAV     ABUTS   GAR CAR VER MAR VIO MAG
+WATER   ROS     ABUTS   HOT FIR CAR CHE GHO
+COAST   VER     ABUTS   CRI CAR LAV MAR 
+COAST   HOT     ABUTS   ROS FIR GHO rub col cry pap 
+COAST   CRI     ABUTS   FIR CAR VER rub mar
+COAST   GAR     ABUTS   CAR LAV CHE ICE
+COAST   FIR     ABUTS   CRI CAR ROS HOT rub
+WATER   CAR     ABUTS   ROS FIR CRI VER LAV GAR CHE
+COAST   RUB     ABUTS   MAR VIO MAU COL fir cri hot 
+WATER   VIO     ABUTS   LAV MAR RUB MAU IND MAG
+COAST   CER     ABUTS   COB FOR AQU SAP roy
+WATER   AQU     ABUTS   MAG IND SAP CER FOR MAL
+WATER   MAU     ABUTS   COL AZU IND VIO RUB
+COAST   SAP     ABUTS   ROY IND AQU CER 
+COAST   COL     ABUTS   MAU AZU RUB cob saf cry hot 
+COAST   ROY     ABUTS   AZU IND SAP cob cer
+COAST   MAG     ABUTS   IND AQU VIO LAV
+COAST   AZU     ABUTS   ROY IND MAU COL cob
+WATER   IND     ABUTS   MAU AZU ROY SAP AQU MAG VIO
+COAST   COB     ABUTS   CER FOR EME SAF azu roy col 

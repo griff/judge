@@ -1,0 +1,47 @@
+USE standard.geography
+
+# POLITICS
+# Powers & Centers
+Ankara          (Ankaran:A)         ANK
+Belgium         (Belgian:B)         BEL
+Berlin          (Berliner:C)        BER
+Brest           (Breton:D)          BRE
+Budapest        (Hungarian:E)       BUD
+Bulgaria        (Bulgarian:F)       BUL
+Constantinople  (Byzantine:G)       CON
+Denmark         (Danish:H)          DEN
+Edinburgh       (Scottish:I)        EDI
+Greece          (Greek:J)           GRE
+Holland         (Dutch:K)           HOL
+Kiel            (Schleswiger:L)     KIE
+Liverpool       (Liverpudlian:N)    LVP
+London          (Cockney:P)         LON
+Marseilles      (Marsellais:Q)      MAR
+Moscow          (Muscovite:R)       MOS
+Munich          (Bavarian:S)        MUN
+Naples          (Neapolitan:T)      NAP
+Norway          (Norwegian:U)       NWY
+Paris           (Parisian:V)        PAR
+Portugal        (Portuguese:W)      POR
+Rome            (Roman:X)           ROM
+Rumania         (Rumanian:Y)        RUM
+Serbia          (Serbian:Z)         SER
+Sevastopol      (Crimean:0)         SEV
+Smyrna          (Smyrnan:1)         SMY
+Spain           (Spanish:2)         SPA
+St+Petersburg   (St+Petersburger:3) STP
+Sweden          (Swedish:4)         SWE
+Trieste         (Carinthian:5)      TRI
+Tunis           (Tunisian:6)        TUN
+Venice          (Venetian:7)        VEN
+Vienna          (Viennese:8)        VIE
+Warsaw          (Polish:9)          WAR
+
+# I've taken Mario's suggestion for STP's adjective.  The adjective for
+# Trieste seems accurate according to all the maps I can find.  All other
+# adjectives are as accurate as I can make them (even "Schleswiger,"
+# although Poland was not independent at the time).
+
+BEGIN WINTER 1900 ADJUSTMENTS
+
+RULE BUILD_ANY

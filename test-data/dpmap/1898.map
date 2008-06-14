@@ -1,0 +1,5 @@
+MAP standard.geography
+USE standard.politics
+
+RULE  MOBILIZE
+BEGIN WINTER 1898 ADJUSTMENTS

@@ -1,0 +1,67 @@
+USE standard.geography
+
+BEGIN SPRING 1454 MOVEMENT
+
+LAND SWI
+
+HOLY+ROMAN+EMPIRE   (Imperial)  BER VIE MUN
+F BER
+A VIE
+A MUN
+
+ENGLAND             (English)   BRE LON LVP
+F BRE
+A LVP
+F LON
+
+FRANCE              (French)    BEL MAR PAR
+F BEL
+A MAR
+A PAR
+
+SPAIN               (Spanish)   SPA POR NAP
+F SPA/SC
+A POR
+F NAP
+
+VENICE              (Venetian)  VEN TRI GRE
+A VEN
+A TRI
+F GRE
+
+POLAND-LITHUANIA    (Polish)    STP WAR SEV
+A STP
+A WAR
+F SEV
+
+OTTOMAN+TURK        (Ottoman)   BUL SMY CON ANK
+F BUL/EC
+F SMY
+A CON
+A ANK
+
+UNOWNED             SWI EDI HAN HOL ROM BUD MOS DEN SER SWE NWY TUN RUM
+
+BEL     -> Brussels                 = bru bel belgium
+BUD     -> Hungary                  = hun bud budapest hungry
+BUL/EC  -> Sofia (east coast)       = sof/ec bul/ec bul(ec) sof(ec) bulgaria(ec) bulgaria/ec
+BUL/SC  -> Sofia (south coast)      = sof/sc bul/sc bul(sc) sof(sc) bulgaria(sc) bulgaria/sc
+BUL     -> Sofia                    = sof bul bulgaria
+EDI     -> Scotland                 = sco edi edinburgh scot
+GRE     -> Athens                   = ath gre greece
+HOL     -> Netherlands              = net hol holland nederland ned neder
+KIE     -> Hannover                 = han kie kiel hanover
+LVP     -> Chester                  = che lvp liverpool
+MOS     -> Muscovy                  = mus mos moscow moskva
+POR     -> Lisbon                   = lis por portugal
+RUH     -> Rheinland                = rhe rhi ruh ruhr palatine pal palatinate
+SPA/NC  -> Madrid (north coast)     = mad/nc spa/nc spa(nc) mad(nc) spain(nc) spain/nc
+SPA/SC  -> Madrid (south coast)     = mad/sc spa/sc spa(sc) mad(sc) spain(sc) spain/sc
+SPA     -> Madrid                   = mad spa Spain
+STP/SC  -> Novgorod (south coast)   = nov/sc stp/sc nov(sc) stp(sc) stpete(sc) stpete/sc st+petersburg/sc st+petersburg(sc) st+pete(sc) st+pete/sc
+STP/NC  -> Novgorod (north coast)   = nov/nc stp/nc nov(nc) stp(nc) stpete(nc) stpete/nc st+petersburg/nc st+petersburg(nc) st+pete(nc) st+pete/nc
+STP     -> Novgorod                 = nov stp stpete st+pete st+petersburg
+GAS     -> Aquitaine                = aqu gas gascony aquataine aquitain aquatain aquitane aquatane
+PIE     -> Genoa                    = gen pie piedmont
+RUM     -> Moldavia                 = mol mold rum rumania
+ROM     -> Papal States             = pap pope rom rome roma papal

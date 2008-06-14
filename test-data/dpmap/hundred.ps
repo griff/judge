@@ -1,0 +1,828 @@
+%!PS-Adobe-2.0
+%%Title: diplomacy map (Hundred)
+%%Creator: mapit
+%%Pages: (atend) 1
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 268 202 Hol Holland
+% 154 190 Ang Anglia
+% 250 225 Fla Flanders
+% 164 372 Guy Guyenne
+% 100 327 BIS Bay of Biscay
+% 60 255 BCH Bristol Channel
+% 144 295 Brt Brittany
+% 220 240 Cal Calais
+% 304 313 Can Cantons
+% 184 420 Ara Aragon
+% 262 340 Dau Dauphine
+% 270 270 Dij Dijon
+% 212 212 DOV Strait of Dover
+% 122 252 ECH English Channel
+% 288 182 Fri Friesland
+% 102 441 Cas Castile
+% 70 180 IRI Irish Sea
+% 219 355 Lim Limousin
+% 165 212 Lon London
+% 292 234 Lux Luxembourg
+% 279 425 MED Mediterranean
+% 39 72 MIN Minch
+% 183 260 Nmd Normandy
+% 183 85 NTH North Sea
+% 133 161 Num Northumbria
+% 216 308 Orl Orleanais
+% 226 273 Par Paris
+% 134 214 Dev Devon
+% 186 348 Poi Poitou
+% 281 375 Pro Provence
+% 321 354 Sav Savoy
+% 105 110 Sco Scotland
+% 298 282 Lor Lorraine
+% 228 168 WAS The Wash
+% 207 389 Tou Toulouse
+% 110 197 Wal Wales
+% 115 149 Num/wc Northumbria (west coast)
+% 145 145 Num/ec Northumbria (east coast)
+% 143 398 Ara/nc Aragon (north coast)
+% 205 430 Ara/sc Aragon (south coast)
+% 170 293 Anj Anjou
+% 30  173 Pal The Pale
+% 265 307 Cha Charolais
+% 332 283 Als Alsace
+% 32 340 ATL Atlantic
+% MAP
+
+% Base PS map by Gary Duke (see also below), 
+% adjustments for mapit by Gary Duke.
+
+% * Mapit procedures based upon those by George Boyce - some adjustments
+% * for Hundred made by Gary Duke.
+% * This file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name      
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+%
+
+% constants:
+  /NameOffset {LetterSize} def          % distance below point to draw name
+  /UnitOffset 5.5 def                     % distance above point to draw unit
+
+  /TitleFontSize 20 def                 % font size (Times-Roman)
+  /MessageFontSize 8 def                % font size (Times-Roman)
+  /NameFontSize 8 def                   % font size (Helvetica-Bold)
+  /OrderFontSize 10 def                 % font size (Courier)
+  /OwnerFontSize 8 def                  % font size (Courier)
+
+  /HeadLength 10 def                    % of a move arrow head
+  /HalfHeadThickness 5 2 div def        
+
+  /HalfThickness 1 2 div def            % of a move/support/convoy arrow shaft
+
+  /HoldCircle 10 def    % of a support hold arrow
+  /MoveCircle 4 def     % of a support move arrow
+  /ConvoyCircle 6 def   % of a convoy arrow
+
+/ShowPage /showpage load def    % nothing special required
+
+/OrderReport {  
+ 450 450 moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { 
+ 450 240 moveto
+ /Courier-Bold findfont OrderFontSize 2 add scalefont setfont
+ currentpoint OrderFontSize sub 2 sub (Retreat orders:) show moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  
+450 28 moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { 
+450 62 moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { 
+450 96 moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { WriteOwner } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { [2] 1 setdash } def
+/OkOrder { [] 0 setdash } def
+
+/DrawTitle {
+ 450 490 moveto
+ /Times-Roman findfont TitleFontSize scalefont setfont
+ 0 TitleFontSize neg rmoveto
+ dup stringwidth pop 280 exch div dup 1 lt
+    { gsave 1 scale show grestore }{ pop show } ifelse
+} def
+
+/DrawMessage {
+ 300 502 moveto
+ /Times-Roman findfont MessageFontSize scalefont setfont
+ show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave mapscale
+  tailx taily translate
+  angle rotate
+  
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave mapscale
+  Red
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave mapscale
+  tailx taily translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div atan sub def
+  /b 180 HalfThickness headdiam 2 div atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+ gsave 
+ /Helvetica-Bold findfont NameFontSize scalefont setfont
+ mapscale 3 1 roll translate unscale
+% mark the spot...
+% 0 0 5 0 360 arc fill
+ dup stringwidth pop
+ -2 div 0 NameOffset sub moveto show
+ grestore
+} def
+
+% Letters for the different countries
+%
+% 0 means "nobody", then 1-7 going clockwise from England
+/Countries [
+  (?) (B) (E) (F)
+] def
+
+/country 0 def
+
+/Black { 0 0 0 setrgbcolor }   bind def
+/WayWhite { 1 setgray } bind def
+/White { 0.9 0.9 0.9 setrgbcolor }   bind def
+/Red    { 1 0 0   setrgbcolor } bind def
+/Maroon { 0.8 0 0   setrgbcolor } bind def
+/Blue   { 0 0 1   setrgbcolor } bind def
+/Green  { 0 0.7 0 setrgbcolor } bind def
+/Brown  { 0.6 0.45 0.2 setrgbcolor } bind def
+/Turquoise { 0.2 0.7 0.7 setrgbcolor } bind def
+
+% Piece colourname, Contrast colourname
+%
+/BurgundyColours { /Maroon /White } def
+/EnglandColours { /Blue  /White } def
+/FranceColours  { /Green  /Black } def
+
+/set_country { % N /piececolour /contrast => -
+    load /Contrast exch store
+    load /PieceColour exch store
+    /country exch store
+} bind def
+
+/BURGUNDY { 1 BurgundyColours set_country } def
+/ENGLAND { 2 EnglandColours set_country } def
+/FRANCE  { 3 FranceColours  set_country } def
+
+/BURGUNDYCENTER { Maroon } def
+/ENGLANDCENTER  { Blue } def
+/FRANCECENTER   { Green } def
+/UNOWNEDCENTER  { Brown } def
+
+/Offsets 4 array def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0                           % maxdx maxdy
+  0 1 3 {
+    /N exch def
+    Countries N get     % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy           % llx lly urx ury
+       3 -1 roll add -2 div     % llx urx dy
+       3 1 roll add -2 div      % dy dx
+       exch 2 array astore      % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub               % llx urx leny
+    3 1 roll exch sub exch      % lenx leny
+                % maxdx maxdy lenx leny
+    3 -1 roll max               % maxdx lenx newmaxdy
+    3 1 roll max                % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/DrawArmy { % x y X => -
+  country
+  3 1 roll 
+  gsave mapscale translate unscale 0 UnitOffset translate
+    gsave
+      newpath
+      LetterSize 14 div dup scale
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto              % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto           % carriage
+      Contrast 2 setlinewidth stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast 2 setlinewidth stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto              % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto           % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop      % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+% Fleet is a little boat...
+/DrawFleet { % N x y => -
+  country
+  3 1 roll
+  gsave mapscale translate unscale 0 UnitOffset translate
+    gsave
+      newpath
+      LetterSize 14 div dup scale
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto         % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto          % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto         % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto           % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto          % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto          % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto          % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto          % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto          % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto        % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto        % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto         % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop      % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+/HOL { 272 212 } def
+/FLA { 250 235 } def
+/GUY { 155 383 } def
+/BRT { 155 310 } def
+/CAL { 211 249 } def
+/CAN { 326 315 } def
+/DAU { 250 351 } def
+/DIJ { 250 265 } def
+/LON { 152 215 } def
+/LUX { 275 240 } def
+/NMD { 187 274 } def
+/ORL { 205 319 } def
+/PAR { 240 284 } def
+/DEV { 134 225 } def
+/SCO { 125 127 } def
+/TOU { 220 400 } def
+/CAS { 102 452 } def
+
+/SEA {
+    closepath
+    gsave Seawater fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+/ISLAND {
+    closepath
+    gsave Landcolor fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+/SWITZERLAND {
+    closepath
+    gsave Swisscolour fill grestore
+    BORDER
+} def
+
+1 setlinewidth
+0 setgray
+
+/Coastcolour { 1 setlinewidth 0 setgray } def
+/Swisscolour { 0.5 setgray } def
+/Seawater { 0.1 0.4 0.6 setrgbcolor } bind def
+/Landcolor  { 0.8 0.7 0.4 setrgbcolor } bind def
+
+% Map which follows is derived via the Mapper for Windows map...
+
+% This template is designed to convert the Mapper for Windows files for a map
+% into PostScript. It outputs a map with titles and messages (for copyright,
+% etc) fitting into 8"x11" Landscape (so should be okay for both A4 and Letter
+% paper). The map itself is scaled into a 500x700pts rectangle.
+% Note that the Mapper files require some reformatting and cannot be used
+% directly. 
+% This template file was written by Gary Duke.
+
+/Title () def           % Default title and message strings
+/Message1 () def
+/Message2 (Map produced by David Norman's Mapper for Windows via template by Gary Duke. Mapit routines by George Boyce, added to map by Gary Duke.) def
+/Message3 (Diplomacy is a trademark of the Avalon Hill Game Company, all rights reserved.) def
+/namefontsize 8 def     % font size of province names to 8pt
+/Bottom 0 def           % and map edges to 500x700pts
+/Top 500 def
+/Right 700 def
+/Left 0 def
+
+/Left -50 def
+/Top 0 def
+/Right 610 def
+/Bottom 480 def
+
+% Set up scaling parameters:
+/vrefl Top Bottom lt def    % vrefl is True if vertical axis is reflected
+/hrefl Right Left lt def    % hrefl is True if horizontal axis is reflected
+/vscaling 500 Top Bottom sub abs div def % 500/(abs(T-B))
+/hscaling 700 Right Left sub abs div def % 700/(abs(R-L)) 
+ 
+/change namefontsize 8 div def    % Contains scale factor to apply to text &
+                  % symbols
+/lin /lineto load def             % Alias for lineto
+/gm {stroke newpath moveto} def   % Alias for moveto, with protection against 
+                  % path overflow
+/unscale                          % Undo scaling transformation on map
+{
+hrefl {-1} {1} ifelse hscaling div
+vrefl {-1} {1} ifelse vscaling div
+scale
+}
+def
+
+/centre                 % Draws supply centre symbol
+{gsave newpath          % Save coord system and start new path
+mapscale
+translate unscale       % Reset origin and undo scaling
+0 -3.5 change mul       % Want centre of symbol 3.5 units below name
+3.5 change mul            % Radius 2 units
+0 360 arc               % Draw and fill
+gsave
+fill
+grestore
+0.5 setlinewidth 0 setgray stroke
+grestore}
+def
+
+/SC                     % Supply centre province - draw symbol
+{ centre }
+def
+
+
+
+/mapscale
+{ hscaling hrefl {neg} if  % Rescale coords to match Mapper scales
+vscaling vrefl {neg} if
+scale
+Left neg Bottom neg translate % Set so bottom left corner has correct coords
+} def
+
+/supply { centre } def
+
+/Centres
+{
+Brown
+HOL supply
+FLA supply
+GUY supply
+BRT supply
+CAL supply
+CAN supply
+DAU supply
+DIJ supply
+LON supply
+LUX supply
+NMD supply
+ORL supply
+PAR supply
+DEV supply
+SCO supply
+TOU supply
+CAS supply
+Black
+} def
+
+/DrawMap
+{
+-20 0 translate
+538 20 translate 90 rotate
+gsave
+0 792.0 translate
+1 -1 scale
+
+/gr {grestore} bind def
+/gs {gsave} bind def
+/l {lineto} bind def
+/m {moveto} bind def
+/n {newpath} bind def
+/s {stroke} bind def
+
+Black
+
+10 setmiterlimit
+0.06000 0.06000 scale
+
+7.500 setlinewidth
+n 1148 5127 m 1140 13207 l 1425 13207 l 1414 12904 l 1590 12765 l 1767 12540 l
+ 1767 12314 l 1838 12175 l 2032 11950 l 2068 11706 l 2739 11706 l
+ 2916 11880 l 3146 11880 l 3323 11828 l 3323 11602 l 3499 11498 l
+ 3623 11134 l 3570 11029 l 3588 10769 l 3712 10838 l 3588 10682 l
+ 3588 10491 l 3393 10387 l 3305 10265 l 3305 10127 l 3199 10109 l
+ 3181 9988 l 2987 9970 l 2757 9884 l 2633 9884 l 2580 9797 l
+ 2633 9762 l 2580 9710 l 2563 9640 l 2421 9640 l 2810 9519 l
+ 3093 9467 l 3446 9519 l 3358 9241 l 3535 9224 l 3535 9293 l
+ 3606 9328 l 3924 9328 l 4083 9293 l 3994 9276 l 4030 9189 l
+ 4419 9068 l 4472 8790 l 4772 8686 l 5055 8581 l 5179 8581 l
+ 5126 8564 l 5373 8443 l 5214 8408 l 5196 8356 l 5320 8252 l
+ 5409 8026 l 5515 8061 l 5462 8113 l 5479 8200 l 5585 8200 l
+ 5568 8147 l 5638 8095 l 5568 7956 l 5603 7870 l 5939 7818 l
+ 5939 5127 l 1148 5127 l SEA
+ 
+
+n 1417 13207 m 1417 12915 l 3835 12870 l 4136 12679 l 4154 12453 l 4560 12349 l
+ 4896 12106 l 4914 11984 l 4878 11880 l 4896 11637 l 5143 11515 l
+ 5391 11585 l 5497 11533 l 5691 11654 l 5957 11654 l 6169 11429 l
+ 6257 11411 l 7017 11498 l 7017 13200 l 3840 13207 l SEA
+
+n 3835 12870 m 4136 12679 l 4154 12453 l 4560 12349 l 4896 12106 l 4914 11984 l
+ 4878 11880 l 4896 11637 l 5143 11515 l 5391 11585 l 5497 11533 l
+ 5691 11654 l 5957 11654 l 6169 11429 l 6257 11411 l 7017 11498 l
+ 7017 13200 l 1402 13207 l stroke
+
+n 2651 5127 m 2669 5943 l stroke
+
+n 4560 12349 m 4154 12453 l 4136 12679 l 3835 12870 l 3742 13035 l stroke
+
+n 1717 7665 m 2315 7279 l stroke
+
+n 1550 8600 m 2297 8425 l stroke
+ 
+n 1665 9750 m 2421 9640 l stroke
+
+n 6257 11411 m 6169 11429 l 5957 11654 l 5691 11654 l 5497 11533 l 5391 11585 l
+ 5143 11515 l 4896 11637 l 4878 11880 l 4914 11984 l 4896 12106 l
+ 4560 12349 l 4154 12453 l 4136 12679 l 3835 12870 l 3735 13042 l
+ 1612 13020 l 1414 12904 l 1590 12765 l 1767 12540 l 1767 12314 l
+ 1838 12175 l 2032 11950 l 2068 11706 l 2739 11706 l 2916 11880 l
+ 3146 11880 l 3323 11828 l 3323 11602 l 3499 11498 l 3623 11134 l
+ 3570 11029 l 3588 10769 l 3712 10838 l 3588 10682 l 3588 10491 l
+ 3393 10387 l 3305 10265 l 3305 10127 l 3199 10109 l 3181 9988 l
+ 2987 9970 l 2757 9884 l 2633 9884 l 2580 9797 l 2633 9762 l
+ 2580 9710 l 2563 9640 l 2421 9640 l 2810 9519 l 3093 9467 l
+ 3446 9519 l 3358 9241 l 3535 9224 l 3535 9293 l 3606 9328 l
+ 3924 9328 l 4083 9293 l 3994 9276 l 4030 9189 l 4419 9068 l
+ 4472 8790 l 4772 8686 l 5055 8581 l 5179 8581 l 5126 8564 l
+ 5373 8443 l 5214 8408 l 5196 8356 l 5320 8252 l 5409 8026 l
+ 5515 8061 l 5462 8113 l 5479 8200 l 5585 8200 l 5568 8147 l
+ 5638 8095 l 5568 7956 l 5603 7870 l 5939 7818 l 6098 7870 l
+ 6098 8200 l 6363 8755 l 6363 9484 l 6611 9988 l 6412 9592 l
+ 6892 9247 l 7020 9465 l 7017 11498 l 6257 11411 l ISLAND
+
+n 3888 7644 m 3729 7436 l 3570 7384 l 3446 7123 l 3111 6880 l 2952 6897 l
+ 2952 6828 l 3111 6811 l 3058 6706 l 3358 6359 l 3323 6255 l
+ 2881 6220 l 2651 6325 l 2563 6238 l 2722 6186 l 2616 6134 l
+ 2916 5995 l 2952 5908 l 2368 5977 l 2227 6081 l 2280 6151 l
+ 2138 6238 l 2121 6377 l 2209 6342 l 2191 6429 l 2103 6602 l
+ 1997 6620 l 2156 6689 l 2244 6637 l 2174 6863 l 2209 6950 l
+ 2121 7140 l 2174 7123 l 2315 6880 l 2386 6880 l 2439 6863 l
+ 2404 6984 l 2474 7071 l 2368 7262 l 2315 7279 l 2368 7384 l
+ 2421 7297 l 2527 7366 l 2598 7297 l 2898 7262 l 2845 7331 l
+ 2792 7436 l 2898 7609 l 3040 7540 l 2987 7679 l 3022 7679 l
+ 2987 7783 l 3022 7783 l 2952 7870 l 2757 7852 l 2474 8078 l
+ 2633 8026 l 2651 8130 l 2686 8147 l 2633 8286 l 2297 8425 l
+ 2333 8512 l 2527 8477 l 2651 8547 l 2722 8495 l 2881 8599 l
+ 3111 8443 l 2987 8651 l 2651 8668 l 2191 9102 l 2333 9102 l
+ 2492 8981 l 2792 9015 l 2863 8859 l 3120 9007 l 3517 8825 l
+ 3499 8755 l 3659 8790 l 4083 8790 l 4436 8651 l 4383 8616 l
+ 4136 8599 l 4136 8529 l 4189 8529 l 4171 8443 l 4313 8477 l
+ 4295 8390 l 4401 8356 l 4454 8217 l 4366 8026 l 4083 8043 l
+ 4012 8078 l 3924 8078 l 4030 7904 l 3818 7765 l 3835 7696 l
+ 3959 7731 l 3941 7679 l 3888 7644 l  ISLAND
+
+n 3570 7384 m 3287 8234 l 3376 8338 l 3499 8755 l stroke
+
+n 2952 7870 m 3111 8043 l 3022 8252 l 3111 8443 l stroke
+
+n 3287 8234 m 3022 8252 l stroke
+
+n 3376 8338 m 3871 8408 l 4136 8529 l stroke
+
+n 2898 7262 m 3446 7123 l stroke
+
+n 4154 12453 m 3323 11828 l stroke
+
+n 7017 10456 m 6787 10422 l 6664 10595 l 6522 10439 l 6452 10422 l 6381 10543 l
+ 6045 10613 l 6063 10856 l stroke
+
+n 2810 9519 m 2333 9102 l stroke
+
+n 3924 9328 m 3659 8790 l stroke
+
+n 5320 8252 m 4454 8217 l stroke
+
+n 3588 10491 m 3835 10439 l 4136 10335 l 4207 9953 l 4140 9810 l 4042 9660 l
+ 3810 9622 l 3517 9623 l 3446 9519 l stroke
+
+n 4207 9953 m 4330 9936 l 4295 9640 l 4507 9363 l 4419 9068 l stroke
+
+n 4330 9936 m 4684 9727 l 4949 9901 l 5020 10248 l 5250 10422 l 5370 10035 l
+ 5409 9727 l 4896 9241 l 4507 9363 l stroke
+
+n 4896 9241 m 5214 9102 l 5143 8946 l 4949 8929 l 4878 8825 l 4772 8807 l
+ 4772 8686 l stroke
+
+n 5250 10422 m 5196 10595 l 4454 10613 l 4136 10335 l stroke
+
+n 3835 10439 m 3959 11012 l 4207 11186 l 4171 11394 l 4189 11793 l 4030 11863 l
+ 3323 11602 l stroke
+
+n 4171 11394 m 4507 11203 l 4454 10613 l stroke
+
+n 4189 11793 m 4401 11932 l 4914 11984 l stroke
+
+n 4507 11203 m 4949 11377 l 5179 11515 l stroke
+
+n 5196 10595 m 5055 10995 l 4949 11377 l stroke
+
+n 5055 10995 m 5391 11168 l 6063 10856 l stroke
+
+n 6045 10613 m 5974 10456 l 5886 10422 l 5780 10491 l 5691 10526 l 5287 10320 l stroke
+
+n 6063 10856 m 5992 10977 l 6045 10977 l 6045 11134 l 6116 11272 l 6257 11255 l
+ 6257 11411 l stroke
+
+n 5780 10491 m 5887 10425 l 6063 10022 l 5780 9814 l 5992 9380 l 6363 9484 l stroke
+
+n 6063 10022 m 6611 9988 l stroke
+
+n 5214 9102 m 5426 9068 l 5479 9172 l 5886 9241 l 5992 9380 l stroke
+
+n 5426 9068 m 5638 8790 l 5621 8616 l 5391 8547 l 5179 8581 l stroke
+
+n 5638 8790 m 5921 8425 l 5833 8147 l 5638 8095 l stroke
+
+n 5921 8425 m 6098 8200 l stroke
+
+n 1147 7417 m 1282 7387 l 1380 7320 l 1477 7312 l 1515 7335 l 1560 7440 l
+ 1530 7485 l 1575 7560 l 1642 7612 l 1747 7672 l 1725 7770 l
+ 1725 7912 l 1732 8002 l 1695 8085 l 1620 8152 l 1560 8250 l
+ 1515 8287 l 1440 8280 l 1380 8287 l 1335 8295 l 1282 8272 l
+ 1222 8235 l 1192 8227 l 1147 8212 l ISLAND
+
+n 1905 12105 m 1515 8280 l stroke
+
+n 3697 9630 m 3652 9735 l 3637 9870 l 3532 9990 l 3652 10140 l 3765 10215 l
+ 3892 10237 l 4170 10170 l stroke
+
+n 3810 7560 m 4695 6952 l 5947 6817 l stroke
+
+n 6600 10005 m 7012 10177 l stroke
+
+n 5827 10462 m 5812 10230 l 5812 10050 l 5752 10005 l 5662 9937 l 5595 9885 l
+ 5385 9855 l stroke
+
+30.000  setlinewidth
+n 4065 8686 m 4542 8946 l gs Red s gr 
+
+grestore
+
+Centres
+
+} def

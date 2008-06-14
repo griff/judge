@@ -1,0 +1,153 @@
+#   --------------------------------------------
+#   Powers, with initial owned centers and units
+#   --------------------------------------------
+NORTH   (NORTHERN)  AEO HER
+A AEO
+A HER
+SOUTH   (SOUTHERN)  HAD XEN
+A HAD
+F XEN
+EAST    (EASTERN)   AMA CEN
+F AMA
+A CEN
+WEST    (WESTERN)   LES VES
+F LES
+F VES
+UNOWNED             APH ARE CUP MOR NES PRO STR TAR
+
+RULE    FTF_PRESS
+
+Morpheus' Palace                        = mor
+Alcmene's Village                       = alc
+Hercules' Respite                       = her
+Mount Olympus                           = oly
+Village of Aeolus                       = aeo
+Chiron's Cave                           = chi
+Centaur Forest                          = cen
+Echo's Glade                            = ech
+Amazon Village                          = ama
+Salmonius' Scheme                       = sal
+Realm of King Midas                     = mid
+Prometheus' Cliff                       = pro
+Sea of Dreams                           = sod
+Gulf of Chains                          = goc
+Western Ocean                           = wes
+Sea of Arrows                           = soa
+Glittering Gulf                         = gli
+Narcissus' Reflection                   = nar
+Sea of Waves                            = sow
+Isle of Lesbos                          = les
+Shrine to Hestia (north coast)          = hes/nc
+Shrine to Hestia (south coast)          = hes/sc
+Shrine to Hestia                        = hes
+Convent of the Vestal Virgins           = ves
+Sea of Fire                             = fir
+Lesbian Sea                             = lbs
+Ocean of Peace                          = pea
+Charon's Crossing                       = cha
+Tartarus                                = tar
+Persephone's Garden                     = per
+Depths of Hades                         = had
+Gabrielle's Village                     = gab
+Xena's Rest                             = xen
+Argo's Pasture                          = arg
+Sea of Tears                            = sot
+Poseidon's Curse                        = pos
+Cecrops' Channel                        = cec
+South Sea                               = sou
+Eastern Ocean                           = eas
+Strife's Cave                           = str
+Palace of Ares                          = are
+Serina's Village                        = ser
+Forest of the Golden Hind               = hin
+Nestor's Kingdom                        = nes
+Minotaur's Labyrinth                    = min
+Scholars Channel                        = sch
+Lover's Lane                            = lov
+Cupid's Cloud                           = cup
+Village of Psyche (east coast)          = psy/ec
+Village of Psyche (west coast)          = psy/wc
+Village of Psyche                       = psy
+Aphrodite's Beach                       = aph
+Sisyphus' Hill                          = sis
+Temple of Zeus                          = zeu
+Tantalus' Pool                          = tan
+Jason's Kingdom                         = jas
+Field of the Golden Fleece              = fie
+Elysian Fields                          = ely
+Realm of the 3 Furies                   = fur
+Callisto's Stronghold                   = cal
+Autolycus' Hideout                      = aut
+Joxter's Retreat                        = jox
+Deianeira's Grave                       = dei
+Hippolyta's Girdle                      = hip
+
+COAST   AEO     ABUTS   MID oly zeu tan CHI NAR GLI
+COAST   ALC     ABUTS   MOR jas fie HER GOC SOD
+COAST   AMA     ABUTS   ECH HIP EAS SCH SOW
+COAST   APH     ABUTS   PSY/EC PSY/WC SOA SOW SCH
+LAND    ARE     ABUTS   NES SER STR HIN
+COAST   ARG     ABUTS   JOX XEN CEC SOU
+LAND    AUT     ABUTS   CAL GAB XEN JOX
+LAND    CAL     ABUTS   FUR PER HAD GAB AUT
+WATER   CEC     ABUTS   HIN STR EAS SOU ARG XEN POS
+COAST   CEN     ABUTS   CHI sis ECH NAR min
+COAST   CHA     ABUTS   TAR ELY PEA
+COAST   CHI     ABUTS   AEO tan sis CEN NAR
+COAST   CUP     ABUTS   PSY/WC PSY/EC SCH LOV SOA
+LAND    DEI     ABUTS   ZEU OLY HER FIE
+WATER   EAS     ABUTS   SOU CEC STR SER SCH AMA HIP MIN
+COAST   ECH     ABUTS   CEN hip min AMA SOW NAR
+COAST   ELY     ABUTS   PEA CHA tar fur
+WATER   FIR     ABUTS   LES HES/SC VES LOV SOT PER TAR PEA LBS
+LAND    FIE     ABUTS   DEI HER ALC JAS
+LAND    FUR     ABUTS   ELY TAR PER CAL
+COAST   GAB     ABUTS   XEN aut cal HAD SOT POS
+WATER   GLI     ABUTS   PRO MID AEO NAR SOW
+WATER   GOC     ABUTS   ALC HER SAL PRO SOA SOD
+COAST   HAD     ABUTS   GAB cal PER SOT
+COAST   HER     ABUTS   ALC fie dei oly SAL GOC
+COAST   HES/NC  ABUTS   LES SOA VES
+COAST   HES/SC  ABUTS   LES VES FIR
+COAST   hes     ABUTS   LES SOA VES FIR
+COAST   HIN     ABUTS   NES are STR CEC POS
+COAST   HIP     ABUTS   MIN AMA EAS ech
+COAST   JAS     ABUTS   fie alc MOR WES
+COAST   JOX     ABUTS   aut xen ARG SOU
+WATER   LBS     ABUTS   WES LES FIR PEA
+COAST   LES     ABUTS   HES/NC HES/SC FIR LBS WES SOA
+WATER   LOV     ABUTS   VES SOA CUP SCH NES POS SOT FIR
+COAST   MID     ABUTS   PRO sal oly AEO GLI
+COAST   MIN     ABUTS   EAS HIP ech sis cen
+COAST   MOR     ABUTS   JAS ALC SOD WES
+WATER   NAR     ABUTS   AEO CHI CEN ECH SOW GLI
+COAST   NES     ABUTS   SER are HIN POS LOV SCH
+LAND    OLY     ABUTS   HER DEI ZEU AEO MID SAL
+WATER   PEA     ABUTS   LBS FIR TAR CHA ELY
+COAST   PER     ABUTS   HAD cal fur TAR FIR SOT
+WATER   POS     ABUTS   XEN GAB SOT LOV NES HIN CEC
+COAST   PRO     ABUTS   SAL MID GLI SOW SOA GOC
+COAST   PSY/EC  ABUTS   APH SCH CUP
+COAST   PSY/WC  ABUTS   APH CUP SOA
+COAST   psy     ABUTS   APH SCH CUP SOA
+COAST   SAL     ABUTS   HER oly mid PRO GOC
+WATER   SCH     ABUTS   CUP PSY/EC APH SOW AMA EAS SER NES LOV
+COAST   SER     ABUTS   STR are NES SCH EAS
+LAND    SIS     ABUTS   MIN CEN CHI TAN
+WATER   SOA     ABUTS   VES HES/NC LES WES SOD GOC PRO SOW APH PSY/WC CUP LOV
+WATER   SOD     ABUTS   MOR ALC GOC SOA WES
+WATER   SOT     ABUTS   GAB HAD PER FIR LOV POS
+WATER   SOU     ABUTS   JOX ARG CEC EAS
+WATER   SOW     ABUTS   PRO GLI NAR ECH AMA SCH APH SOA
+COAST   STR     ABUTS   HIN are SER EAS CEC
+LAND    TAN     ABUTS   SIS CHI AEO ZEU
+COAST   TAR     ABUTS   PER fur ely CHA PEA FIR
+COAST   VES     ABUTS   HES/NC HES/SC SOA LOV FIR
+WATER   WES     ABUTS   JAS MOR SOD SOA LES LBS
+COAST   XEN     ABUTS   ARG jox aut GAB POS CEC
+LAND    ZEU     ABUTS   TAN AEO OLY DEI
+
+#   -----------------------------------------------------
+#   Notify Todd Hertzberg whenever a 1900 game is created
+#   -----------------------------------------------------
+NOTIFY  Tarzan.MonkeyMan@Verizon.net

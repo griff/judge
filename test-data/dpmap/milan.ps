@@ -1,0 +1,2528 @@
+%!PS-Adobe-2.0
+%%Title: diplomacy map (regular map)
+%%Creator: mapit
+%%Pages: (atend) 1
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 311   155 ADR Adriatic Sea
+% 425   59  AEG Aegean Sea
+% 363   120 ALB Albania
+% 511   124 ANK Ankara
+% 328   121 APU Apulia
+% 626   121 ARM Armenia
+% 353   343 BAL Baltic Sea
+% 477   561 BAR Barents Sea
+% 231   284 BEL Belgium
+% 312   308 BER Berlin
+% 482   164 BLA Black Sea
+% 318   252 BOH Bohemia
+% 374   387 BOT Gulf of Bothnia
+% 162   257 BRE Brest
+% 376   205 BUD Budapest
+% 415   148 BUL Bulgaria
+% 448   151 BUL/EC Bulgaria (east coast)
+% 424   121 BUL/SC Bulgaria (south coast)
+% 226   230 BUR Burgundy
+% 166   387 CLY Clyde
+% 471   106 CON Constantinople
+% 281   351 DEN Denmark
+% 482   35  EAS Eastern Mediterranean
+% 189   401 EDI Edinburgh
+% 145   288 ENG English Channel
+% 398   437 FIN Finland
+% 396   242 GAL Galicia
+% 164   203 GAS Gascony
+% 384   92  GRE Greece
+% 256   335 HEL Helgoland Bight
+% 245   305 HOL Holland
+% 333   44  ION Ionian Sea
+% 115   310 IRI Irish Sea
+% 274   295 KIE Kiel
+% 195   314 LON London
+% 403   341 LVN Livonia
+% 177   344 LVP Liverpool
+% 204   147 LYO Gulf of Lyon
+% 68    252 MAO Mid-Atlantic Ocean
+% 214   185 MAR Marseilles
+% 265   194 MIL Milan
+% 527   360 MOS Moscow
+% 274   250 MUN Munich
+% 190   71  NAF North Africa
+% 91    430 NAO North Atlantic Ocean
+% 318   104 NAP Naples
+% 284   429 NWY Norway
+% 227   374 NTH North Sea
+% 246   504 NWG Norwegian Sea
+% 191   238 PAR Paris
+% 201   269 PIC Picardy
+% 247   192 SAV Savoy
+% 57    176 POR Portugal
+% 347   309 PRU Prussia
+% 278   152 ROM Rome
+% 252   271 RUH Ruhr
+% 440   178 RUM Rumania
+% 375   145 SER Serbia
+% 513   234 SEV Sevastopol
+% 329   281 SIL Silesia
+% 288   381 SKA Skagerrak
+% 473   74  SMY Smyrna
+% 122   165 SPA Spain
+% 77    211 SPA/NC Spain (north coast)
+% 101   109 SPA/SC Spain (south coast)
+% 465   403 STP St Petersburg
+% 476   474 STP/NC St Petersburg (north coast)
+% 430   402 STP/SC St Petersburg (south coast)
+% 326   384 SWE Sweden
+% 603   50  SYR Syria
+% 324   172 TRI Trieste
+% 234   45  TUN Tunis
+% 295   218 TYR Tyrolia
+% 268   103 TYS Tyrrhenian Sea
+% 444   260 UKR Ukraine
+% 285   174 VEN Venetia
+% 339   231 VIE Vienna
+% 168   313 WAL Wales
+% 384   283 WAR Warsaw
+% 200   100 WES Western Mediterranean
+% 194   343 YOR Yorkshire
+% 247   218     SWI Switzerland
+% MAP
+
+% The original map postscript code is from William Roberts, 30/4/92
+
+% * modified by George Boyce for use with his mapit program, i.e.
+% * this file provides the following procedures:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+% * ArrowRetreat
+%
+
+% constants:
+  /NameOffset {LetterSize} def      % distance below point to draw name
+  /UnitOffset 4 def         % distance above point to draw unit
+
+  /TitleFontSize 20 def         % font size (Times-Roman)
+  /MessageFontSize 8 def        % font size (Times-Roman)
+  /NameFontSize 6 def           % font size (Helvetica-Bold)
+  /OrderFontSize 10 def         % font size (Courier)
+  /OwnerFontSize 8 def          % font size (Courier)
+
+  /HeadLength 10 def            % of a move arrow head
+  /HalfHeadThickness 5 2 div def    
+
+  /HalfThickness 1 2 div def        % of a move/support/convoy arrow shaft
+
+  /HoldCircle 10 def    % of a support hold arrow
+  /MoveCircle 4 def % of a support move arrow
+  /ConvoyCircle 6 def   % of a convoy arrow
+
+/ShowPage /showpage load def    % nothing special required
+
+/OrderReport {  % to the right of the map
+ maxx 5 add maxy 55 sub moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { % below order report with a title in slightly larger font
+ maxx 5 add maxy 485 sub moveto
+ /Courier-Bold findfont OrderFontSize 2 add scalefont setfont
+ currentpoint OrderFontSize sub 2 sub (Retreat orders:) show moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  % below left half of map
+ minx miny 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { % below right half of map
+ minx 450 add miny 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { % in upper right corner of map
+ maxx 100 sub maxy 10 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { WriteOwner } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { [2] 1 setdash } def
+/OkOrder { [] 0 setdash } def
+
+/DrawTitle {
+ maxx 5 add maxy 10 sub moveto
+ /Times-Roman findfont TitleFontSize scalefont setfont
+ currentpoint (DIPLOMACY) show moveto
+ 0 TitleFontSize neg rmoveto
+ dup stringwidth pop 208 exch div dup 1 lt
+    { gsave 1 scale show grestore }{ pop show } ifelse
+} def
+
+/DrawMessage {
+ minx maxy MessageFontSize add moveto
+ /Times-Roman findfont MessageFontSize scalefont setfont
+ show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+% draw an arrow indicating a retreat order between two points
+/ArrowRetreat {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  Red
+  tailx taily translate
+  angle rotate
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength 2 mul HalfThickness HalfHeadThickness div sub sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  /headBase arrowlength base add HalfThickness HalfHeadThickness div sub 2 div def
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  headBase HalfThickness neg lineto
+  headBase HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  headBase HalfHeadThickness lineto
+  headBase HalfThickness lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+
+  grestore
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  tailx taily translate
+  angle rotate
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div atan sub def
+  /b 180 HalfThickness headdiam 2 div atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+ gsave
+ /Helvetica-Bold findfont NameFontSize scalefont setfont
+ 3 1 roll translate
+% mark the spot...
+% 0 0 5 0 360 arc fill
+ dup stringwidth pop
+ -2 div 0 NameOffset sub moveto show
+ grestore
+} def
+
+% Letters for the different countries
+%
+% 0 means "nobody", then 1-7 going clockwise from England
+/Countries [
+  (?) (E) (F) (G) (R) (T) (A) (I) (N) (C) (J)
+] def
+
+/country 0 def
+
+/Black { 0 setgray }   bind def
+/White { 1 setgray }   bind def
+/Grey  { 0.7 setgray } bind def
+
+/Red    { 1 0 0   setrgbcolor } bind def
+/Pink   { 0.3 0 0 setrgbcolor } bind def
+/Blue   { 0 0 1   setrgbcolor } bind def
+/Mauve  { 1 0 1   setrgbcolor } bind def
+/Yellow { 1 1 0   setrgbcolor } bind def
+/Orange { 1 0.5 0.3  setrgbcolor } bind def
+/Green  { 0 0.7 0 setrgbcolor } bind def
+/Brown  { 0.6 0.45 0.2 setrgbcolor } bind def
+%/Brown  { 0.7 0.5 0.2 setrgbcolor } bind def <- Bruce
+/Turquoise { 0.2 0.7 0.7 setrgbcolor } bind def
+
+
+% Piece colourname, Contrast colourname
+%
+%/EnglandColours    { /Red /White } def
+/EnglandColours { /Blue /White } def
+%/FranceColours { /Blue /White } def
+/FranceColours  { /Turquoise /Black } def
+/GermanyColours { /Black /White } def
+%/RussiaColours { /Brown /Black } def
+/RussiaColours  { /White /Black } def
+/TurkeyColours  { /Yellow /Black } def
+%/AustriaColours    { /Grey /Black } def
+/AustriaColours { /Red /Black } def
+/ItalyColours   { /Green /Black } def
+/IndiaColours   { /Mauve /White } def
+/ChinaColours   { /Orange /Black } def
+%/JapanColours  { /Turquoise /Black } def
+/JapanColours   { /Grey /Black } def
+/BalkanColours  { /Pink /Black } def
+%/LowlandColours    { /White /Black } def
+/LowlandColours { /Brown /Black } def
+%/NorwayColours { /Turquoise /Black } def
+/NorwayColours  { /Grey /Black } def
+/SpainColours   { /Orange /Black } def
+
+
+/set_country { % N /piececolour /contrast => -
+    load /Contrast exch store
+    load /PieceColour exch store
+    /country exch store
+} bind def
+
+/ENGLAND { 1 EnglandColours set_country } def
+/FRANCE  { 2 FranceColours  set_country } def
+/GERMANY { 3 GermanyColours set_country } def
+/RUSSIA  { 4 RussiaColours  set_country } def
+/TURKEY  { 5 TurkeyColours  set_country } def
+/AUSTRIA { 6 AustriaColours set_country } def
+/ITALY   { 7 ItalyColours   set_country } def
+/INDIA   { 8 IndiaColours   set_country } def
+/CHINA   { 9 ChinaColours   set_country } def
+/JAPAN   { 10 JapanColours  set_country } def
+
+/Offsets 11 array def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0               % maxdx maxdy
+  0 1 10 {
+    /N exch def
+    Countries N get % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy       % llx lly urx ury
+       3 -1 roll add -2 div % llx urx dy
+       3 1 roll add -2 div  % dy dx
+       exch 2 array astore  % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub       % llx urx leny
+    3 1 roll exch sub exch  % lenx leny
+                    % maxdx maxdy lenx leny
+    3 -1 roll max       % maxdx lenx newmaxdy
+    3 1 roll max        % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/DrawArmy { % x y X => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      Contrast 2 setlinewidth stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast 2 setlinewidth stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+% Fleet is a little boat...
+/DrawFleet { % N x y => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+} bind def
+
+/DrawMap {
+536 0 translate
+90 rotate
+0.9 dup scale       % reduce the size by 10%
+part1 part2 part3 part4 part5 part6 part7 part8 part9 part10
+part11 part12 part13 part14 part15 part16 part17 part18 
+docenters
+
+Black
+%Credits
+} def
+
+/Credits {
+% give credits
+/Times-Roman findfont 6 scalefont setfont
+30 70 moveto
+currentpoint (MILAN Diplomacy) show
+moveto 0 -12 rmoveto
+currentpoint (Electronic map by Thierry Cornu after William Roberts) show
+moveto 0 -6 rmoveto
+currentpoint () show
+moveto 0 -12 rmoveto
+currentpoint (Diplomacy is a trademark of the Avalon Hill Game Company,) show
+moveto 0 -6 rmoveto
+(Baltimore, Maryland, all rights reserved.) show
+} def
+
+%
+% The rest of this file is the map drawn by William Roberts
+% with slight changes to make it fit the page better
+%
+
+/minx 22 def /maxx 650 def  % was 712
+/miny 25 def /maxy 576 def
+
+/gm /moveto load def
+/lin /lineto load def
+
+/internal { gsave Internalborder stroke grestore newpath } def
+/BORDER { gsave Nationalborder stroke grestore newpath} def
+
+/lastborder { 
+  gsave
+    % frame 
+    minx miny moveto
+    minx maxy lineto
+    maxx maxy lineto
+    maxx miny lineto
+    closepath
+    [] 0 setdash 0 setgray
+    gsave 4 setlinewidth stroke grestore
+    clip 2 setlinewidth Landcolour stroke
+  grestore
+} def
+
+/buffer 255 string def
+
+/SEA {
+    closepath
+    gsave Seacolour fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+/ISLAND {
+    closepath
+    gsave Landcolour fill grestore
+    gsave Coastcolour stroke grestore
+    newpath
+} def
+
+/SWITZERLAND {
+    closepath
+    gsave Swisscolour fill grestore
+    BORDER
+} def
+
+1 setlinewidth
+0 setgray
+
+%/Seacolour { 0.9 setgray } def
+/Seacolour { 0.1 0.4 0.6 setrgbcolor } bind def
+/Coastcolour { 1 setlinewidth 0 setgray } def
+/Swisscolour { 0.5 setgray } def
+/Landcolour  { 0.8 0.7 0.4 setrgbcolor } bind def
+
+% /Internalborder { 1 setlinewidth [3] 1.5 setdash 0 setgray } def
+/Internalborder { 0.5 setlinewidth [3 1] 1.5 setdash 0 setgray } def
+/Nationalborder { 2 setlinewidth 0 setgray } def
+
+/supply {
+  gsave translate
+    newpath
+    0 0 2 0 360 arc
+    fill
+  grestore
+} def
+
+/MIL {264 184} def % (MILAN: Mil center)
+/SER {370 162} def
+/NAP {311 117} def
+/ROM {280 141} def
+/GRE {402  85} def
+/BUL {400 149} def
+/SMY {452  77} def
+/ANK {530 124} def
+/RUM {425 176} def
+/BUD {351 207} def
+/VIE {329 220} def
+/TRI {314 191} def
+%/VEN {281 195} def % (MILAN: old Ven supply center)
+/MUN {284 241} def
+/MAR {204 180} def
+/SPA {100 161} def
+/TUN {238  62} def
+/POR { 43 164} def
+/BRE {142 270} def
+/PAR {204 249} def
+/BEL {223 281} def
+/HOL {236 302} def
+/KIE {279 316} def
+/BER {303 305} def
+/LON {185 305} def
+/LVP {168 337} def
+/EDI {185 388} def
+/NWY {300 415} def
+/DEN {301 342} def
+/SWE {346 405} def
+/WAR {368 286} def
+/STP {446 403} def
+/MOS {526 345} def
+/SEV {491 229} def
+/CON {446 131} def
+
+/AUSTRIACENTER { Red } def
+/ENGLANDCENTER { Blue } def
+/FRANCECENTER  { Turquoise } def
+/GERMANYCENTER { Black } def
+/ITALYCENTER   { Green } def
+/RUSSIACENTER  { White } def
+/TURKEYCENTER  { Yellow } def
+/UNOWNEDCENTER { Brown } def
+% /UNOWNEDCENTER { Grey } def <-- Bruce
+
+/docenters {
+UNOWNEDCENTER
+MIL supply
+SER supply
+NAP supply
+ROM supply
+GRE supply
+BUL supply
+SMY supply
+ANK supply
+RUM supply
+BUD supply
+VIE supply
+TRI supply
+MUN supply
+MAR supply
+SPA supply
+TUN supply
+POR supply
+BRE supply
+PAR supply
+BEL supply
+HOL supply
+KIE supply
+BER supply
+LON supply
+LVP supply
+EDI supply
+NWY supply
+DEN supply
+SWE supply
+WAR supply
+STP supply
+MOS supply
+SEV supply
+CON supply
+} def
+
+/part1 {
+Landcolour minx miny maxx minx sub maxy miny sub rectfill
+% Turkey -> StP coastline
+549 miny gm
+549 31 lin
+555 43 lin
+555 52 lin
+550 60 lin
+551 68 lin
+555 75 lin
+550 75 lin
+545 71 lin
+536 71 lin
+523 60 lin
+516 58 lin
+508 60 lin
+501 64 lin
+490 65 lin
+486 57 lin
+475 55 lin
+466 58 lin
+459 63 lin
+454 60 lin
+444 59 lin
+448 65 lin
+447 73 lin
+435 82 lin
+435 89 lin
+440 94 lin % x55 2
+432 98 lin
+431 106 lin
+438 113 lin
+448 114 lin
+452 118 lin
+458 113 lin
+467 122 lin
+% black sea bit
+458 130 lin
+470 131 lin % x63 2
+478 129 lin
+486 130 lin
+488 135 lin
+499 145 lin
+512 148 lin
+519 152 lin
+534 148 lin
+541 142 lin
+552 142 lin
+558 139 lin
+576 143 lin
+580 146 lin
+586 146 lin % x57 2
+591 152 lin
+597 156 lin
+600 162 lin % x3 2
+590 177 lin
+577 177 lin
+560 188 lin
+551 190 lin
+% -
+% Crimea patch added by John W. Walko Copyright 2005
+% (email john@jwinformationsolutions.com www.jwinformationsolutions.com).
+% Crimea patch restores proper locations of Isthmus of Perekop and
+% Strait of Kerch.
+% 
+540 201 lin
+536 200 lin
+536 205 lin
+543 203 lin
+547 217 lin
+539 222 lin
+551 235 lin
+539 228 lin
+531 226 lin
+521 218 lin
+512 209 lin
+505 207 lin
+506 206 lin
+511 206 lin
+519 200 lin
+525 201 lin
+527 204 lin
+533 205 lin
+533 197 lin
+525 197 lin
+524 195 lin
+523 191 lin
+514 187 lin
+511 182 lin
+503 181 lin
+497 184 lin
+504 186 lin
+502 190 lin
+490 195 lin
+489 199 lin
+502 203 lin
+501 206 lin
+% end patch
+485 205 lin
+487 211 lin
+475 211 lin
+468 201 lin
+466 195 lin
+462 192 lin
+464 182 lin % x9 2
+458 181 lin
+455 176 lin
+453 171 lin
+454 163 lin
+449 158 lin
+446 149 lin
+446 142 lin % x4 2
+% end of black sea
+} def
+
+/part2 {
+454 136 lin % x64 2
+455 126 lin
+450 122 lin
+445 122 lin
+440 117 lin
+432 117 lin
+427 121 lin
+420 120 lin
+416 119 lin
+407 117 lin
+402 107 lin
+394 109 lin
+390 113 lin
+390 108 lin
+399 97 lin
+406 92 lin
+409 88 lin
+413 78 lin
+411 77 lin
+407 81 lin
+408 74 lin
+406 73 lin
+403 76 lin % start of Peloponnese
+397 75 lin
+401 72 lin
+403 65 lin
+401 64 lin
+396 68 lin
+395 66 lin %
+400 60 lin
+404 50 lin
+402 49 lin % x54 2
+396 56 lin
+396 49 lin
+393 50 lin
+390 58 lin
+389 58 lin
+387 53 lin
+381 60 lin
+383 63 lin
+379 70 lin %
+380 75 lin
+385 78 lin
+394 77 lin
+396 79 lin
+385 80 lin
+377 76 lin % end of Peloponnese
+374 80 lin
+370 92 lin
+363 97 lin
+359 102 lin
+354 111 lin
+351 136 lin % x6 2
+339 146 lin
+330 150 lin
+314 167 lin
+310 167 lin
+306 172 lin
+308 179 lin
+302 180 lin
+298 184 lin
+297 195 lin
+286 189 lin
+285 180 lin
+282 176 lin
+294 164 lin
+298 152 lin
+303 148 lin
+305 143 lin
+313 136 lin
+320 134 lin
+322 127 lin
+331 125 lin
+342 114 lin
+347 106 lin
+342 100 lin
+332 108 lin
+327 107 lin
+325 101 lin
+330 96 lin
+325 85 lin
+321 77 lin
+312 73 lin
+308 79 lin
+315 87 lin
+318 96 lin
+313 104 lin
+303 111 lin
+290 125 lin
+279 132 lin
+272 141 lin
+263 151 lin
+261 169 lin % x51 2
+252 179 lin
+245 181 lin
+237 173 lin
+223 168 lin
+212 168 lin
+197 179 lin
+} def
+
+/part3 {
+183 175 lin
+183 160 lin
+176 155 lin
+159 151 lin
+142 142 lin
+134 136 lin
+134 127 lin
+138 124 lin
+136 118 lin
+126 118 lin
+121 109 lin
+117 114 lin
+109 108 lin
+104 103 lin
+95 103 lin
+86 109 lin
+74 110 lin
+67 107 lin
+57 109 lin
+52 119 lin
+48 127 lin
+44 131 lin % x20 2
+34 131 lin
+29 139 lin
+32 145 lin
+36 152 lin
+35 156 lin
+29 154 lin
+31 165 lin
+38 172 lin
+47 177 lin
+52 187 lin
+57 203 lin
+55 214 lin
+60 221 lin
+70 218 lin
+72 225 lin
+92 215 lin
+118 201 lin
+138 195 lin
+156 230 lin % x46 2
+149 243 lin
+149 254 lin
+139 262 lin
+128 265 lin
+132 276 lin % x40 2
+148 279 lin
+156 270 lin
+164 270 lin
+164 286 lin
+171 283 lin
+171 276 lin
+181 273 lin % x47 2
+182 279 lin
+192 278 lin
+197 284 lin
+200 290 lin
+210 291 lin
+219 298 lin
+225 300 lin
+227 307 lin
+240 319 lin % x32 2
+256 318 lin % x16 2
+258 323 lin
+268 320 lin
+272 322 lin
+273 333 lin
+269 336 lin
+275 342 lin
+271 348 lin
+274 356 lin
+270 362 lin
+278 369 lin
+279 361 lin
+290 374 lin
+294 372 lin
+296 366 lin
+290 364 lin
+290 358 lin
+294 354 lin % x34 2
+287 349 lin
+290 343 lin
+294 341 lin
+288 336 lin
+283 337 lin
+280 331 lin % x21 2
+284 327 lin
+291 326 lin
+292 321 lin
+297 321 lin
+307 325 lin
+315 327 lin
+312 319 lin
+320 316 lin
+324 323 lin
+327 319 lin
+338 325 lin
+350 329 lin
+356 327 lin
+358 319 lin
+} def
+
+/part4 {
+366 322 lin
+365 328 lin
+376 330 lin
+373 337 lin
+375 343 lin
+371 351 lin
+377 362 lin
+381 371 lin
+389 370 lin
+391 363 lin
+397 363 lin
+400 373 lin
+395 381 lin
+388 387 lin
+393 396 lin % x22 2
+407 400 lin
+418 399 lin
+423 399 lin
+431 407 lin
+437 408 lin
+431 413 lin
+422 413 lin
+409 412 lin
+401 408 lin
+390 407 lin
+385 402 lin
+376 414 lin
+375 425 lin
+375 438 lin
+371 444 lin
+384 460 lin
+393 472 lin
+401 481 lin
+397 489 lin
+390 489 lin
+379 484 lin
+376 472 lin
+371 464 lin
+363 453 lin
+355 444 lin
+351 434 lin
+349 426 lin
+349 418 lin
+355 411 lin
+361 406 lin
+361 400 lin
+355 398 lin
+358 391 lin
+348 388 lin
+342 380 lin
+343 365 lin
+339 353 lin
+320 346 lin
+321 337 lin
+309 336 lin % x25 2
+307 342 lin
+311 348 lin
+305 350 lin
+309 357 lin % x33 2
+303 370 lin
+300 381 lin
+301 394 lin
+293 396 lin
+283 390 lin
+272 385 lin
+266 387 lin
+264 395 lin
+257 395 lin
+257 401 lin
+263 401 lin
+266 408 lin
+258 407 lin
+259 424 lin
+263 439 lin
+271 449 lin
+283 457 lin
+295 461 lin
+307 470 lin
+319 482 lin
+325 494 lin
+330 505 lin
+337 512 lin
+341 519 lin
+342 525 lin
+331 523 lin
+340 532 lin
+341 538 lin
+350 543 lin
+349 530 lin
+354 542 lin
+362 550 lin
+372 558 lin
+386 564 lin
+400 565 lin
+413 561 lin
+418 566 lin
+427 560 lin
+421 556 lin
+428 549 lin
+432 557 lin
+} def
+
+/part5 {
+443 549 lin
+453 549 lin
+467 542 lin
+477 540 lin
+486 533 lin
+492 523 lin
+489 516 lin
+481 510 lin
+472 506 lin
+460 506 lin
+453 508 lin
+439 516 lin
+450 505 lin
+460 495 lin
+461 484 lin
+473 472 lin
+483 473 lin
+483 479 lin
+474 483 lin
+471 492 lin
+488 491 lin
+495 487 lin
+496 495 lin
+488 498 lin
+490 504 lin
+500 517 lin
+505 521 lin
+511 520 lin
+511 527 lin
+505 533 lin
+504 544 lin
+497 550 lin
+506 553 lin
+515 552 lin
+519 544 lin
+513 539 lin
+514 534 lin
+519 538 lin
+524 533 lin
+530 541 lin
+531 553 lin
+538 562 lin
+543 565 lin
+547 572 lin
+547 576 lin
+% delta = (2,-564)
+% 361 lines
+% BORDER
+
+% connect across top of map
+22 576 lin
+
+% NAf+Tunis coast
+% 698 496 gm
+22 80 lin
+32 86 lin
+40 93 lin
+45 101 lin
+55 107 lin
+63 101 lin
+63 94 lin
+78 88 lin
+84 87 lin
+92 81 lin
+108 81 lin
+124 85 lin
+136 88 lin
+146 84 lin
+164 86 lin
+193 80 lin
+212 80 lin
+223 74 lin
+229 73 lin
+235 76 lin
+245 76 lin
+246 68 lin
+256 71 lin % x53 2
+257 66 lin
+249 59 lin
+254 49 lin
+253 42 lin
+246 36 lin
+240 27 lin
+239 miny lin
+%239 19 lin
+%243 12 lin
+% delta = (-221,68)
+% 31 lines
+% BORDER - but it joins neatly to the previous one!
+SEA
+
+% Britain
+130 300 gm
+134 297 lin
+140 300 lin
+146 301 lin
+149 298 lin
+154 298 lin
+155 304 lin
+161 304 lin
+165 298 lin
+} def
+
+/part6 {
+174 298 lin
+182 295 lin
+186 292 lin
+191 293 lin
+201 300 lin
+193 301 lin
+198 305 lin
+205 308 lin
+207 314 lin
+208 322 lin
+201 325 lin
+194 322 lin
+191 326 lin
+199 330 lin
+200 342 lin
+198 350 lin
+195 353 lin
+195 364 lin
+192 371 lin
+188 375 lin
+181 372 lin
+188 379 lin
+183 379 lin
+190 382 lin
+199 389 lin
+205 397 lin
+193 402 lin
+183 402 lin
+191 407 lin
+197 413 lin
+201 419 lin
+203 425 lin
+193 422 lin
+189 417 lin
+180 421 lin
+173 410 lin % x37 2
+164 411 lin
+160 407 lin % x43 2
+164 402 lin
+156 385 lin
+157 377 lin
+166 374 lin
+161 371 lin
+161 365 lin
+175 365 lin
+169 359 lin % x35 2
+170 354 lin
+174 349 lin
+168 342 lin
+160 348 lin
+155 345 lin
+155 339 lin
+159 335 lin
+154 329 lin
+144 327 lin
+142 324 lin
+147 321 lin
+152 323 lin
+153 315 lin
+159 313 lin
+164 316 lin
+160 311 lin
+150 314 lin
+146 311 lin
+145 308 lin
+136 306 lin
+135 302 lin
+% 76 lines
+ISLAND
+
+% Ireland
+109 335 gm
+115 335 lin
+118 337 lin
+124 333 lin
+128 333 lin
+131 338 lin
+137 334 lin
+145 346 lin
+147 358 lin
+153 359 lin % x36 2
+157 363 lin
+157 370 lin
+155 378 lin
+149 379 lin
+147 383 lin
+135 383 lin
+132 376 lin
+134 373 lin
+129 373 lin
+121 378 lin
+118 372 lin
+118 367 lin
+112 365 lin
+117 361 lin
+122 358 lin
+114 355 lin
+111 348 lin
+106 351 lin
+103 347 lin
+} def
+
+/part7 {
+103 339 lin
+% 14 lines
+ISLAND
+
+
+% Sea in StP south
+448 412 gm
+451 418 lin
+457 420 lin
+452 427 lin
+443 430 lin
+439 434 lin
+434 428 lin
+438 423 lin
+444 423 lin
+446 417 lin
+SEA
+
+% Sea in StP north
+477 431 gm
+481 432 lin
+480 438 lin
+472 442 lin
+472 448 lin
+466 445 lin
+468 439 lin
+475 436 lin
+SEA
+
+% Caspian Sea
+% 712 212 gm
+% 706 211 lin
+% 707 217 lin
+% 703 220 lin
+% 697 220 lin
+% 691 217 lin
+% 687 222 lin
+% 680 230 lin
+% 671 232 lin
+% 672 237 lin
+% 681 240 lin
+% 675 245 lin
+% 675 251 lin
+% 693 257 lin
+% 688 265 lin
+% 687 276 lin
+% 677 278 lin
+% 666 274 lin
+% 659 274 lin
+% 654 262 lin
+650 260 gm
+647 258 lin
+638 259 lin
+646 250 lin
+638 241 lin
+634 230 lin
+637 218 lin
+649 213 lin
+650 205 lin
+% 652 203 lin
+% 670 190 lin
+% 676 191 lin
+% 682 181 lin
+% 694 181 lin
+% 698 177 lin
+% 688 171 lin
+% 690 164 lin
+% 692 156 lin
+% 688 147 lin
+% 694 139 lin
+% 702 134 lin
+% 708 136 lin
+% 712 141 lin
+SEA
+
+% Cyprus
+537 56 gm
+527 50 lin
+518 49 lin
+511 44 lin
+512 37 lin
+522 37 lin
+531 43 lin
+532 49 lin
+ISLAND
+
+% Crete
+437 37 gm
+435 36 lin
+426 37 lin
+422 40 lin
+414 39 lin
+412 37 lin
+409 40 lin
+403 39 lin
+401 36 lin
+401 30 lin
+408 33 lin
+419 28 lin
+422 28 lin
+} def
+
+/part8 {
+426 32 lin
+435 30 lin
+438 34 lin
+ISLAND
+
+% Sicily
+306 80 gm
+300 83 lin
+298 79 lin
+289 79 lin
+284 84 lin
+276 84 lin
+272 79 lin
+278 72 lin
+288 66 lin
+295 60 lin
+301 56 lin
+305 60 lin
+305 72 lin
+ISLAND
+
+% Sardinia
+243 104 gm
+235 102 lin
+231 100 lin
+229 107 lin
+232 117 lin
+230 125 lin
+228 130 lin
+233 134 lin
+236 130 lin
+240 130 lin % x52 2
+243 135 lin
+248 130 lin
+249 123 lin
+ISLAND
+
+% Corsica
+250 160 gm
+242 154 lin
+237 152 lin
+237 145 lin
+241 139 lin
+246 137 lin
+249 147 lin
+252 152 lin
+ISLAND
+
+% Majorca
+173 129 gm
+168 129 lin
+165 126 lin
+166 120 lin
+173 120 lin
+178 125 lin
+ISLAND
+
+% Shetland
+224 443 gm
+219 443 lin
+214 436 lin
+219 432 lin
+224 439 lin % x45 2
+ISLAND
+
+% Faroes
+185 461 gm % x42 2
+192 470 lin
+196 476 lin
+193 481 lin
+185 479 lin % x44 2
+182 474 lin
+188 471 lin
+184 465 lin
+ISLAND
+
+% Gotland
+363 373 gm
+360 366 lin
+359 361 lin
+353 360 lin
+350 364 lin
+350 369 lin
+355 373 lin % x24 2
+ISLAND
+
+% Demark's little island
+302 348 gm
+305 344 lin
+304 336 lin
+297 333 lin
+295 337 lin
+298 341 lin
+294 346 lin
+298 350 lin
+ISLAND
+
+% Tun|NAf
+224 74 gm
+224 60 lin
+} def
+
+/part9 {
+213 52 lin
+217 39 lin
+217 miny lin
+% delta = (7,62)
+% 4 lines
+BORDER
+
+% Arm|Sev
+% 688 148 gm
+% 679 143 lin
+% 679 154 lin
+% 674 159 lin
+% 671 148 lin
+% 656 137 lin
+650 140 gm
+627 148 lin
+626 160 lin
+614 165 lin
+607 160 lin
+600 162 lin % x3 2
+% delta = (88,-14)
+% 10 lines
+BORDER
+
+% Con|Bul
+446 142 gm % x4 2
+436 141 lin
+433 143 lin
+429 134 lin
+433 128 lin
+427 120 lin
+% delta = (19,22)
+% 5 lines
+BORDER
+
+% Gre|Bul
+418 120 gm
+417 130 lin
+410 136 lin
+401 126 lin
+394 129 lin % x12 2
+385 124 lin
+374 120 lin % x5 2
+372 107 lin
+362 98 lin
+% delta = (56,22)
+% 8 lines
+BORDER
+
+% Alb|Ser
+374 120 gm % x5 2
+370 135 lin
+362 145 lin % x7 2
+BORDER
+
+% Austria|Alb+Ser+Rum+Rus+Ger
+351 136 gm % x6 2
+362 145 lin % x7 2
+359 152 lin
+359 161 lin
+353 162 lin
+355 177 lin % x62 2
+367 175 lin
+383 171 lin % x10 2
+390 185 lin
+402 185 lin
+410 190 lin
+421 187 lin
+427 194 lin
+428 202 lin
+422 209 lin
+415 211 lin
+415 217 lin
+% Rum.Rus
+426 225 lin % x8 2
+426 239 lin
+418 246 lin
+414 255 lin
+402 264 lin
+396 254 lin
+389 252 lin
+382 263 lin
+376 264 lin
+370 254 lin
+359 258 lin % x18 2
+352 251 lin
+341 261 lin
+332 258 lin
+325 266 lin
+317 272 lin
+311 272 lin % x27 2
+307 265 lin
+303 266 lin
+298 271 lin
+289 264 lin
+290 257 lin
+297 253 lin
+301 245 lin
+307 237 lin % x58 2
+300 231 lin
+} def
+
+/part10 {
+291 227 lin
+278 226 lin
+273 233 lin
+266 225 lin % x14 2
+BORDER
+
+
+% Rum|Sev
+426 225 gm % x8 2
+434 224 lin
+440 215 lin
+439 205 lin
+445 198 lin
+447 190 lin
+456 187 lin
+464 182 lin % x9 2
+BORDER
+
+% Rum|Ser
+453 172 gm
+443 166 lin
+439 162 lin
+432 166 lin
+424 163 lin
+413 168 lin
+402 162 lin
+396 164 lin
+393 170 lin
+386 165 lin % x11 2
+383 171 lin % x10 2
+% delta = (70,1)
+% 10 lines
+BORDER
+
+%
+386 165 gm % x11 2
+387 158 lin
+392 154 lin
+387 148 lin
+394 129 lin % x12 2
+% delta = (-8,36)
+% 4 lines
+BORDER
+
+% Italy|Austria
+271 212 gm % x13 2
+289 218 lin
+289 208 lin
+300 209 lin
+303 201 lin
+297 194 lin
+BORDER
+
+% Switzerland
+271 212 gm % x13 2
+266 206 lin
+260 212 lin
+256 202 lin
+251 202 lin
+251 211 lin
+241 207 lin
+237 211 lin % x15 2
+240 216 lin
+227 210 lin
+226 217 lin
+242 228 lin
+249 225 lin
+260 229 lin
+266 225 lin % x14 2
+267 217 lin
+SWITZERLAND
+
+% Fra|Ital
+237 211 gm % x15 2
+235 198 lin
+228 195 lin
+229 189 lin
+235 184 lin
+234 173 lin
+% delta = (3,38)
+% 5 lines
+BORDER
+
+% Fra|Ger
+243 228 gm
+243 241 lin
+253 245 lin
+253 251 lin % x31 2
+238 256 lin
+244 264 lin
+240 269 lin
+241 283 lin
+241 290 lin % x17 2
+248 294 lin % x29 2
+256 295 lin
+252 307 lin
+258 310 lin
+258 314 lin
+256 318 lin % x16 2
+% delta = (-13,-90)
+} def
+
+/part11 {
+% 14 lines
+BORDER
+
+% Bel|Hol
+241 290 gm % x17 2
+224 299 lin
+% delta = (17,-9)
+% 1 lines
+BORDER
+
+% Bel|Fra
+238 258 gm
+232 257 lin
+234 263 lin
+227 264 lin % x48 2
+228 273 lin
+224 277 lin
+219 271 lin
+218 280 lin
+213 280 lin
+211 286 lin
+205 290 lin
+% delta = (33,-32)
+% 10 lines
+BORDER
+
+% Germany|Russia
+359 258 gm % x18 2
+354 267 lin
+349 270 lin
+349 279 lin
+344 285 lin
+344 291 lin
+352 298 lin
+368 302 lin
+378 308 lin
+388 310 lin
+382 322 lin
+376 331 lin
+% delta = (-15,-73)
+% 11 lines
+BORDER
+
+% Norway|Sweden
+302 394 gm
+308 398 lin
+316 417 lin
+312 426 lin
+320 432 lin
+320 438 lin
+315 444 lin
+318 457 lin
+323 469 lin
+331 467 lin
+339 487 lin
+339 495 lin
+349 504 lin
+349 513 lin
+356 522 lin
+361 517 lin
+361 531 lin
+369 524 lin
+372 526 lin
+371 532 lin % x19 2
+372 540 lin
+379 545 lin
+382 541 lin
+381 534 lin
+401 535 lin
+405 539 lin
+401 542 lin
+402 548 lin
+407 552 lin
+417 549 lin
+421 546 lin
+421 536 lin
+424 530 lin
+429 536 lin
+428 550 lin
+% delta = (-126,-156)
+% 34 lines
+BORDER
+
+% Sweden|Finland
+371 532 gm % x19 2
+376 531 lin
+383 525 lin
+388 522 lin
+390 509 lin
+390 488 lin
+% delta = (-19,44)
+% 5 lines
+BORDER
+
+% Hebrides
+174 421 gm
+170 423 lin
+164 418 lin
+159 416 lin
+158 411 lin
+} def
+
+/part12 {
+165 414 lin
+170 414 lin
+173 417 lin
+ISLAND
+
+% Portugal|Spain
+57 202 gm
+64 203 lin
+65 198 lin
+67 193 lin
+73 195 lin
+74 192 lin
+84 195 lin
+82 188 lin
+79 188 lin
+70 179 lin
+66 168 lin
+63 162 lin
+58 162 lin
+57 148 lin
+44 131 lin % x20 2
+% delta = (13,71)
+% 14 lines
+BORDER
+
+% France|Spain
+183 169 gm
+177 168 lin
+172 171 lin
+167 171 lin
+167 178 lin % x50 2
+161 183 lin
+154 179 lin
+137 195 lin
+% delta = (46,-26)
+% 7 lines
+BORDER
+
+% Den|Kie
+272 333 gm
+280 331 lin % x21 2
+BORDER
+
+639 259 gm
+632 285 lin
+622 304 lin
+609 315 lin
+592 318 lin
+575 311 lin
+556 301 lin
+547 301 lin
+532 303 lin
+509 290 lin
+499 288 lin
+492 277 lin
+486 261 lin
+463 243 lin
+451 231 lin
+440 214 lin
+% delta = (-40,-141)
+% 19 lines
+internal
+
+%
+498 288 gm
+466 288 lin
+} def
+
+/part13 {
+443 286 lin
+421 282 lin
+402 277 lin
+% delta = (96,11)
+% 4 lines
+internal
+
+%
+401 265 gm
+401 278 lin
+399 297 lin
+387 310 lin
+% delta = (14,-45)
+% 3 lines
+internal
+
+%
+398 297 gm
+417 304 lin
+424 315 lin
+423 323 lin
+430 335 lin
+430 347 lin % x23 2
+427 364 lin
+425 378 lin
+422 389 lin
+413 387 lin
+403 388 lin
+393 396 lin % x22 2
+% delta = (5,-99)
+% 11 lines
+internal
+
+%
+430 347 gm % x23 2
+440 347 lin
+454 358 lin
+467 366 lin
+482 364 lin
+491 372 lin
+505 392 lin
+520 403 lin
+546 406 lin
+577 412 lin
+650 420 lin
+% delta = (-147,-65)
+% 9 lines
+internal
+
+%
+415 413 gm
+420 427 lin
+422 455 lin
+424 531 lin
+% delta = (-9,-118)
+% 3 lines
+internal
+
+%
+378 365 gm
+361 367 lin
+% delta = (17,-2)
+% 1 lines
+internal
+
+%
+355 373 gm % x24 2
+342 381 lin
+% delta = (13,-8)
+% 1 lines
+internal
+
+%
+309 336 gm % x25 2
+300 329 lin
+294 329 lin
+288 337 lin
+% delta = (21,-1)
+% 3 lines
+internal
+
+%
+% no, that doesn't look right. kiel should touch the baltic sea
+%294 330 gm
+%293 320 lin
+293 320 gm
+298 286 lin % x28 2
+307 292 lin
+324 297 lin % x26 2
+326 319 lin
+% delta = (-32,11)
+% 5 lines
+internal
+
+%
+324 297 gm % x26 2
+345 290 lin
+% delta = (-21,7)
+% 1 lines
+internal
+
+%
+308 293 gm
+} def
+
+/part14 {
+311 272 lin % x27 2
+% delta = (-3,21)
+% 1 lines
+internal
+
+%
+298 286 gm % x28 2
+266 271 lin % x30 2
+248 294 lin % x29 2
+% delta = (50,-8)
+% 2 lines
+internal
+
+%
+266 271 gm % x30 2
+253 251 lin % x31 2
+% delta = (13,20)
+% 1 lines
+internal
+
+%
+271 349 gm
+265 354 lin
+252 355 lin
+241 341 lin
+236 328 lin
+240 319 lin % x32 2
+% delta = (31,30)
+% 5 lines
+internal
+
+%
+271 362 gm
+264 369 lin
+261 381 lin
+266 389 lin
+% delta = (5,-27)
+% 3 lines
+internal
+
+%
+309 357 gm % x33 2
+294 354 lin % x34 2
+% delta = (15,3)
+% 1 lines
+internal
+
+%
+169 359 gm % x35 2
+153 359 lin % x36 2
+% delta = (16,0)
+% 1 lines
+internal
+
+%
+173 410 gm % x37 2
+176 380 lin % x38 2
+165 375 lin
+% delta = (8,35)
+% 2 lines
+internal
+
+%
+176 380 gm % x38 2
+180 362 lin
+187 346 lin
+186 332 lin % x39 2
+180 322 lin
+176 307 lin
+181 296 lin
+% delta = (-5,84)
+% 6 lines
+internal
+
+%
+192 323 gm
+179 321 lin
+% delta = (13,2)
+% 1 lines
+internal
+
+%
+186 332 gm % x39 2
+174 330 lin
+158 335 lin
+% delta = (28,-3)
+% 2 lines
+internal
+
+%
+193 367 gm
+180 363 lin
+% delta = (13,4)
+% 1 lines
+internal
+
+%
+129 300 gm
+103 284 lin
+% delta = (26,16)
+} def
+
+/part15 {
+% 1 lines
+internal
+
+%
+132 276 gm % x40 2
+103 283 lin
+71 295 lin % x41 2
+22 316 lin
+% delta = (110,-40)
+% 3 lines
+internal
+
+%
+71 295 gm % x41 2
+108 335 lin
+% delta = (-37,-40)
+% 1 lines
+internal
+
+% NWG|MAO lower
+170 422 gm
+185 461 lin % x42 2
+% delta = (-5,-40)
+% 1 lines
+internal
+
+% NWG|MAO to Cly
+158 410 gm
+160 407 lin % x43 2
+internal
+
+% NWG|NAO top
+185 479 gm % x44 2
+141 576 lin
+% delta = (44,-97)
+% 1 lines
+internal
+
+%
+215 435 gm
+202 425 lin
+% delta = (13,10)
+% 1 lines
+internal
+
+%
+224 439 gm % x45 2
+269 447 lin
+% delta = (-45,-8)
+% 1 lines
+internal
+
+%
+156 230 gm % x46 2
+169 234 lin
+181 254 lin
+181 273 lin % x47 2
+% delta = (-25,-43)
+% 3 lines
+internal
+
+%
+168 234 gm
+175 220 lin
+184 218 lin
+196 223 lin
+205 234 lin
+217 243 lin
+222 255 lin
+227 264 lin % x48 2
+% delta = (-59,-30)
+% 7 lines
+internal
+
+%
+223 256 gm
+211 260 lin
+197 255 lin
+181 255 lin
+% delta = (42,1)
+% 3 lines
+internal
+
+%
+197 223 gm
+199 203 lin % x49 2
+%213 214 lin %(MILAN: old boarder between MAR and BUR)
+%227 217 lin
+228 195 lin %new boarder between MAR and BUR)
+% delta = (-30,6)
+% 3 lines
+internal
+
+%
+199 203 gm % x49 2
+179 191 lin
+167 178 lin % x50 2
+% delta = (32,25)
+% 2 lines
+internal
+
+} def
+
+/part16 {
+%
+137 122 gm
+165 123 lin
+% delta = (-28,-1)
+% 1 lines
+internal
+
+%
+178 126 gm
+230 124 lin
+% delta = (-52,2)
+% 1 lines
+internal
+
+%
+261 169 gm % x51 2
+249 160 lin
+% delta = (12,9)
+% 1 lines
+internal
+
+%
+232 100 gm
+236 76 lin
+% delta = (-4,24)
+% 1 lines
+internal
+
+%
+240 140 gm
+240 130 lin % x52 2
+% delta = (0,10)
+% 1 lines
+internal
+
+%
+272 78 gm
+256 71 lin % x53 2
+% delta = (16,7)
+% 1 lines
+internal
+
+%
+354 110 gm
+346 106 lin
+% delta = (8,4)
+% 1 lines
+internal
+
+%
+402 49 gm % x54 2
+408 40 lin
+% delta = (-6,9)
+% 1 lines
+internal
+
+%
+410 32 gm
+407 miny lin
+% delta = (3,20)
+% 1 lines
+internal
+
+%
+467 58 gm
+456 55 lin
+447 43 lin
+438 35 lin
+% delta = (29,23)
+% 3 lines
+internal
+
+%
+432 107 gm
+431 117 lin
+% delta = (1,-10)
+% 1 lines
+internal
+
+%
+484 129 gm
+491 93 lin % x56 2
+% delta = (-7,36)
+% 1 lines
+internal
+
+%
+440 94 gm % x55 2
+452 88 lin
+471 93 lin
+491 93 lin % x56 2
+512 100 lin
+531 105 lin
+549 100 lin
+565 103 lin
+578 110 lin
+592 121 lin
+% delta = (-152,-27)
+% 9 lines
+internal
+} def
+
+/part17 {
+
+%
+586 146 gm % x57 2
+592 120 lin
+601 94 lin
+619 89 lin
+650 93 lin
+% 661 94 lin
+% 698 100 lin
+% 712 108 lin
+% delta = (-126,38)
+% 6 lines
+internal
+
+%
+600 95 gm
+549 59 lin
+% delta = (51,36)
+% 1 lines
+internal
+
+%
+281 215 gm
+281 206 lin
+%267 197 lin %(MILAN: old VEN/PIE boarder)
+%259 188 lin %(MILAN: old VEN/PIE boarder)
+%251 180 lin %(MILAN: old PIE/ROM boarder)
+267 176 lin %(MILAN: new VEN / MIL boarder)
+% delta = (30,35)
+% 4 lines
+internal
+
+%
+%258 188 gm %(MILAN: old PIE / ROM boarder)
+252 179 gm %(MILAN: new SAV / ROM  boarder)
+267 176 lin
+279 164 lin
+288 152 lin
+300 141 lin
+309 125 lin
+323 114 lin
+327 104 lin
+% delta = (-69,84)
+% 7 lines
+internal
+
+260 177 gm %(MILAN: SAV /MIL boarder)
+255 202 lin %(MILAN: SAV /MIL boarder)
+
+internal
+
+%
+308 126 gm
+294 121 lin
+% delta = (14,5)
+% 1 lines
+internal
+
+%
+304 143 gm
+299 141 lin
+% delta = (5,2)
+% 1 lines
+internal
+
+%
+%285 155 gm %(MILAN: old TUS/ROM boarder)
+%269 144 lin %(MILAN: old TUS/ROM boarder)
+% delta = (16,11)
+% 1 lines
+internal
+
+%
+343 260 gm
+344 245 lin
+% delta = (-1,15)
+% 1 lines
+internal
+
+%
+319 235 gm % x59 2
+315 219 lin % x60 2
+% delta = (4,16)
+% 1 lines
+internal
+
+%
+340 203 gm % x61 2
+342 215 lin
+350 226 lin
+357 231 lin
+361 240 lin
+% delta = (-21,-37)
+% 4 lines
+internal
+
+%
+307 237 gm % x58 2
+319 235 lin % x59 2
+330 242 lin
+345 245 lin
+353 241 lin
+361 241 lin
+375 238 lin
+389 233 lin
+401 227 lin
+410 221 lin
+} def
+
+/part18 {
+415 216 lin
+% delta = (-108,21)
+% 10 lines
+internal
+
+%
+299 209 gm
+303 216 lin
+315 219 lin % x60 2
+319 211 lin
+325 204 lin
+340 203 lin % x61 2
+337 195 lin
+341 185 lin
+351 183 lin
+355 177 lin % x62 2
+internal
+
+% Con/Bul
+470 131 gm % x63 2
+454 136 lin % x64 2
+internal
+
+% BAR|NWG
+394 565 gm
+394 576 lin
+internal
+
+% ENC|NTH
+200 300 gm
+214 294 lin
+internal
+
+% WMS|MAO
+63 100 gm
+66 107 lin
+internal
+
+% 22,12 -> 712,576
+lastborder
+
+} def
+

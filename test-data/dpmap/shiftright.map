@@ -1,0 +1,49 @@
+map standard.geography
+use standard.politics
+
+#   ----------------------------------
+#   Powers with initial unit positions
+#   ----------------------------------
+FRANCE
+OWNS BUD VIE TRI
+A BUD
+A VIE
+F TRI
+
+AUSTRIA
+OWNS EDI LON LVP
+F EDI
+F LON
+A LVP
+
+RUSSIA
+OWNS BRE MAR PAR
+F BRE
+A MAR
+A PAR
+
+TURKEY
+OWNS BER KIE MUN
+F KIE
+A BER
+A MUN
+
+ENGLAND
+OWNS NAP ROM VEN
+F NAP
+A ROM
+A VEN
+
+ITALY
+OWNS WAR MOS SEV STP
+A WAR
+A MOS
+F SEV
+F STP/SC
+
+GERMANY
+OWNS ANK CON SMY
+F ANK
+A CON
+A SMY
+

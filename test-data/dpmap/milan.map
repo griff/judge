@@ -1,0 +1,22 @@
+USE     standard.map
+
+DROP    TUS VEN
+
+Milan           = mil milano
+Venetia         = ven venice
+PIE -> Savoy    = sav pie piedmont
+
+LAND    MIL     ABUTS   SAV ROM TYR VEN SWI
+COAST   VEN     ABUTS   ADR APU rom TRI MIL TYR
+
+AMEND   ADR     ABUTS   VEN
+AMEND   APU     ABUTS   VEN
+AMEND   BUR     ABUTS   SAV
+AMEND   LYO     ABUTS   ROM
+AMEND   ROM     ABUTS   LYO MIL SAV ven
+AMEND   SAV     ABUTS   -TYR BUR MIL ROM
+AMEND   TYR     ABUTS   -SAV MIL VEN
+AMEND   TRI     ABUTS   VEN
+
+ITALY   MIL
+A MIL

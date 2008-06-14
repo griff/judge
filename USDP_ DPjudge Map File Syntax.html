@@ -1,0 +1,787 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>USDP: DPjudge Map File Syntax</title>
+
+
+
+
+<style type="text/css">
+<!--
+.bodycopy		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000000
+				}
+.fineprint		{
+					font-family:		verdana;
+					font-size:			9px;
+					color:				#000000;
+					background-color:	#CCCCCC
+				}
+.gameheader		{
+					font-family:		verdana;
+					font-size:			18px;
+					color:				#000000;
+					font-weight:		bold
+				}
+.bannerinfo		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#ffffff;
+					background-color:	#777777
+				}
+.bannerinfo2	{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#ffffff;
+					font-weight:		bold
+				}
+TT     			{
+					font-size: 11px
+				}
+TD				{
+					background-color:	#F7F7F7
+				}
+TD.border		{
+					background-color:	#666666
+				}
+TD.grey			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000000;
+					background-color:	#CCCCCC
+				}
+A				{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:ACTIVE		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#990099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:FOCUS			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#666666;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:HOVER			{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#0000FF;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:LINK			{	
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#000099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+A:VISITED		{
+					font-family:		verdana;
+					font-size:			10px;
+					color:				#660099;
+					font-weight:		bold;
+					text-decoration:	none
+				}
+.ch				{
+					cursor:				pointer;
+					cursor:				hand
+				}
+.inputSubmit	{	
+					color:				#000000;
+					background-color:	#EEEEEE;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px;
+					font-weight:		bold;
+					cursor:				hand
+				}
+.inputSubmit2	{
+					color:				#000000;
+					background-color:	#EEEEEE;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px;
+					font-weight:		bold;
+					width:				11em;
+					cursor:				hand;
+				}
+.inputBox		{
+					color:				#000000;
+					background:			#FFFFFF;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px
+				}
+.pressBox		{
+					color:				#000000;
+					background:			#FFFFFF;
+					border-color:		#000000;
+					border-top:			1px solid;
+					border-bottom:		1px solid;
+					border-left:		1px solid;
+					border-right:		1px solid;
+					font-family:		verdana;
+					font-size:			10px
+				}
+//-->
+</style>
+
+
+
+
+
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"></head><body bgcolor="#ffffff">
+
+<table align="center" bgcolor="#666666" border="0" cellpadding="0" cellspacing="1" width="750">
+<tbody><tr valign="top">
+<td colspan="3">
+	<!--BANNER TABLE BEGINS HERE-->
+	<table border="0" cellpadding="0" cellspacing="0" width="100%">
+	<tbody><tr>
+	<td align="center" width="225"><a href="http://www.floc.net/dpjudge"><img src="USDP_%20DPjudge%20Map%20File%20Syntax_files/dpjudge_logo.gif" border="0" height="43" vspace="10" width="205"></a></td>
+	<td class="border" width="1"><img src="USDP_%20DPjudge%20Map%20File%20Syntax_files/spacer.html" width="1"></td>
+	<td class="gameheader" align="center">
+		<!--HEADER GOES HERE-->
+		<b>DPjudge Map File Syntax</b>
+		<!--INFORMATION LINKS TABLE BEGINS HERE-->
+		<table border="0" cellpadding="5" cellspacing="0" width="100%">
+		<tbody><tr>
+		<td class="bodycopy" align="center">
+		<a href="http://www.floc.net/dpjudge?page=About">about the DPjudge</a> |
+		<a href="http://www.floc.net/dpjudge?variant=dppd">the DPPD</a> |
+		<a href="http://www.floc.net/dpjudge?page=Questions">common questions</a></td>
+		</tr>
+		</tbody></table>
+		<!--INFORMATION LINKS TABLE ENDS HERE-->
+		<!--HEADER ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	<!--BANNER TABLE ENDS HERE-->
+</td>
+</tr>
+<tr><td colspan="3" height="5"><!--SPACER--></td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="1"></a><b>View Map Files</b></td>
+</tr>
+<tr valign="top">
+<td class="bodycopy">
+<blockquote><br>
+The DPjudge already supports a number of existing map variants, each of
+which is implemented by a <tt>.map</tt> file in the format described here,
+and an accompanying "Manusized" PostScript (<tt>.ps</tt>) graphical template
+file.
+You can view each of these files as a working example of a DPjudge
+<tt>.map</tt> file.
+<p>
+		<table align="center" border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr><td><input onclick='window.open("http://www.floc.net/dpjudge?page=MapFiles")' value="Browse the Existing Map Files" )="" class="inputSubmit" type="button"></td></tr>
+		</tbody></table>
+&nbsp;<br>
+If you can create a <tt>.map</tt> file of your own, and send it in,
+along with an appropriately formatted (Manusized) <tt>.ps</tt>
+file, you can add to the map variants supported by the DPjudge.
+Creating a <tt>.map</tt> file is easy.  It is the creation of the
+accompanying <tt>.ps</tt> file that is (currently) difficult, mostly due to the
+fact that Manus is very particular -- the map must look very very good to
+be accepted.  Take a look at the <tt>.ps</tt> files
+<a href="http://www.manushand.com/mapit">here</a>.
+<br>&nbsp;<br>
+</p></blockquote></td></tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="1"></a><b>General Directives</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		
+		
+		<dl>
+<p></p><dt><b><tt># <i>comment...</i></tt></b></dt><dd>
+	Any line that has a pound sign (<tt>#</tt>) as its first non-whitespace
+	character will be considered a comment, and ignored.  Comments must
+	span a complete line (that is, you may not add a comment to the end
+	of a non-comment line).
+
+<p></p></dd><dt><b><tt>USE[S] <i>fileName...</i></tt></b></dt><dd>
+	This line causes another file to be immediately read in.  This is used
+	to share map information.  For example, the <tt>britain.map</tt> file
+	<tt>USES</tt> the <tt>standard.geography</tt> file, which contains
+	all the geography for the standard Diplomacy map.
+
+<p></p></dd><dt><b><tt>MAP <i>mapName</i></tt></b></dt><dd>
+	This line is identical to <tt>USE <i>mapName</i>.map</tt> with the
+	additional provision that the graphical map template (used to generate
+	the actual visual map) will be the one having the <tt><i>mapName</i></tt>
+	specified.  For example, the "fleetRome" map
+	not only <tt>USE</tt>s the same map data (slightly altered) as the
+	standard map, but also uses the same graphical map for display (and
+	therefore, the <tt>MAP</tt> command is proper for that variant).  By
+	contrast, the "britain" and "crowded" maps may <tt>USE</tt> (that is,
+	load and then alter) the data from the standard map file, but (due to
+	the additional SC dots that must be depicted on the map to support
+	these variants), they use different
+	graphical maps than does the standard game, so the <tt>USE</tt>
+	command (rather than <tt>MAP</tt>) is proper for these variants.
+</dd></dl>
+
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="2"></a><b>Geographic Directives</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><b><tt>[<i>oldAbbrev</i> -&gt;] <i>placeName</i> = <i>abbreviation alias...</i></tt></b></dt><dd>
+	This type of line specifies all the recognized aliases for a map location.
+	The <tt><i>placeName</i></tt> is the long form of the map location (the
+	form to appear in results mailings).  The <tt><i>abbreviation</i></tt>
+	is the DPjudge standard abbreviation for the place-name (the form to
+	appear in all orders when shown to the player on his Web pages).
+	This standard abbreviation must be exactly three characters long
+	and must both begin and end with an alphabetic
+	or numeric character.  Each <tt><i>alias</i></tt> is a single word (that
+	is, having no embedded spaces) that is to be recognized as another name
+	for the location in question. <!-- (each <tt><i>alias</i></tt> will be
+	translated to the DPjudge standard <tt><i>abbreviation</i></tt>). -->
+	If you wish to specify an alias that is more than a single word in
+	length, you must join the separate words using plus-sign characters
+	(<tt>+</tt>).  For example,<br>
+	<tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	Norwegian Sea = nwg norwegian nrg norwsea norw+sea</tt>
+	<p>
+	If an <tt><i>alias</i></tt> ends with a question-mark (<tt>?</tt>),
+	it must not contain a plus-sign, and this indicates that the
+	<tt><i>alias</i></tt> (without the question-mark) is to be considered
+	"ambiguous." Ambiguous aliases may not be used in games that use the
+	<tt>NO_CHECK</tt> rule (the ambiguity will be reported to the player
+	at the time of order-entry).  For example, <tt>TYR</tt> is an ambiguous
+	alias in the standard game map, since it is commonly used as an alias
+	for both Tyrolia and the Tyrrhenian Sea.
+	</p><p>
+	If the <tt><i>placeName</i></tt> is preceded on the line by an
+	<tt><i>oldAbbrev</i></tt> and an arrow (<tt>-&gt;</tt>), this
+	indicates that the location being named is a pre-existing location
+	whose abbreviation is currently <tt><i>oldAbbrev</i></tt>.  This allows
+	you to completely rename a map location, and/or provide a different
+	standard <tt><i>abbreviation</i></tt> or a different set of
+	<tt><i>alias</i></tt>es.  When renaming a location in this way, all
+	existing information about that location (such as adjacencies to this
+	location from other locations) is automatically adjusted to reflect the
+	new <tt><i>abbreviation</i></tt> instead.  Note that if you wish to
+	rename a multi-coast space, every coast must be separately renamed.
+	That is, if the map defines <tt>SPA</tt> and <tt>SPA/SC</tt> and
+	<tt>SPA/NC</tt>, it is <u>not</u> sufficient to simply rename <tt>SPA</tt>;
+	separate rename directives must also be given for the coastal regions
+	or they will retain their original name, abbreviation, and aliases.
+
+</p><p></p></dd><dt><b><tt>COAST <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt> -or-
+<br><tt>LAND&nbsp; <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt> -or-
+<br><tt>WATER <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt> -or-
+<br><tt>PORT&nbsp; <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt> -or-
+<br><tt>SHUT&nbsp; <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt> -or-
+<br><tt>AMEND <i>abbreviation</i> [ABUTS [<i>abut...</i>]]</tt></b>
+</dt><dd>
+	This type of line specifies the terrain type and adjacencies for
+	the place-name whose <tt><i>abbreviation</i></tt> is given.
+	The <tt><i>terrain</i></tt> must be either <tt>WATER</tt>, <tt>LAND</tt>,
+	<tt>COAST</tt>, <tt>PORT</tt>, <tt>SHUT</tt> (impassable), or
+	<tt>AMEND</tt>.  The only
+	difference between <tt>PORT</tt> and <tt>COAST</tt> spaces is that fleets
+	located in <tt>PORT</tt> spaces may convoy armies as if they were in water.
+	<p>
+	If the <tt><i>terrain</i></tt> is <tt>AMEND</tt>, all pre-existing
+	data for the <tt>abbreviation</tt> (from an earlier such line) will
+	be retained, and the adjacency information given on the line will
+	<i>modify</i> that which is already on record.
+	If an area listed to the right of <tt>ABUTS</tt> begins with a dash
+	(<tt>-</tt>), then the area is <i>removed</i> (if possible) from any
+	pre-existing list of adjacencies for the location in question.
+	</p><p>
+	In all <i>other</i> cases (that is, if the <tt><i>terrain</i></tt> is
+	<u>not</u> <tt>AMEND</tt>), the adjacency information given on this
+	line will silently <i>supplant</i> (become valid <i>instead of</i>)
+	any previous such line for the same location.  In this way, maps can be
+	changed on the fly, such that what was a <tt>LAND</tt> location can become
+	<tt>COAST</tt> or <tt>WATER</tt> and/or can obtain different adjacencies.
+	</p><p>
+	The <i><tt>abut</tt></i> locations must be the DPjudge standard
+	abbreviations (the first abbreviation given after the equals-sign in each
+	<tt><i>placename</i></tt> line).
+	</p><p>
+	<i><b><u>Specifying Army and Fleet Restrictions</u></b></i><br>
+	This directive is case-sensitive.  Army and fleet restrictions are
+	specifyied by use of upper- and lower-case as described below.
+	Everything must be in upper-case <i><u>except</u></i> the following:
+	</p><ul>
+	<li>The <tt><i>abbreviation</i></tt> for any <tt>COAST</tt> location that
+		a fleet cannot occupy <i><u>must</u> be listed entirely in
+		lowercase</i>.  For instance, on the standard map, Spain
+		must be listed as <tt>spa</tt>
+		since fleets may only occupy either <tt>SPA/SC</tt> or
+		<tt>SPA/NC</tt>.
+		Specifying a location using lower-case after the same location was
+		given earlier using upper-case, or vice-versa, will cause the previous
+		location's terrain type and adjacencies to be forgotten (or, in the
+		case of <tt>AMEND</tt>, will cause the previous location to be converted
+		to the new casing, and its adjacencies preserved so they can be modified
+		by the <tt>AMEND</tt> directive).
+	</li><li>In the list of adjacencies, <i><u>any</u></i> 
+		location that a fleet could occupy but into which a fleet
+		can<u>not</u> move from the location in question <i><u>must</u>
+		be listed entirely in lowercase</i>.  For
+		example, on the standard map, Tuscany must be listed as <tt>tus</tt>
+		in the list of locations adjacent to <tt>VEN</tt>, since
+		a fleet cannot move directly from Venice to Tuscany.
+	</li><li>In the list of adjacencies, <i><u>any</u></i> <tt>LAND</tt> or
+		<tt>COAST</tt> location to which an army can<u>not</u> make a direct
+		(non-convoyed) move from the location in question <i><u>must</u>
+		be listed with its first character in uppercase and the remainder
+		in lower-case.</i>  This is useful to specify offshore islands, and
+		therefore no example on the standard map can be given.  Consider,
+		however, allowing an army to be convoyed into the Tyrrhenian Sea
+		(call it Sicily).  To implement this, the Tyrrhenian Sea would be
+		given the terrain type <tt>PORT</tt> (to allow both fleets and armies
+		to occupy the space and to allow fleets in that
+		space to convoy) and all land spaces adjacent to the Tyrrhenian Sea
+		would list their adjacency to that space as <tt>Tys</tt> (rather
+		than <tt>TYS</tt> or <tt>tys</tt>) to indicate than an army may
+		not move directly to the space despite the fact that movement from
+		a <tt>COAST</tt> (such as Naples) to an adjacent <tt>PORT</tt> (the
+		Tyrrhenian) would otherwise be allowed.  Convoyed movement would
+		be allowed, though, so an order such as <tt>A&nbsp;Nap-ION-TYS</tt>
+		would be perfectly valid.
+	</li></ul>
+	<p>
+	<i><b><u>Specifying Multi-Coast Spaces</u></b></i><br>
+	</p><ul>
+	<li>If an area abuts a multi-coast province, its adjacencies must list
+		<i><u>only</u></i> the coasts that are reachable, and must <u>not</u>
+		list the main space itself (for example, <tt>RUM</tt> is listed as being
+		adjacent to <tt>BUL/EC</tt>, but <u>not</u> to <tt>BUL</tt> itself).
+	</li><li>The line for every coast of a province should appear
+		in the map file <i>before</i> the line for the space itself.
+	</li><li>If the map will undergo terrain changes during play,
+		it is important to note that the fleet-friendly space listed
+		<i>last</i> is the one on which a unit in that space will be put if
+		a terrain modification requires it.  For example, if a fleet is in
+		Rome when Venice becomes a <tt>WATER</tt> space, the map file
+		will need to direct that Rome becomes a multi-coast province by
+		adding entries for <tt>ROM/EC</tt>, <tt>ROM/WC</tt>, and <tt>rom</tt>.
+		By listing <tt>ROM/WC</tt> <i><u>after</u></i> <tt>ROM/EC</tt>, the
+		fleet in Rome will be placed on the west (rather than the east) coast.
+	</li></ul>
+	<p>
+	<i><b><u>Power Restrictions and One-Way Adjacencies</u></b></i><br>
+	An <tt><i>abut</i></tt> location (appearing to the right of <tt>ABUTS</tt>)
+	may optionally be preceded by one or more power abbreviations, separated
+	from the location abbreviation by a colon.  This indicates that movement
+	across the adjacency is only allowed for units owned by the listed
+	power(s).  For example,
+	<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;COAST&nbsp;SPA&nbsp;ABUTS&nbsp;EI:NAF</tt><br>
+	indicates that an English or Italian unit in Spain may move directly
+	to North Africa (and may support actions in North Africa).  Units owned by
+	other powers do not have this capability.  Power abbreviations are not
+	necessarily required before the colon; if none are given, the adjacency
+	will be essentially impassable by all units.  This is useful to set up
+	one-way adjacencies, such as the following example:
+	<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WATER&nbsp;SKA&nbsp;ABUTS&nbsp;BAL<br>
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WATER&nbsp;BAL&nbsp;ABUTS&nbsp;:SKA</tt><br>
+	This indicates that a unit may move from Skagerrak to the Baltic Sea,
+	but not vice-versa.  Without the <tt>:SKA</tt>, the map would be declared
+	to be in error, as one-way adjacencies are otherwise illegal.
+	</p><p>
+	<i><b><u>Center Ownership Restrictions</u></b></i><br>
+	Further restriction on the power eligible to use an adjacency may be
+	made by supplying any number of comma-separated supply centers in a
+	parenthesized list at the end of the abut location.  For example,
+	<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;BLA&nbsp;ABUTS&nbsp;AEG(CON,SMY)</tt><br>
+	indicates that a unit in
+	the Black Sea is adjacent to the Aegean Sea if and only if the power
+	that owns the unit also owns both Constantinople and Smyrna.
+	</p><p>
+	<i><b><u>Special Restrictions</u></b></i><br>
+	After considering any power and center ownership restrictions that may
+	be given, then
+	if an area listed to the right of <tt>ABUTS</tt> begins or ends with
+	any <i>non-alphabetic character or characters</i>, all such characters
+	specify restrictions on the adjacency (these are special restrictions;
+	beyond those covered by the upper- and lower-case rules listed above).  The
+	recognized restrictions are as follows:
+	</p><blockquote>
+	<dl>
+	<dt><b><tt>~</tt> (tilde)</b>
+		<i>[implementing weak movement across straits]</i>
+	<ol type="a">
+	<li>Support cannot be offered across the adjacency.
+	</li><li>Movement across the adjacency has no strength (except that given by
+		any supporting units).  This means that even if the move is made
+		with one valid support, a unit <tt>HOLD</tt>ing at the destination
+		will not be dislodged.  This also means that an unsupported move
+		across the boundary will not cut any support being offered by a
+		unit at the destination.
+	</li></ol>
+	</dt>
+	<p>
+	</p><dt><b><tt>*</tt> (asterisk)</b>
+		<i>[implementing the Cape of Good Hope Rule from the 1900 Variant]</i>
+	<ol type="a">
+	<li>Movement across the adjacency (to the listed space) is done at
+		half-strength.  This includes convoyed movement whose final step
+		is the crossing of the adjacency.
+	</li><li>Support cannot be offered across the adjacency.
+	</li><li>Movement across the adjacency does not cut any support being offered
+		by a unit at the destination (unless the move dislodges the supporting
+		unit, of course).
+	</li><li>Any unit attempting to retreat across the adjacency is destroyed if
+		any other retreating unit attempts a retreat to the destination
+		space (the other unit succeeds in its retreat attempt).
+	</li></ol>
+	</dt>
+	</dl>
+	</blockquote>
+
+<p></p></dd><dt><b><tt>DROP <i>abbreviation...</i></tt></b></dt><dd>
+	This line will remove <i>all</i> data that was given concerning the
+	place(s) with the specified <tt><i>abbreviation</i></tt>(s), including all
+	adjacency information.  That is, all record of the space will be
+	forgotten, and no space will be left thinking that it is adjacent to the
+	<tt>DROP</tt>ped location.  <tt>DROP</tt>ping a multi-coast space,
+	without designating any particular coast, will also <tt>DROP</tt> all
+	information for each of the coasts.  That is, <tt>DROP&nbsp;SPA</tt>,
+	used on the standard map, will remove all information on Spain, Spain
+	(north coast), and Spain (south coast).
+
+</dd></dl>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="3"></a><b>Political Directives</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><b><tt><i>powerName</i> [(<i>ownWord</i>[:<i>abbrev</i>])]
+	[<i>center...</i>]</tt>
+</b></dt><dd>
+	This type of line is used to specify a power name, its "ownership word" and
+	single-letter abbreviation (for instance, England's ownership word would
+	be "English", and abbreviation would be "E") and all centers that serve as
+	the home centers for the power.  If the <tt><i>ownWord</i></tt> is omitted,
+	the <tt><i>powerName</i></tt> is used for this purpose, and if the
+	<tt><i>abbrev</i></tt> is omitted, the initial letter of the
+	<tt><i>ownWord</i></tt> is used as the abbreviation.
+	A plus-sign (<tt>+</tt>) appearing anywhere in the <tt><i>powerName</i></tt>
+	indicates that the next character in the name is to be displayed in
+	upper-case.  Any plus-sign appearing in the <tt><i>ownWord</i></tt> will
+	be displayed as a space.
+	<p>
+	<u><b>Building in Non-Supply Centers</b></u><br>
+	If the <tt><i>center</i></tt> is preceded (immediately, with no
+	intervening space) by a plus-sign (<tt>+</tt>), the location is <u>not</u>
+	a supply center, but the power <u>will</u> be eligible to build there.
+	This type of location is referred to as a <i>factory</i> site.
+	</p><p>
+	<u><b>Conditional Building in Non-Supply Centers</b></u><br>
+	If the <tt><i>center</i></tt> is preceded (immediately, with no
+	intervening space) by an asterisk (<tt>*</tt>), the location
+	is <u>not</u> a supply center, but the power <u>will</u> be eligible to
+	build there
+	<i>if and only if</i> the power owns at least one, but <u>not all</u>
+	of his original home supply centers.
+	This type of location is referred to as a <i>partisan</i> site.
+	</p><p>
+	If the <tt><i>center</i></tt> is preceded (immediately, with no
+	intervening space) by a dash (<tt>-</tt>), the center is removed
+	(if possible) from any pre-existing list of home centers for the power,
+	and added to the list of unowned supply centers.
+	This allows for locations to lose "home center" status.  Factory and
+	partisan sites may also be removed in this same manner.
+	</p><p>
+	Multiple lines for a single <tt><i>powerName</i></tt> may be used to
+	handle long lists of centers.  This type of line sets a "current power"
+	such that all following lines (that specify initial owned centers and
+	units) will apply to this power (as opposed to any other) until another
+	<tt><i>powerName</i></tt> directive is encountered.
+
+</p><p></p></dd><dt><b><tt>UNOWNED [<i>center...</i>]</tt> -or-<br>
+		<tt>NEUTRAL [<i>center...</i>]</tt> -or-<br>
+		<tt>CENTERS [<i>center...</i>]</tt></b></dt><dd>
+	This line (all three forms are synonymous) is used to list all unowned
+	supply centers.  The <tt>UNOWNED</tt>
+	power differs from others in that all centers listed as <tt>UNOWNED</tt>
+	<i>may</i> be listed elsewhere without error&nbsp;-- they are silently
+	moved to
+	owned status.  Additionally, any "current power" is forgotten by this line.
+	Again, multiple lines may be used to supply a long list of
+	unowned centers.  If you remove a center from the list of <tt>UNOWNED</tt>
+	centers (using a dash before its name), that location is no longer
+	a supply center at all.
+	For example, to make Warsaw a non-supply
+	center on the standard map, you would need to specify the two lines:
+	"<tt>RUSSIA&nbsp;-WAR</tt>" and "<tt>UNOWNED&nbsp;-WAR</tt>"
+	<i>in that order</i>.
+
+<p></p></dd><dt><b><tt>DUMMY</tt></b></dt><dd>
+	This indicates that the curent power is to be made a <tt>DUMMY</tt>
+	power in the game.  No player will take the role of such a power.
+	This power can be put into civil disorder using the <tt>CD_DUMMIES</tt>
+	rule, or may be played under the <tt>CONTROL</tt> of another power
+	(see the description of the <tt>ROTATE</tt> and <tt>CONTROL</tt>
+	directives used in the game <a href="http://www.floc.net/dpjudge?page=Status">status file</a>).
+
+<p></p></dd><dt><b><tt>NEWHOMES <i>year...</i></tt></b></dt><dd>
+	This command will cause home supply centers to be completely reassigned to
+	all players during the adjustment phase of the specified game-year(s).
+	Each power's home SC's will be all of the centers he owns at the time.
+
+<p></p></dd><dt><b><tt>UNPLAYED <i>powerName...</i></tt></b></dt><dd>
+	This line removes the specified <tt><i>powerName</i></tt>, and all
+	information that had been recorded for that power.  This directive
+	is useful to create variants for a smaller number of players on a
+	specific <tt>USE</tt>d map.
+
+</dd></dl>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="4"></a><b>Military Directives</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><b><tt>RULE <i>rule...</i></tt></b></dt><dd>
+	Specifies a DPjudge <a href="http://www.floc.net/dpjudge?page=Rules"><tt>RULE</tt></a> that will be
+	in effect for all games using this map.  For example,
+	<tt>RULE&nbsp;BUILD_ANY</tt> would appear in a map file for the the
+	Chaos variant, since that variant allows players to build new units in
+	any unoccupied, owned supply center.
+
+<p></p></dd><dt><b><tt>VICTORY <i>centerCount...</i></tt></b></dt><dd>
+	Specifies a list of the supply center counts which will determine victory,
+	from the first game-year forward (the final listed number is repeated for
+	subsequent years).
+	This line is optional; if omitted, the <tt>VICTORY</tt> criteria is
+	set (for all game-years) to one supply center greater than half the
+	number of centers on the map.
+
+<p></p></dd><dt><b><tt>FLOW <i>season</i>:<i>phase</i>[,<i>phase</i>...] ...</tt></b></dt><dd>
+	This line specifies the sequence of phases through a game year.
+	Each season must be followed by a colon and then immediately (no
+	intervening whitespace) by one or more phase types.  If more than
+	one phase type is given, these should be separated from each other
+	by commas (again, with no intervening whitespace).  This line is optional;
+	if not provided, the following is used:<br><tt>
+	&nbsp;&nbsp;
+	FLOW SPRING:MOVEMENT,RETREATS<br>
+	&nbsp;&nbsp;
+	FLOW FALL:MOVEMENT,RETREATS<br>
+	&nbsp;&nbsp;
+	FLOW WINTER:ADJUSTMENTS
+	</tt><br>
+	Each individual phase type must begin with a unique letter.
+	Additionally, the phase names <tt>MOVEMENT</tt>, <tt>RETREATS</tt>, and
+	<tt>ADJUSTMENTS</tt> are reserved (and therefore, so are the initial
+	letters <tt>M</tt>, <tt>R</tt>, and <tt>A</tt>).  (See the
+	<a href="http://www.floc.net/dpjudge?page=Status">status file syntax</a> list for more information
+	on the <tt>FLOW</tt> command.)
+
+<p></p></dd><dt><b><tt>BEGIN <i>season year phaseType</i></tt></b></dt><dd>
+	Specifies the initial game phase.  This line is optional; if it is
+	omitted, the initial game phase will be
+	<tt>SPRING&nbsp;1901&nbsp;MOVEMENT</tt>.  Only the final <tt>BEGIN</tt>
+	listed in the map file will be used.  This allows for map files
+	to <tt>USE</tt> other map files and then override the start phase.
+
+<p></p></dd><dt><b><tt>OWNS <i>center...</i></tt></b></dt><dd>
+	Specifies the list of centers owned by the "current power"
+	at the beginning of the game.  If not specified, the list of initially
+	owned centers is set to the home centers that were listed for the
+	"current power."  One or more of the <tt><i>center</i></tt>s may be
+	<tt>SC!</tt>, which allows the player to place a build on any
+	vacant home center (and become its owner) despite the fact the he does
+	not own it at the start of the game.  Additionally, <tt>SC?</tt> may
+	be used, to indicate an ability to build in any <i>unoccupied</i> home
+	center and <i>not</i> take ownership of the center.
+
+<p></p></dd><dt><b><tt>RESERVES</tt></b></dt><dd>
+	For each <tt>RESERVES</tt> line given for the "current power," the power
+	is eligible to maintain one extra unit, over and above the power's supply
+	center count.  However, this is only true if the power owns at least one of
+	its original home centers.  Note that if a game's
+	<a href="http://www.floc.net/dpjudge?page=Status">status file</a> includes any different
+	<tt>RESERVES</tt> information (or the <tt>NO_RESERVES</tt> rule),
+	this will override any reserves settings given in the map file.
+
+<p></p></dd><dt><b><tt>MILITIA</tt></b></dt><dd>
+	Militia are similar to <tt>RESERVES</tt> (above), except that they are
+	only granted if the additional force is used for home defense.
+	For each <tt>MILITIA</tt> line given for the "current power," the power
+	is eligible to maintain one extra unit, over and above the power's supply
+	center count <i>for each of his units that is positioned atop a home
+	supply center when an adjustment phase arrives</i>.  Note that if a game's
+	<a href="http://www.floc.net/dpjudge?page=Status">status file</a> includes any different
+	<tt>MILITIA</tt> information (or the <tt>NO_MILITIA</tt> rule),
+	this will override any reserves settings given in the map file.
+
+<p></p></dd><dt><b><tt>UNITS</tt></b></dt><dd>
+	This line is optional.  If given, all units that have been listed
+	as initial units for the "current power" are immediately forgotten.
+	This can be used to alter the starting position of a power from
+	that given in a <tt>USE</tt>d file.
+
+<p></p></dd><dt><b><tt><i>unit</i></tt></b></dt><dd>
+	Specifies a unit that the current power owns at the beginning of the game.
+	The <tt><i>unit</i></tt> will replace any unit that may have previously
+	been listed as beginning in that same space,
+</dd></dl>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+<tr bgcolor="#cccccc" valign="top">
+<td class="grey" align="center"><a name="4"></a><b>Dynamic Directives</b></td>
+</tr>
+<tr valign="top">
+<td>
+<!--MAIN TABLES GO HERE-->
+	<table border="0" cellpadding="10" cellspacing="0" width="100%">
+	<tbody><tr valign="top">
+	<td class="bodycopy">
+		<!--BODYCOPY BEGINS HERE-->
+		<dl>
+<p></p><dt><b><tt>IN <i>phase</i> <i>...</i></tt> -or-<br>
+	<tt>IN <i>phaseAbbrev ...</i></tt></b></dt><dd>
+	Indicates that one or more map directives are to be applied to the map
+	(modifying any current settings) during specific game phases.
+	This can be used to cause spaces to change terrain (or become impassable,
+	if the terrain is <tt>SHUT</tt>) in specific seasons.  The
+	<tt>IN</tt> directive introduces directives to be run <i>only</i> in
+	phases that match the given <tt><i>phase</i></tt>.  The
+	<tt><i>phase</i></tt> may be either a <u>complete</u>
+	<tt><i>phaseAbbrev</i></tt>iation (such as <tt>S1904M</tt>) or may
+	be any initial part of a fully-written <tt><i>phase</i></tt> name
+	(such as <tt>SPRING</tt> or <tt>SPRING&nbsp;1904</tt>).  For example,
+	<tt>IN&nbsp;SPRING</tt> will introduce a directive or directives
+	to be applied whenever
+	the current game phase begins with <tt>SPRING</tt>.  If a single
+	map directive is to be applied, it may be specified on the same line
+	as the <tt>IN</tt>, separated from it by a colon.  For example:
+	<br><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;IN SPRING: WATER ARC</tt>
+	<br>Alternatively, multiple directives may be given, each on its own
+	line, below the <tt>IN</tt>
+	directive.  Note that in this case (where directives are given
+	on subsequent lines of the file), <i>all</i> subsequent lines until the
+	end of the file will apply
+	to the most recent <tt>IN</tt> (or <tt>FROM</tt>, as described below).
+	To return to giving directives that apply at all times, use the directive
+	<tt>FROM&nbsp;START</tt>.
+
+<p></p></dd><dt><b><tt>FROM <i>movementPhaseAbbrev ...</i></tt> -or-<br>
+	<tt>FROM START</tt></b></dt><dd>
+	The <tt>FROM</tt> directive is similar to the <tt>IN</tt> directive
+	(discussed above)
+	except that the directive or directives are applied once the indicated
+	<tt><i>phaseAbbr</i></tt> has been reached, and remain in effect
+	thereafter.  The same forms as allowed by the <tt>IN</tt> directive
+	(that is, single- or multiple-line) are supported, but the
+	<tt><i>movementPhaseAbbrev</i></tt>iation given must be a complete phase
+	abbreviation (such as <tt>S1904M</tt>).  That is, it may <i>not</i> be a
+	fully-written phase name or any initial part thereof (as can be given
+	in an <tt>IN</tt> directive), and it may not indicate any phase type
+	other than movement.  When using the multiple-line form of the directive,
+	the directive <tt>FROM&nbsp;START</tt>
+	can be used to return to giving directives that apply at all times.
+	Note that when a <tt>.map</tt> file is loaded, all directives in
+	<tt>FROM</tt> clauses, including any applying to the current phase,
+	are processed (in the order in which the phases occurred), and
+	<i>then</i> any <tt>IN</tt> clause(s) are processed for the current
+	phase.
+	
+	
+
+</dd></dl>
+		<!--BODYCOPY ENDS HERE-->
+	</td>
+	</tr>
+	</tbody></table>
+	
+</td>
+</tr>
+
+
+		<tr valign="top">
+		<td colspan="3" class="fineprint" align="right" bgcolor="#cccccc">
+		The DPjudge is copyright © 1995-2008 by Manus Hand.
+		All rights reserved.
+		</td>
+		</tr>
+		</tbody></table>
+				
+
+
+</body></html>

@@ -1,0 +1,1344 @@
+%!PS-Adobe-2.0
+%%Title: Maharajah1 Diplomacy map
+%%Creator: mapit
+%%Pages: (atend) 1
+%%BoundingBox: 0 0 612 792
+%%DocumentPaperSizes: Letter A4
+%%Orientation: Landscape
+%%EndComments
+
+% INFO
+% 65 979 Buk Bukhara
+% 927 175 AnS Andaman Sea
+% 936 36 Ace Aceh
+% 987 352 Ayu Ayutthaya
+% 687 33 MaS Maldive Sea
+% 132 175 ArS Arabian Sea
+% 52 834 Yez Yezd
+% 34 650 Isf Isfahan
+% 19 521 PrG Persian Gulf
+% 27 427 Ara Arabia
+% 29 312 Yem Yemen
+% 195 994 Sam Samarkand
+% 300 1001 Tas Tashkent
+% 464 991 Fer Ferghana
+% 589 984 Kag Kashgar
+% 591 880 Yar Yarkand
+% 668 745 Nep Nepal
+% 812 611 Ass Assam
+% 956 604 Ava Ava
+% 141 866 Mes Meshed
+% 197 834 Her Herat
+% 237 923 Bal Balkh
+% 404 920 Bad Badakhshan
+% 519 884 Kas Kashmir
+% 141 763 Kho Khorasan
+% 241 761 Kan Kandahar
+% 296 870 Kab Kabul
+% 415 837 Lah Lahore
+% 157 663 Shi Shiraz
+% 127 567 Hor Hormuz
+% 250 596 Sin Sind
+% 246 543 InD Indus Delta
+% 300 784 Pes Peshawar
+% 354 774 Mul Multan
+% 342 703 Jod Jodhpur
+% 299 663 Abd Ahmadabad
+% 207 415 GoC Gulf of Cambay
+% 101 422 Oma Oman
+% 438 695 Jai Jaipur
+% 509 703 Agr Agra
+% 573 742 Awa Awadh
+% 377 636 Chi Chitor
+% 458 582 Mal Malwa
+% 594 581 Cha Chambal
+% 668 618 Bih Bihar
+% 727 533 Ben Bengal
+% 773 478 GaD Ganges Delta
+% 907 381 Peg Pegu
+% 630 532 Mah Mahanadi
+% 530 535 War Warangal
+% 550 475 Tel Telingana
+% 619 461 Gol Golconda
+% 661 409 Ori Orissa
+% 318 451 Guj Gujarat
+% 388 569 Anh Anhilwara
+% 402 503 Kha Khandesh
+% 487 496 Hyd Hyderabad
+% 385 433 Ahm Ahmadnagar
+% 441 430 Bij Bijapur
+% 412 345 Goa Goa
+% 437 302 Hon Honavar
+% 572 400 Ber Berar
+% 552 329 Ban Bangalore
+% 464 257 Cal Calicut
+% 529 244 Pul Pulicat
+% 349 194 LaS Laccadive Sea
+% 755 313 BoB Bay of Bengal
+% 724 152 SoC Sea of Ceylon
+% 492 166 Tin Tinnevelly
+% 578 139 Jaf Jaffna
+% 566 68  Kdy Kandy
+% MAP
+
+% This is a template for mapit maps produced by Mapmaker for Windows by David
+% Norman. This template was written by Gary Duke.
+% The intention is to allow any map drawn by Mapmaker to be used to produce
+% mapit output with the "look" of the original Diplomacy map under mapit - 
+% i.e. with the OrderReport and so on in similar places. The only part of the
+% mapit output to suffer is that concerned with the StatusReport, as there
+% is no way of guaranteeing a section of the map in which to place it (as
+% the ordinary mapit uses the top-right of the standard map for this).
+
+% * Most of this template is the special mapit prologue developed by George 
+% * Boyce, which provides the following features:
+% *
+% * DrawMap      draws the base map
+% * DrawName     draws a province name
+% * DrawArmy     draws an army
+% * DrawFleet    draws a fleet
+% * DrawTitle    write game title
+% * DrawMessage  write a footnote/message
+%
+% * OrderReport   positions point to write order report
+% * RetreatReport
+% * OwnerReport
+% * AdjustReport
+% * StatusReport
+%
+% * WriteOrder   writes the order line
+% * WriteRetreat
+% * WriteOwner
+% * WriteAdjust
+% * WriteStatus
+%
+% * ArrowMove    draws arrow indicating a move order
+% * ArrowHold
+% * ArrowSupport
+% * ArrowConvoy
+%
+% This section is followed by an adjusted version of the MapMaker PS template,
+% written by Gary Duke.
+
+/country 0 def
+
+/Black { 0 setgray } bind def
+/White { 1 setgray } bind def
+
+/set_country { % N /piececolour /contrast => -
+    load /Contrast exch store
+    load /PieceColour exch store
+    /country exch store
+} bind def
+/Top 1042 def
+/Left 0 def
+/Right 1047 def
+/Bottom 0 def
+/MapWindowWidth  502 def
+/MapWindowHeight 493 def
+/mainscale 1.068103 def
+/Title (Maharajah1 Diplomacy) def
+/Countries 8 array def
+Countries 0 (?) put
+/Offsets 8 array def
+/BAHMANID-SULTANATE-COLOR { 1.000 0.000 1.000 setrgbcolor } def
+Countries 1 (B) put
+/BAHMANID-SULTANATE { 1 /BAHMANID-SULTANATE-COLOR /Black set_country } def
+/BAHMANID-SULTANATECENTER { BAHMANID-SULTANATE-COLOR } def
+
+/DELHI-SULTANATE-COLOR { 1.000 0.000 0.251 setrgbcolor } def
+Countries 2 (D) put
+/DELHI-SULTANATE { 2 /DELHI-SULTANATE-COLOR /White set_country } def
+/DELHI-SULTANATECENTER { DELHI-SULTANATE-COLOR } def
+
+/GONDWANA-COLOR { 0.000 0.000 1.000 setrgbcolor } def
+Countries 3 (G) put
+/GONDWANA { 3 /GONDWANA-COLOR /White set_country } def
+/GONDWANACENTER { GONDWANA-COLOR } def
+
+/MUGHAL-EMPIRE-COLOR { 0.549 0.314 0.000 setrgbcolor } def
+Countries 4 (E) put
+/MUGHAL-EMPIRE { 4 /MUGHAL-EMPIRE-COLOR /White set_country } def
+/MUGHAL-EMPIRECENTER { MUGHAL-EMPIRE-COLOR } def
+
+/RAJPUTANA-COLOR { 1.000 1.000 0.000 setrgbcolor } def
+Countries 5 (R) put
+/RAJPUTANA { 5 /RAJPUTANA-COLOR /Black set_country } def
+/RAJPUTANACENTER { RAJPUTANA-COLOR } def
+
+/SAFAVID-EMPIRE-COLOR { 0.000 1.000 0.000 setrgbcolor } def
+Countries 6 (S) put
+/SAFAVID-EMPIRE { 6 /SAFAVID-EMPIRE-COLOR /Black set_country } def
+/SAFAVID-EMPIRECENTER { SAFAVID-EMPIRE-COLOR } def
+
+/VIJAYANAGAR-COLOR { 1.000 0.502 0.000 setrgbcolor } def
+Countries 7 (V) put
+/VIJAYANAGAR { 7 /VIJAYANAGAR-COLOR /Black set_country } def
+/VIJAYANAGARCENTER { VIJAYANAGAR-COLOR } def
+
+/Message1 (Variant created by David E. Cohen. Map Drawn by Juho Snellman) def
+% constants:
+  /AdjustScale {mainscale mul} bind def
+  /NameOffset {LetterSize} def % distance below point to draw name
+  /UnitOffset {LetterSize vrefl not {neg} if} def % distance above point to draw unit
+
+  /TitleFontSize 20 def         % font size (Times-Roman)
+  /MessageFontSize 8 def        % font size (Times-Roman)
+  /NameFontSize 6 AdjustScale def   % font size (Helvetica-Bold)
+  /OrderFontSize 10 def         % font size (Courier)
+  /OwnerFontSize 8 def          % font size (Courier)
+
+  /HeadLength 10 AdjustScale def    % of a move arrow head
+  /HalfHeadThickness 5 2 div AdjustScale def    
+
+  /HalfThickness 1 2 div AdjustScale def % of a move/support/convoy arrow shaft
+
+  /HoldCircle 10 AdjustScale def    % of a support hold arrow
+  /MoveCircle 4 AdjustScale def     % of a support move arrow
+  /ConvoyCircle 6 AdjustScale def   % of a convoy arrow
+
+/ShowPage /showpage load def    % nothing special required
+
+/OrderReport {  % to the right of the map
+ MapWindowWidth 5 add MapWindowHeight 50 sub moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/RetreatReport { % below order report with a title in slightly larger font
+ MapWindowWidth 5 add -40 moveto
+ /Courier-Bold findfont OrderFontSize 2 add scalefont setfont
+ currentpoint OrderFontSize sub 2 sub (Retreat orders:) show moveto
+ /Courier findfont OrderFontSize scalefont setfont
+} def
+/OwnerReport {  % below left half of map
+ 0 -28 moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/AdjustReport { % below right half of map
+ 400 -28 moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+/StatusReport { % in upper right corner of map
+ MapWindowWidth 8 add MapWindowHeight 60 sub moveto
+ /Courier findfont OwnerFontSize scalefont setfont
+} def
+
+/Write { currentpoint 3 2 roll show moveto 0 FontSize neg rmoveto } def
+/WriteOrder { /FontSize OrderFontSize def Write } def
+/WriteRetreat { WriteOrder } def
+/WriteOwner { /FontSize OwnerFontSize def Write } def
+/WriteAdjust { WriteOwner } def
+/WriteStatus { } def
+
+% failed orders get dashed lines, good orders normal lines
+/FailedOrder { [2] 1 setdash } def
+/OkOrder { [] 0 setdash } def
+
+/DrawTitle {
+ MapWindowWidth 5 add MapWindowHeight 10 sub moveto
+ /Times-Roman findfont TitleFontSize scalefont setfont
+ currentpoint Title show moveto
+ 0 TitleFontSize neg rmoveto
+ dup stringwidth pop 208 exch div dup 1 lt
+    { gsave 1 scale show grestore }{ pop show } ifelse
+} def
+
+/DrawMessage {
+ 0 MapWindowHeight MessageFontSize add moveto
+ /Times-Roman findfont MessageFontSize scalefont setfont
+ show
+} def
+
+% draw an arrow indicating a move order between two points
+/ArrowMove {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /angle dy dx atan def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  mapdict begin
+  MapCoords
+  tailx taily translate
+  PortraitFlag {UnitOffset neg 0} {0 UnitOffset neg} ifelse translate
+  angle rotate
+  end
+
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /base arrowlength HeadLength sub def
+
+  % if base of arrow is long enough, shorten it
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def LetterSize /arrowlength arrowlength LetterSize sub def} {0} ifelse def
+  % if base is still 5 or longer, shorten it some more
+  % which makes arrow head touch support circle
+  base LetterSize ge {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def} if
+
+  x 0 translate
+
+  newpath
+  0 HalfThickness neg moveto
+  base HalfThickness neg lineto
+  base HalfHeadThickness neg lineto
+  arrowlength 0 lineto
+  base HalfHeadThickness lineto
+  base HalfThickness lineto
+  0 HalfThickness lineto
+  closepath
+
+  stroke
+  grestore
+} def
+
+% draw an arrow indicating support of a unit holding at p1
+/ArrowHold {
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  tailx taily tipx tipy HoldCircle ArrowCircle
+
+} def
+
+% draw arrow indicating support of a unit moving from p1 to p2
+/ArrowSupport {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy MoveCircle ArrowCircle
+
+} def
+
+% draw arrow indicating convoy of a unit moving from p1 to p2
+/ArrowConvoy {
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  /taily exch def
+  /tailx exch def
+
+% find midpoint of (x1,y1)-(x2,y2)
+  /tipx x1 x2 min x1 x2 sub abs 2 div add def
+  /tipy y1 y2 min y1 y2 sub abs 2 div add def
+
+  tailx taily tipx tipy ConvoyCircle ArrowCircle
+
+} def
+
+/ArrowCircle {  % like an arrow but with a circle at the tip
+  /headdiam exch def
+  /tipy exch def
+  /tipx exch def
+  /taily exch def
+  /tailx exch def
+
+  /dx tipx tailx sub def
+  /dy tipy taily sub def
+  /arrowlength dx dx mul dy dy mul add sqrt def
+  /angle dy dx atan def
+  /base arrowlength headdiam sub def
+
+% positon origin at base of arrow with arrow point along x axis
+  gsave
+  mapdict begin
+  MapCoords
+  tailx taily translate
+  PortraitFlag {UnitOffset neg 0} {0 UnitOffset neg} ifelse translate
+  angle rotate
+  end
+
+  % if base of arrow is long enough, shorten it by LetterSize
+  % e.g. which moves arrow start beyond support circle
+  /x base LetterSize gt {/base base LetterSize sub def /arrowlength arrowlength LetterSize sub def LetterSize} {0} ifelse def
+
+  x 0 translate
+
+% draw the shaft first...
+  base HalfThickness neg moveto
+  0 HalfThickness neg lineto
+  0 HalfThickness lineto
+  base HalfThickness lineto
+% now the circle...
+  /a 180 HalfThickness headdiam 2 div atan sub def
+  /b 180 HalfThickness headdiam 2 div atan add def
+  arrowlength 0 headdiam a b arcn
+
+  closepath
+  stroke
+  grestore
+} def
+
+% draw the given name centered just below the specified point
+/DrawName { % x y str => -
+mapdict begin
+ gsave
+ /Helvetica-Bold findfont NameFontSize scalefont setfont
+ MapCoords
+ 3 1 roll translate
+ NormCoords
+ dup stringwidth pop
+ -2 div 0 NameOffset sub moveto show
+ grestore
+end
+} def
+
+/max { % p q => max(p,q)
+  2 copy lt { exch} if pop
+} bind def
+
+/min { % p q => min(p,q)
+  2 copy gt { exch} if pop
+} bind def
+
+/InitLetters {
+  0 0               % maxdx maxdy
+  0 1 Countries length 1 sub {
+    /N exch def
+    Countries N get % maxdx maxdy (N)
+    newpath 0 0 moveto
+    true charpath pathbbox     % ... llx lly urx ury
+    %
+    % Compute the offset in to centre the letter at 0,0
+       4 copy       % llx lly urx ury
+       3 -1 roll add -2 div % llx urx dy
+       3 1 roll add -2 div  % dy dx
+       exch 2 array astore  % [dx,dy]
+       Offsets N 3 -1 roll put  % - ([dx,dy] stored in offsets)
+    %
+    % Update maximum xwidth, ywidth
+    3 -1 roll sub       % llx urx leny
+    3 1 roll exch sub exch  % lenx leny
+                    % maxdx maxdy lenx leny
+    3 -1 roll max       % maxdx lenx newmaxdy
+    3 1 roll max        % newmaxdy newmaxdx
+    exch
+  } for
+
+  newpath
+  % maxdx maxdy = biggest bounding rectangle of the letters
+  max 1.5 mul /LetterSize exch def
+} def
+
+/Helvetica-Bold findfont NameFontSize scalefont setfont InitLetters
+
+/PieceColour { 1 setgray } bind def
+/Contrast { 0 setgray } bind def
+
+% Army is a little cannon...
+/DrawArmy { % x y X => -
+  mapdict begin
+  country
+  3 1 roll 
+  PortraitFlag {exch} if
+  UnitOffset sub
+  PortraitFlag {exch} if
+  gsave MapCoords translate NormCoords
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      Contrast 2 setlinewidth stroke
+      0 0 9 0 360 arc   % wheel
+      closepath
+      Contrast 2 setlinewidth stroke
+      newpath
+      -20 7 moveto 30 0 rlineto 0 -4 rlineto 4 0 rlineto
+       0 -2 rlineto -30 0 rlineto 0  2 rlineto -4 0 rlineto
+       0 4 rlineto      % barrel
+       4 2 moveto 20 -10 rlineto 2 0 rlineto -8 0 rlineto
+      -20  10 rlineto       % carriage
+      PieceColour fill
+      0 0 9 0 360 arc   % wheel
+      closepath
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+  end
+} bind def
+
+% Is it a bird? Is it a balloon? Is it Superman? NO! It's an airplane!
+/DrawWing { % N x y => -
+  country
+  3 1 roll UnitOffset add
+  gsave translate
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      % Start from the front
+      2 24 moveto
+      
+      % left part of cockpit
+      -1 0 rlineto -1 -5 rlineto 0 -4 rlineto
+      
+      % Left wing
+      -1 -2 rlineto -12 -9 rlineto -0.5 1.5 rlineto -.5 -1.5 rlineto
+      0 -5 rlineto 1 0 rlineto 0 1 rlineto 10 1 rlineto
+      1 0 rlineto 
+      
+      % tail 
+      1 -6 rlineto -3 -1 rlineto 0 -1 rlineto 10 0 rlineto
+      0 1 rlineto -3 1 rlineto 1 6 rlineto 
+      
+      % Right wing
+      1 0 rlineto 10 -1 rlineto 0 -1 rlineto 1 0 rlineto 
+      0 5 rlineto -.5 1.5 rlineto -.5 -1.5 rlineto -12 9 rlineto
+      -1 2 rlineto 
+
+      % right part of cockpit
+      0 4 rlineto -1 5 rlineto -1 0 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      gsave PieceColour fill grestore 
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+     exch 1 add exch 3.5 add 
+    moveto    
+        
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+    
+  grestore
+} bind def 
+
+% Fleet is a little boat...
+/DrawFleet { % N x y => -
+  mapdict begin
+  country
+  3 1 roll
+  PortraitFlag {exch} if
+  UnitOffset sub
+  PortraitFlag {exch}  if
+  gsave MapCoords translate NormCoords
+    gsave 
+      newpath
+      LetterSize 14 div dup scale
+      -26 -7 moveto 0 5 rlineto 7 0 rlineto 0 1 rlineto     % to bow
+      -3 0 rlineto 0 1 rlineto 7 0 rlineto 0 1 rlineto      % A turret
+      -3 0 rlineto 0 1 rlineto 8 0 rlineto 0 -2 rlineto     % B turret
+      1 0 rlineto 0 4 rlineto 1 0 rlineto 0 2 rlineto       % conn tower
+      2 0 rlineto 0 -1 rlineto 1 0 rlineto 0 4 rlineto      % Infra struct
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % funnel 1
+      2 0 rlineto 0 -4 rlineto 1 0 rlineto 0 3 rlineto      % funnel 2
+      2 0 rlineto 0 5 rlineto 1 0 rlineto 0 -5 rlineto      % mast 2
+      2 0 rlineto 0 -8 rlineto 2 0 rlineto 0 2 rlineto      % funnel 2
+      8 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % C turret
+      7 0 rlineto 0 -1 rlineto -3 0 rlineto 0 -1 rlineto    % D turret
+      6 0 rlineto 0 -1 rlineto 2 0 rlineto 0 -2 rlineto     % stern
+      -1 0 rlineto 0 -2 rlineto
+      closepath
+      gsave Contrast 2 setlinewidth stroke grestore
+      PieceColour fill
+    grestore
+    dup Offsets exch get aload pop  % N dx dy
+    moveto
+    /Helvetica-Bold findfont NameFontSize scalefont setfont
+    Countries exch get Contrast show    % then a white letter
+  grestore
+  end
+} bind def
+
+% Here follows the adjusted Mapmaker -> PS template
+
+% * This template is designed to allow MapMaker to output a map in PostScript.
+% * It outputs a map with titles and messages (for copyright, etc) fitting 
+% * into 8"x11" Landscape (so should be okay for both A4 and Letter paper).
+% The map itself is scaled into a 423x592pts rectangle, with extra space at 
+% bottom and right for mapit stuff...
+% * This template file was written by Gary Duke.
+
+/Message2 (Map produced by David Norman's MapMaker for Windows via template by Gary Duke.) def
+/Message3 (Diplomacy is a trademark of the Avalon Hill Game Company, all rights reserved.) def
+
+/mapdict 22 dict def
+mapdict begin
+% Set up scaling parameters:
+/deltav Top Bottom sub abs def   % abs(T-B)
+/deltah Right Left sub abs def   % abs(R-L)
+% /PortraitFlag deltah deltav lt def % True for Portrait map, False for Lands.
+/PortraitFlag false def
+
+/vrefl Top Bottom lt def    % vrefl is True if vertical axis is reflected
+/hrefl Right Left lt def    % hrefl is True if horizontal axis is reflected
+
+PortraitFlag
+{
+/vscaling MapWindowWidth deltav div def % 592/(abs(T-B))
+/hscaling MapWindowHeight deltah div def % 423/(abs(R-L)) 
+} 
+{
+/vscaling MapWindowHeight deltav div def % 423/(abs(T-B))
+/hscaling MapWindowWidth deltah div def % 592/(abs(R-L))
+}
+ifelse
+% Now hscaling and vscaling contain the scale factors for the map coords
+
+/lin /lineto load def             % Alias for lineto
+/mv /moveto load def              % Alias for moveto
+
+% Set up procedure to change from normal to map coords
+/MapCoordsPort                    % Change to map coords - if Portrait
+{
+0 MapWindowHeight translate
+270 rotate
+hscaling hrefl {-1} {1} ifelse div
+vscaling vrefl {-1} {1} ifelse div
+scale
+Left neg Bottom neg translate
+}
+def
+/MapCoordsLand                    % Change to map coords - if Landscape
+{
+hscaling hrefl {-1} {1} ifelse div
+vscaling vrefl {-1} {1} ifelse div
+scale
+Left neg Bottom neg translate
+}
+def
+/MapCoords
+PortraitFlag
+{ /MapCoordsPort } { /MapCoordsLand }
+ifelse
+load
+def
+
+% Set up procedure to change from map to normal coords -
+%  actually only unscale and rotate (as required)
+/NormCoordsPort                   % Change to normal coords - if Portrait
+{
+hrefl {-1} {1} ifelse hscaling div
+vrefl {-1} {1} ifelse vscaling div
+scale
+90 rotate
+}
+def
+/NormCoordsLand                   % Change to mormal coords - if Landscape
+{
+hrefl {-1} {1} ifelse hscaling div
+vrefl {-1} {1} ifelse vscaling div
+scale
+}
+def
+/NormCoords
+PortraitFlag
+{/NormCoordsPort } { /NormCoordsLand }
+ifelse
+load
+def
+
+/neutcentre             % Draws (neutral) supply centre symbol
+{gsave newpath          % Save coord system and start new path
+translate NormCoords    % Reset origin and undo scaling
+0 -1.5 NameOffset mul    % Want centre of symbol below name
+2 mainscale mul         % Radius 2 units
+0 360 arc               % Draw and stroke
+mainscale setlinewidth stroke
+grestore}
+def
+
+/homecentre             % Draws (home) supply centre symbol
+{gsave newpath          % Save coord system and start new path
+translate NormCoords    % Reset origin and undo scaling
+0 -1.5 NameOffset mul    % Want centre of symbol below name
+2 mainscale mul         % Radius 2 units
+0 360 arc               % Draw and fill
+fill
+grestore}
+def
+
+/NO                    % Normal province - nothing needed (mapit draws names)
+{pop pop}
+def
+
+/NC                    % Neutral centre province - draw symbol
+{
+neutcentre
+}
+def
+
+/HC                    % Home centre province - draw symbol
+{
+homecentre
+}
+def
+
+end   % Definitions for mapdict completed
+
+% Can't be defined inside mapdict, since this is called from code generated
+% by mapit. Should not be used from inside DrawMap.
+/supply                 % Draws supply centre symbol, in default color
+{mapdict begin         
+gsave newpath          % Save coord system and start new path
+MapCoords translate NormCoords % Change to map coordinates for the translate
+0 -1.5 NameOffset mul   % Want centre of symbol below name
+2 mainscale mul
+0 360 arc               % Create path
+gsave    fill         % Fill, then add small black border for contrast
+grestore 0.05 mainscale mul setlinewidth Black stroke 
+grestore
+end
+}
+def
+% Color for unowned centers 
+/UNOWNEDCENTER  { 0.6 0.45 0.2 setrgbcolor } def
+
+% Now for 'shell' of DrawMap routine
+/premap {
+% First we place origin at lower left corner of map, and rotate to Landscape
+MapWindowHeight 40 add 20 translate 90 rotate
+gsave
+
+% Print Mapmaker copyright messages
+
+/Times-Roman findfont 8 scalefont setfont
+0 -6 moveto Message1 show
+0 -12 moveto Message2 show
+0 -18 moveto Message3 show
+
+% Set up line width for main map:
+% Linewidth will be geometric mean of scalings in "units"
+mainscale hscaling vscaling mul sqrt div setlinewidth
+
+MapCoords
+} def
+
+/postmap {
+% Draw outline rectangle
+grestore
+} def
+
+% BeginEPSF and EndEPSF copied from Adobe Document 5001 
+% from partners.adobe.com
+/BeginEPSF { %def
+/b4_Inc_state save def % Save state for cleanup
+/dict_count countdictstack def % Count objects on dict
+stack
+/op_count count 1 sub def % Count objects on operand stack
+userdict begin % Push userdict on dict stack
+/showpage { } def % Redefine showpage, { } = null proc
+0 setgray 0 setlinecap % Prepare graphics state
+1 setlinewidth 0 setlinejoin
+10 setmiterlimit [ ] 0 setdash newpath
+/languagelevel where % If level not equal to 1 then
+{pop languagelevel % set strokeadjust and
+1 ne % overprint to their defaults.
+{false setstrokeadjust false setoverprint
+} if
+} if
+} bind def
+
+/EndEPSF { %def
+count op_count sub {pop} repeat % Clean up stacks
+countdictstack dict_count sub {end} repeat
+b4_Inc_state restore
+} bind def
+
+/doeps {
+gsave
+% 90 rotate
+% -1 1 scale
+% -1042 -1047 translate
+BeginEPSF
+%%BeginDocument
+%!PS-Adobe-2.0 EPSF-2.0
+%%Title: maha1.eps
+%%Creator: fig2dev Version 3.2 Patchlevel 3d
+%%CreationDate: Sat Feb  1 19:40:03 2003
+%%For: jsnell@kiki (Juho Snellman)
+%%BoundingBox: 0 0 1042 1047
+%%Magnification: 1.0000
+%%EndComments
+/$F2psDict 200 dict def
+$F2psDict begin
+$F2psDict /mtrx matrix put
+/col-1 {0 setgray} bind def
+/col0 {0.000 0.000 0.000 srgb} bind def
+/col1 {0.000 0.000 1.000 srgb} bind def
+/col2 {0.000 1.000 0.000 srgb} bind def
+/col3 {0.000 1.000 1.000 srgb} bind def
+/col4 {1.000 0.000 0.000 srgb} bind def
+/col5 {1.000 0.000 1.000 srgb} bind def
+/col6 {1.000 1.000 0.000 srgb} bind def
+/col7 {1.000 1.000 1.000 srgb} bind def
+/col8 {0.000 0.000 0.560 srgb} bind def
+/col9 {0.000 0.000 0.690 srgb} bind def
+/col10 {0.000 0.000 0.820 srgb} bind def
+/col11 {0.530 0.810 1.000 srgb} bind def
+/col12 {0.000 0.560 0.000 srgb} bind def
+/col13 {0.000 0.690 0.000 srgb} bind def
+/col14 {0.000 0.820 0.000 srgb} bind def
+/col15 {0.000 0.560 0.560 srgb} bind def
+/col16 {0.000 0.690 0.690 srgb} bind def
+/col17 {0.000 0.820 0.820 srgb} bind def
+/col18 {0.560 0.000 0.000 srgb} bind def
+/col19 {0.690 0.000 0.000 srgb} bind def
+/col20 {0.820 0.000 0.000 srgb} bind def
+/col21 {0.560 0.000 0.560 srgb} bind def
+/col22 {0.690 0.000 0.690 srgb} bind def
+/col23 {0.820 0.000 0.820 srgb} bind def
+/col24 {0.500 0.190 0.000 srgb} bind def
+/col25 {0.630 0.250 0.000 srgb} bind def
+/col26 {0.750 0.380 0.000 srgb} bind def
+/col27 {1.000 0.500 0.500 srgb} bind def
+/col28 {1.000 0.630 0.630 srgb} bind def
+/col29 {1.000 0.750 0.750 srgb} bind def
+/col30 {1.000 0.880 0.880 srgb} bind def
+/col31 {1.000 0.840 0.000 srgb} bind def
+
+end
+save
+newpath 0 1047 moveto 0 0 lineto 1042 0 lineto 1042 1047 lineto closepath clip newpath
+4.1 1933.1 translate
+1 -1 scale
+
+/cp {closepath} bind def
+/ef {eofill} bind def
+/gr {grestore} bind def
+/gs {gsave} bind def
+/sa {save} bind def
+/rs {restore} bind def
+/l {lineto} bind def
+/m {moveto} bind def
+/rm {rmoveto} bind def
+/n {newpath} bind def
+/s {stroke} bind def
+/sh {show} bind def
+/slc {setlinecap} bind def
+/slj {setlinejoin} bind def
+/slw {setlinewidth} bind def
+/srgb {setrgbcolor} bind def
+/rot {rotate} bind def
+/sc {scale} bind def
+/sd {setdash} bind def
+/ff {findfont} bind def
+/sf {setfont} bind def
+/scf {scalefont} bind def
+/sw {stringwidth} bind def
+/tr {translate} bind def
+/tnt {dup dup currentrgbcolor
+  4 -2 roll dup 1 exch sub 3 -1 roll mul add
+  4 -2 roll dup 1 exch sub 3 -1 roll mul add
+  4 -2 roll dup 1 exch sub 3 -1 roll mul add srgb}
+  bind def
+/shd {dup dup currentrgbcolor 4 -2 roll mul 4 -2 roll mul
+  4 -2 roll mul srgb} bind def
+/$F2psBegin {$F2psDict begin /$F2psEnteredState save def} def
+/$F2psEnd {$F2psEnteredState restore end} def
+
+$F2psBegin
+10 setmiterlimit
+ 0.06000 0.06000 sc
+%
+% Fig objects follow
+%
+% Polyline
+n 0 22200 m 17250 22200 l 17250 32175 l 0 32175 l
+ cp gs col11 1.00 shd ef gr 
+% Polyline
+45.000 slw
+n -25 14829 m 17225 14829 l 17225 32169 l -25 32169 l
+ cp gs col0 s gr 
+% Polyline
+n 0 24075 m 300 24225 l 525 24150 l 750 23775 l 1050 23850 l 1125 24000 l
+ 1425 24150 l 1725 24150 l 2025 24225 l 2250 24450 l 2400 25050 l
+ 2175 25275 l 2175 25500 l 2100 25725 l 2175 25950 l 1800 26100 l
+ 1875 26475 l 1500 26400 l 1650 26625 l 1575 27075 l 1500 27300 l
+ 1050 27450 l 1050 27600 l 825 27900 l 375 27900 l 300 27600 l
+ 0 27525 l
+ 0 24075 l  cp gs col7 1.00 shd ef gr gs col0 s gr 
+% Polyline
+n 17250 31575 m 17025 31200 l 17025 30900 l 16725 30225 l 16650 30150 l 16425 30000 l
+ 16425 29775 l 16650 29700 l 16575 29475 l 16500 28875 l 16500 28575 l
+ 16425 28425 l 16275 28350 l 16350 28050 l 16125 27825 l 16050 27600 l
+ 16125 27450 l 16050 27375 l 15900 27225 l 15825 27150 l 15825 27000 l
+ 15750 27000 l 15675 27225 l 15600 27375 l 15450 27150 l 15375 27150 l
+ 15300 27225 l 15075 27225 l 14850 27300 l 14700 27450 l 14475 27450 l
+ 14400 27300 l 14475 27075 l 14550 26925 l 14550 26775 l 14475 26550 l
+ 14400 26400 l 14475 26175 l 14325 25725 l 14175 25650 l 14100 25500 l
+ 13950 25575 l 13725 25500 l 13725 25350 l 13725 25200 l 13650 24975 l
+ 13575 24900 l 13575 24750 l 13425 24675 l 13200 24675 l 13125 24675 l
+ 13050 24750 l 12900 24750 l 12900 24975 l 12825 25050 l 12600 25050 l
+ 12450 25050 l 12300 25050 l 12075 24975 l 12000 25125 l 12000 25275 l
+ 11850 25350 l 11625 25575 l 11400 25725 l 11175 25725 l 11025 25800 l
+ 10875 25950 l 10875 26175 l 10875 26400 l 10725 26475 l 10425 26550 l
+ 10350 26775 l 10200 26925 l 9975 27225 l 9750 27300 l 9450 27450 l
+ 9225 27600 l 9075 27750 l 9225 27975 l 9225 28200 l 9150 28575 l
+ 9000 28800 l 9000 29100 l 8775 29475 l 8475 29925 l 8325 30150 l
+ 8175 30225 l 7875 30000 l 7650 29775 l 7650 29475 l 7500 29250 l
+ 7425 29025 l 7275 28725 l 7200 28500 l 6900 27750 l 6675 27525 l
+ 6375 27300 l 6450 26850 l 6375 26475 l 6300 26175 l 6300 25875 l
+ 6225 25725 l 6225 25500 l 6075 25350 l 6075 25125 l 6075 24975 l
+ 5850 24900 l 5775 25050 l 5850 25200 l 5475 25350 l 5025 25200 l
+ 4725 24900 l 4500 24525 l 4725 24525 l 4950 24375 l 5250 24375 l
+ 5325 24225 l 5250 24075 l 5025 24075 l 4800 24375 l 4575 24225 l
+ 4350 24000 l 4125 23850 l 3825 23550 l 3525 23550 l 3225 23475 l
+ 2925 23400 l 2550 23475 l 2325 23475 l 1950 23400 l 1725 23400 l
+ 1200 23250 l 1200 23025 l 1050 22950 l 975 23175 l 675 23175 l
+ 375 23100 l 150 22950 l 75 22950 l 0 22950 l 0 14850 l
+ 17250 14850 l
+ 17250 31575 l  cp gs col7 1.00 shd ef gr gs col0 s gr 
+% Polyline
+n 9600 31575 m 9975 31200 l 10125 30825 l 10500 30375 l 10275 30225 l 10125 29925 l
+ 9600 29400 l 9525 29475 l 9300 29475 l 9150 29775 l 9150 30150 l
+ 8925 30375 l 8775 30600 l 8850 30900 l 8925 31125 l 9150 31425 l
+ 9225 31575 l 9300 31575 l
+ cp gs col7 1.00 shd ef gr gs col0 s gr 
+% Polyline
+n 14775 32175 m 14775 31500 l 14850 31200 l 14925 30825 l 15150 30600 l 15600 30600 l
+ 16200 31275 l 16575 31650 l 16950 32175 l
+ cp gs col7 1.00 shd ef gr gs col0 s gr 
+% Polyline
+135.000 slw
+n 3825 23775 m 4200 22650 l 4125 21900 l 4725 20850 l 4950 20625 l 5250 19800 l
+ 5175 19575 l
+ 5550 18975 l gs col11 s gr 
+% Polyline
+n 14550 26850 m 15000 26325 l 15150 25575 l 15450 25050 l
+ 15375 22275 l gs col11 s gr 
+% Polyline
+n 12450 25200 m 12450 24150 l 12150 23100 l 12075 22500 l
+ 13575 21825 l gs col11 s gr 
+% Polyline
+n 12075 22575 m 11550 22875 l 11175 22875 l 10200 22050 l 9675 21825 l 9675 21450 l
+ 9300 21075 l
+ 8775 20400 l gs col11 s gr 
+% Polyline
+15.000 slw
+n 1725 24150 m
+ 2100 23400 l gs col0 s gr 
+% Polyline
+n 1837 26257 m 3225 26775 l 4125 26850 l 5475 26775 l
+ 6427 26707 l gs col0 s gr 
+% Polyline
+n 8775 29475 m
+ 9225 29700 l gs col0 s gr 
+% Polyline
+2 slj
+n 3825 26850 m 3825 26851 l 3826 26855 l 3828 26861 l 3831 26871 l 3834 26885 l
+ 3840 26904 l 3846 26928 l 3854 26958 l 3864 26993 l 3874 27034 l
+ 3887 27080 l 3900 27132 l 3915 27187 l 3931 27247 l 3948 27310 l
+ 3965 27377 l 3983 27445 l 4002 27515 l 4020 27585 l 4039 27656 l
+ 4057 27727 l 4076 27798 l 4094 27867 l 4111 27936 l 4128 28002 l
+ 4145 28068 l 4161 28131 l 4176 28193 l 4191 28252 l 4205 28310 l
+ 4219 28366 l 4232 28420 l 4244 28473 l 4256 28524 l 4268 28574 l
+ 4279 28622 l 4289 28670 l 4300 28716 l 4309 28762 l 4319 28806 l
+ 4328 28851 l 4337 28895 l 4346 28938 l 4354 28982 l 4363 29025 l
+ 4371 29070 l 4379 29116 l 4388 29161 l 4396 29207 l 4404 29253 l
+ 4412 29300 l 4419 29347 l 4427 29394 l 4435 29442 l 4442 29490 l
+ 4450 29538 l 4457 29587 l 4464 29636 l 4472 29686 l 4479 29735 l
+ 4486 29785 l 4493 29835 l 4499 29885 l 4506 29935 l 4513 29985 l
+ 4519 30035 l 4525 30085 l 4532 30134 l 4538 30183 l 4543 30231 l
+ 4549 30279 l 4555 30326 l 4560 30373 l 4565 30418 l 4570 30463 l
+ 4575 30507 l 4580 30551 l 4584 30593 l 4589 30634 l 4593 30675 l
+ 4597 30714 l 4601 30753 l 4605 30791 l 4608 30828 l 4612 30864 l
+ 4615 30899 l 4619 30933 l 4622 30967 l 4625 31000 l 4629 31042 l
+ 4633 31083 l 4637 31124 l 4640 31163 l 4644 31203 l 4648 31242 l
+ 4651 31282 l 4655 31321 l 4658 31362 l 4662 31403 l 4665 31444 l
+ 4669 31487 l 4673 31531 l 4676 31576 l 4680 31621 l 4684 31668 l
+ 4688 31716 l 4692 31763 l 4696 31811 l 4700 31858 l 4703 31904 l
+ 4707 31948 l 4710 31990 l 4713 32028 l 4716 32062 l 4718 32092 l
+ 4720 32117 l 4722 32137 l 4723 32152 l 4724 32163 l 4725 32170 l
+ 4725 32173 l
+ 4725 32175 l gs col0 s gr 
+% Polyline
+n 4627 30975 m 4628 30975 l 4632 30974 l 4638 30974 l 4648 30973 l 4662 30971 l
+ 4681 30969 l 4705 30966 l 4734 30963 l 4769 30959 l 4809 30955 l
+ 4854 30950 l 4904 30945 l 4958 30939 l 5015 30933 l 5076 30926 l
+ 5138 30920 l 5203 30913 l 5268 30906 l 5334 30899 l 5401 30892 l
+ 5466 30886 l 5531 30879 l 5595 30873 l 5657 30867 l 5718 30861 l
+ 5777 30856 l 5835 30851 l 5891 30846 l 5945 30841 l 5998 30837 l
+ 6049 30832 l 6099 30829 l 6147 30825 l 6195 30822 l 6241 30819 l
+ 6287 30816 l 6332 30813 l 6376 30811 l 6420 30808 l 6464 30806 l
+ 6507 30804 l 6551 30803 l 6595 30801 l 6637 30800 l 6679 30799 l
+ 6722 30797 l 6765 30797 l 6809 30796 l 6854 30795 l 6899 30795 l
+ 6945 30794 l 6993 30794 l 7042 30794 l 7093 30794 l 7145 30794 l
+ 7199 30794 l 7254 30795 l 7312 30795 l 7372 30796 l 7433 30797 l
+ 7497 30798 l 7563 30799 l 7631 30801 l 7700 30802 l 7772 30803 l
+ 7844 30805 l 7918 30807 l 7992 30809 l 8067 30810 l 8141 30812 l
+ 8215 30814 l 8286 30816 l 8356 30818 l 8423 30820 l 8486 30822 l
+ 8544 30823 l 8598 30825 l 8647 30826 l 8690 30827 l 8728 30829 l
+ 8759 30829 l 8785 30830 l 8805 30831 l 8820 30831 l 8830 30832 l
+ 8837 30832 l 8840 30832 l
+ 8842 30832 l gs col0 s gr 
+% Polyline
+n 10125 30825 m 10126 30825 l 10130 30825 l 10136 30825 l 10146 30826 l 10160 30826 l
+ 10179 30827 l 10204 30828 l 10234 30830 l 10269 30831 l 10310 30833 l
+ 10357 30835 l 10408 30837 l 10465 30840 l 10525 30843 l 10589 30846 l
+ 10655 30849 l 10724 30852 l 10795 30856 l 10866 30859 l 10938 30863 l
+ 11010 30867 l 11082 30871 l 11152 30874 l 11221 30878 l 11289 30882 l
+ 11356 30886 l 11420 30890 l 11483 30894 l 11544 30898 l 11603 30903 l
+ 11661 30907 l 11717 30911 l 11771 30915 l 11824 30919 l 11875 30924 l
+ 11926 30928 l 11975 30933 l 12023 30938 l 12071 30942 l 12118 30947 l
+ 12165 30953 l 12211 30958 l 12257 30963 l 12304 30969 l 12350 30975 l
+ 12394 30981 l 12439 30987 l 12484 30993 l 12529 31000 l 12575 31006 l
+ 12622 31013 l 12669 31021 l 12717 31028 l 12767 31036 l 12817 31044 l
+ 12869 31053 l 12922 31062 l 12977 31072 l 13034 31082 l 13092 31093 l
+ 13153 31104 l 13215 31115 l 13280 31127 l 13346 31140 l 13414 31153 l
+ 13485 31166 l 13557 31180 l 13630 31194 l 13705 31209 l 13781 31224 l
+ 13857 31239 l 13934 31254 l 14011 31270 l 14086 31285 l 14161 31300 l
+ 14233 31314 l 14302 31328 l 14368 31342 l 14431 31354 l 14488 31366 l
+ 14541 31377 l 14588 31387 l 14630 31395 l 14666 31403 l 14696 31409 l
+ 14721 31414 l 14740 31418 l 14754 31421 l 14764 31423 l 14770 31424 l
+ 14774 31425 l
+ 14775 31425 l gs col0 s gr 
+% Polyline
+n 16275 28350 m 16274 28350 l 16271 28350 l 16266 28351 l 16258 28352 l 16246 28353 l
+ 16229 28354 l 16209 28357 l 16182 28359 l 16151 28362 l 16114 28366 l
+ 16071 28370 l 16023 28375 l 15969 28380 l 15910 28385 l 15845 28392 l
+ 15776 28398 l 15702 28405 l 15624 28412 l 15543 28420 l 15459 28428 l
+ 15372 28436 l 15284 28444 l 15194 28452 l 15103 28460 l 15012 28468 l
+ 14920 28476 l 14829 28484 l 14739 28492 l 14649 28499 l 14561 28507 l
+ 14474 28514 l 14389 28521 l 14305 28527 l 14223 28534 l 14143 28540 l
+ 14065 28545 l 13989 28551 l 13915 28556 l 13843 28561 l 13772 28565 l
+ 13703 28570 l 13636 28573 l 13570 28577 l 13506 28580 l 13443 28583 l
+ 13381 28586 l 13321 28589 l 13261 28591 l 13202 28593 l 13144 28595 l
+ 13087 28596 l 13030 28597 l 12974 28598 l 12917 28599 l 12861 28600 l
+ 12806 28600 l 12750 28600 l 12694 28600 l 12639 28600 l 12583 28599 l
+ 12526 28598 l 12470 28597 l 12413 28596 l 12356 28595 l 12298 28593 l
+ 12239 28591 l 12179 28589 l 12119 28586 l 12057 28583 l 11994 28580 l
+ 11930 28577 l 11864 28573 l 11797 28570 l 11728 28565 l 11657 28561 l
+ 11585 28556 l 11511 28551 l 11435 28545 l 11357 28540 l 11277 28534 l
+ 11195 28527 l 11111 28521 l 11026 28514 l 10939 28507 l 10851 28499 l
+ 10761 28492 l 10671 28484 l 10580 28476 l 10488 28468 l 10397 28460 l
+ 10306 28452 l 10216 28444 l 10128 28436 l 10041 28428 l 9957 28420 l
+ 9876 28412 l 9798 28405 l 9724 28398 l 9655 28392 l 9590 28385 l
+ 9531 28380 l 9477 28375 l 9429 28370 l 9386 28366 l 9349 28362 l
+ 9318 28359 l 9291 28357 l 9271 28354 l 9254 28353 l 9242 28352 l
+ 9234 28351 l 9229 28350 l 9226 28350 l
+ 9225 28350 l gs col0 s gr 
+% Polyline
+n 15000 30750 m 14999 30748 l 14997 30745 l 14993 30738 l 14986 30727 l 14977 30712 l
+ 14965 30692 l 14950 30667 l 14932 30637 l 14911 30602 l 14888 30564 l
+ 14863 30522 l 14836 30477 l 14809 30429 l 14780 30381 l 14751 30332 l
+ 14723 30282 l 14695 30233 l 14667 30186 l 14641 30139 l 14616 30094 l
+ 14592 30050 l 14569 30008 l 14547 29968 l 14527 29930 l 14508 29893 l
+ 14490 29858 l 14474 29824 l 14458 29792 l 14444 29760 l 14431 29730 l
+ 14418 29701 l 14406 29672 l 14395 29643 l 14385 29615 l 14375 29588 l
+ 14364 29554 l 14354 29521 l 14344 29488 l 14335 29455 l 14327 29421 l
+ 14319 29386 l 14312 29350 l 14306 29313 l 14300 29274 l 14294 29234 l
+ 14289 29192 l 14284 29148 l 14280 29102 l 14275 29055 l 14272 29006 l
+ 14268 28957 l 14265 28907 l 14262 28858 l 14259 28810 l 14257 28764 l
+ 14255 28723 l 14254 28685 l 14253 28653 l 14252 28627 l 14251 28606 l
+ 14250 28592 l 14250 28582 l 14250 28577 l
+ 14250 28575 l gs col0 s gr 
+% Polyline
+0 slj
+n 600 24000 m 675 24600 l 1200 24975 l 1050 25650 l 975 25875 l 975 26325 l
+ 1125 26775 l
+ 1200 27375 l gs col0 s gr 
+% Polyline
+n 975 25875 m 525 25725 l 375 25725 l 225 25875 l
+ 0 25800 l gs col0 s gr 
+% Polyline
+n 8925 30375 m 9450 30525 l 9750 30525 l 9975 30525 l
+ 10305 30607 l gs col0 s gr 
+% Polyline
+n 9000 28950 m 8775 28875 l 8550 28800 l 8400 28875 l 8100 28875 l 7800 28800 l
+
+ 7477 29130 l gs col0 s gr 
+% Polyline
+n 8167 28867 m 8250 27225 l 8775 27150 l
+ 9540 27405 l gs col0 s gr 
+% Polyline
+n 8025 26925 m
+ 8250 27225 l gs col0 s gr 
+% Polyline
+n 8025 26925 m
+ 6975 27975 l gs col0 s gr 
+% Polyline
+n 8025 26925 m 8325 26400 l 8625 26100 l 9000 26025 l 9300 26100 l 9525 26100 l
+ 9825 26250 l
+ 10425 26550 l gs col0 s gr 
+% Polyline
+n 9825 26250 m 10425 25425 l 10500 25125 l 10875 24750 l 11400 24675 l 11700 24450 l
+
+ 12075 24975 l gs col0 s gr 
+% Polyline
+n 11700 24450 m 12300 23850 l 12900 23775 l 13500 23700 l 13800 23700 l 14100 23850 l
+ 14400 24300 l 14550 24900 l
+ 14100 25500 l gs col0 s gr 
+% Polyline
+n 14475 24600 m 15450 24375 l 15825 24450 l
+ 15825 27000 l gs col0 s gr 
+% Polyline
+n 15825 24450 m 16350 24225 l 16500 23925 l 16875 23700 l
+ 17250 23700 l gs col0 s gr 
+% Polyline
+n 10800 14857 m 10800 18375 l 12375 20625 l
+ 17250 20700 l gs col0 s gr 
+% Polyline
+n 14992 24487 m 14250 22800 l 14325 21900 l
+ 13725 20625 l gs col0 s gr 
+% Polyline
+n 12900 23775 m 13050 22575 l 12675 21375 l
+ 12750 20625 l gs col0 s gr 
+% Polyline
+n 12907 22140 m 11325 22950 l 11325 23700 l
+ 11850 24300 l gs col0 s gr 
+% Polyline
+n 12675 21375 m 11325 21075 l 10350 19725 l 9900 18675 l
+ 10800 18390 l gs col0 s gr 
+% Polyline
+n 11325 22950 m 9975 21900 l 10125 21150 l
+ 10875 20475 l gs col0 s gr 
+% Polyline
+n 9900 18675 m 9150 18675 l 9150 18825 l 8700 18750 l 8250 18825 l 8250 19575 l
+ 9225 21000 l 9750 21525 l 9600 21675 l
+ 9975 21900 l gs col0 s gr 
+% Polyline
+n 8820 26062 m 8700 25200 l 8775 24825 l 9375 24900 l 9825 25050 l
+ 10462 25290 l gs col0 s gr 
+% Polyline
+n 11325 23700 m 10875 23775 l 10575 24000 l 10125 24075 l 9750 24300 l
+ 9450 24922 l gs col0 s gr 
+% Polyline
+n 8775 24825 m 8550 24675 l 8625 24450 l 8625 24300 l 8700 24150 l 9075 24000 l
+ 9300 23775 l 9600 23625 l 9900 23625 l
+ 10260 24052 l gs col0 s gr 
+% Polyline
+n 8625 24300 m 8475 23775 l 8175 23475 l 7875 23475 l 7350 23475 l 7500 23850 l
+ 7425 24225 l 7725 24450 l 7950 24825 l 7950 25275 l 8175 25875 l
+
+ 8475 26250 l gs col0 s gr 
+% Polyline
+n 8010 25485 m 7800 26025 l 7650 26250 l 7500 26475 l 7425 26775 l 7125 26925 l
+
+ 6577 27450 l gs col0 s gr 
+% Polyline
+n 6825 25200 m 6900 24375 l 7050 24225 l
+ 7425 24232 l gs col0 s gr 
+% Polyline
+n 7590 26332 m 7200 26100 l 7200 25875 l 7125 25725 l 7200 25575 l 6900 25575 l
+
+ 6825 25200 l gs col0 s gr 
+% Polyline
+n 6900 25575 m 6600 25875 l
+ 6300 26100 l gs col0 s gr 
+% Polyline
+n 5925 24922 m 5850 24375 l 6000 24225 l 6450 24300 l
+ 6907 24375 l gs col0 s gr 
+% Polyline
+n 7350 23482 m 6900 23175 l 6600 23175 l 6375 23400 l 6000 23400 l 5775 23475 l
+ 5775 23700 l
+ 6112 24247 l gs col0 s gr 
+% Polyline
+n 4897 24247 m 4650 23475 l 5250 22950 l 5475 22500 l 5625 22575 l 5925 22575 l
+
+ 6495 23280 l gs col0 s gr 
+% Polyline
+n 11325 23250 m 10200 23025 l 9675 22875 l
+ 9675 23625 l gs col0 s gr 
+% Polyline
+n 9675 22875 m 9000 22575 l 8625 22650 l 8400 22800 l
+ 8002 23460 l gs col0 s gr 
+% Polyline
+n 10140 22035 m 9900 22125 l 9000 22125 l 8400 21975 l 8100 22125 l
+ 8505 22732 l gs col0 s gr 
+% Polyline
+n 6907 23175 m 6900 22125 l 7200 22050 l 7425 21900 l
+ 8100 22125 l gs col0 s gr 
+% Polyline
+n 9007 22125 m 7875 20625 l 7575 19725 l 7425 19200 l 7725 18825 l 7650 18450 l
+
+ 8415 18795 l gs col0 s gr 
+% Polyline
+n 5625 22575 m 5850 22125 l 6225 22125 l 6525 22350 l
+ 6900 22200 l gs col0 s gr 
+% Polyline
+n 9450 18675 m 9000 17325 l 8775 16650 l 8775 16125 l 8925 15600 l
+ 8745 14857 l gs col0 s gr 
+% Polyline
+n 8820 16800 m 9825 16575 l 10200 16650 l
+ 10800 16575 l gs col0 s gr 
+% Polyline
+n 7987 18592 m 7875 17325 l 7950 16650 l 8025 16500 l 8475 16350 l
+ 8775 16425 l gs col0 s gr 
+% Polyline
+n 5475 22500 m 5325 22125 l 5325 21900 l 5325 21375 l 5625 21000 l 6000 20925 l
+ 6450 21150 l
+ 6825 20925 l gs col0 s gr 
+% Polyline
+n 4908 23244 m 4200 22875 l 3975 22800 l 3225 22725 l
+ 3067 23430 l gs col0 s gr 
+% Polyline
+n 3225 22725 m 2475 22275 l 2100 22275 l 1950 22200 l 1425 22050 l 1200 22275 l
+
+ 1132 22972 l gs col0 s gr 
+% Polyline
+n 1425 22050 m 1125 20475 l 825 19725 l 525 18975 l
+ 0 18675 l gs col0 s gr 
+% Polyline
+n 1132 20557 m 2175 20400 l 2550 20250 l 3300 20775 l 3450 21000 l 3750 21375 l
+ 3525 22200 l
+ 3675 22770 l gs col0 s gr 
+% Polyline
+n 5302 22845 m 4800 22350 l 4650 22050 l 4425 21675 l 4125 21450 l
+ 3750 21375 l gs col0 s gr 
+% Polyline
+n 4350 21600 m 4725 20850 l 4875 20775 l 5100 20850 l
+ 5625 21000 l gs col0 s gr 
+% Polyline
+n 6825 18675 m 6000 18600 l 5850 18525 l 5625 18750 l 5475 19125 l 5250 19575 l
+ 5175 20025 l
+ 4875 20775 l gs col0 s gr 
+% Polyline
+n 6457 19942 m 5850 19950 l 5625 19875 l
+ 5235 19710 l gs col0 s gr 
+% Polyline
+n 1957 20430 m 1650 19200 l 1725 17850 l 1575 17550 l 1500 17175 l
+ 0 16800 l gs col0 s gr 
+% Polyline
+n 3075 19125 m 2700 18825 l 2250 18450 l 2175 18525 l 2025 18525 l
+ 1695 18450 l gs col0 s gr 
+% Polyline
+n 1500 17175 m 2025 17100 l 2325 17025 l 2775 17250 l 3150 17325 l 3450 17025 l
+ 3675 16425 l 4050 15975 l 3975 15450 l
+ 4200 14850 l gs col0 s gr 
+% Polyline
+n 2550 18675 m 2775 17850 l
+ 3075 17325 l gs col0 s gr 
+% Polyline
+n 5850 18525 m 5250 18150 l 4950 18225 l 4650 18525 l
+ 4500 18900 l gs col0 s gr 
+% Polyline
+n 1875 14850 m 1875 15225 l 2100 15450 l 2475 15525 l 2625 15750 l 2625 15900 l
+ 2775 16125 l
+ 3675 16500 l gs col0 s gr 
+% Polyline
+n 7927 16800 m 6825 16125 l 6225 16200 l 5400 16425 l 4575 16200 l
+ 4050 15975 l gs col0 s gr 
+% Polyline
+n 5008 16313 m 5325 15900 l 5700 15750 l 6075 15750 l 6300 15450 l
+ 6652 14850 l gs col0 s gr 
+% Polyline
+n 5520 18337 m 5850 17850 l 6450 17475 l 6750 17475 l 7125 17700 l
+ 7897 17550 l gs col0 s gr 
+% Polyline
+n 5962 17760 m 5250 17250 l 5325 16800 l
+ 5325 16425 l gs col0 s gr 
+% Polyline
+n 5100 20175 m 4275 19500 l 4500 18900 l 4200 18600 l 3900 18300 l 3450 19050 l
+ 3075 19125 l
+ 2692 20355 l gs col0 s gr 
+% Polyline
+n 3450 17025 m 3750 17475 l 3825 17625 l 3900 18075 l
+ 3900 18300 l gs col0 s gr 
+% Polyline
+n 4050 18450 m 4425 17400 l 4650 17250 l 4875 17025 l
+ 5325 16725 l gs col0 s gr 
+% Polyline
+n 7357 21945 m 6450 20175 l 6525 19125 l 6825 18675 l
+ 7560 19035 l gs col0 s gr 
+$F2psEnd
+rs
+%%EndDocument
+EndEPSF
+grestore
+} def
+
+
+/Centres {
+gsave
+UNOWNEDCENTER
+ACE supply
+AYU supply
+MES supply
+HER supply
+BAL supply
+BAD supply
+KAS supply
+KAB supply
+LAH supply
+SHI supply
+HOR supply
+SIN supply
+MUL supply
+ABD supply
+OMA supply
+AGR supply
+AWA supply
+CHI supply
+MAL supply
+BIH supply
+PEG supply
+WAR supply
+TEL supply
+GOL supply
+ORI supply
+GUJ supply
+KHA supply
+HYD supply
+AHM supply
+BIJ supply
+GOA supply
+BAN supply
+CAL supply
+PUL supply
+grestore
+} def
+
+/ACE {936 36} def
+/AYU {987 352} def
+/MES {141 866} def
+/HER {197 834} def
+/BAL {237 923} def
+/BAD {404 920} def
+/KAS {519 884} def
+/KAB {296 870} def
+/LAH {425 837} def
+/SHI {157 663} def
+/HOR {127 567} def
+/SIN {250 596} def
+/MUL {354 774} def
+/ABD {299 663} def
+/OMA {101 422} def
+/AGR {509 703} def
+/AWA {573 742} def
+/CHI {377 636} def
+/MAL {458 582} def
+/BIH {668 618} def
+/PEG {907 381} def
+/WAR {530 535} def
+/TEL {550 475} def
+/GOL {619 461} def
+/ORI {661 409} def
+/GUJ {318 451} def
+/KHA {402 503} def
+/HYD {487 496} def
+/AHM {385 433} def
+/BIJ {441 430} def
+/GOA {412 345} def
+/BAN {552 329} def
+/CAL {464 257} def
+/PUL {529 244} def
+/KDY {566 68} def
+
+/DrawMap {
+mapdict begin
+premap
+doeps
+postmap
+Centres
+end
+} def

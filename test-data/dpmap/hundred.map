@@ -1,0 +1,129 @@
+#   --------
+#   Politics
+#   --------
+ENGLAND     (ENGLISH)       DEV LON GUY CAL NMD
+A CAL
+A GUY
+A NMD
+F DEV
+F LON
+
+FRANCE      (FRENCH)        PAR ORL DAU TOU
+A DAU
+A ORL
+A PAR
+A TOU
+A PRO
+
+BURGUNDY    (BURGUNDIAN)    HOL FLA LUX DIJ
+A DIJ
+A FLA
+A LUX
+F HOL
+
+UNOWNED                     CAN CAS BRT SCO
+
+RULE        BUILD_ANY
+
+BEGIN       A.D. 1425 MOVEMENT
+FLOW        NEWYEAR:5
+FLOW        A.D.:MOVEMENT,RETREATS
+FLOW        IFYEARDIV:10
+FLOW        A.D.:ADJUSTMENTS
+
+#   ---------
+#   Geography
+#   ---------
+Minch                       = min
+North Sea                   = nth
+Scotland                    = sco
+Irish Sea                   = iri
+The Wash                    = was
+Northumbria                 = num nor northumberland
+Northumbria (west coast)    = num/wc num(wc) nor/wc nor(wc)
+Northumbria (east coast)    = num/ec num(ec) nor/ec nor(ec)
+The Pale                    = pal pale
+Wales                       = wal
+Devon                       = dev ply plymouth
+Anglia                      = ang
+London                      = lon
+Strait of Dover             = dov dover
+Bristol Channel             = bch
+Friesland                   = fri
+Holland                     = hol ams amsterdam
+Flanders                    = fla ant antwerp
+English Channel             = ech eng
+Bay of Biscay               = bis biscay
+Atlantic                    = atl
+Calais                      = cal art artois
+Normandy                    = nmd
+Brittany                    = brt bri
+Anjou                       = anj
+Paris                       = par
+Orleanais                   = orl orleans
+Luxembourg                  = lux luxemburg
+Lorraine                    = lor swa swabia
+Dijon                       = dij
+Charolais                   = cha
+Cantons                     = can canton
+Alsace                      = als
+Savoy                       = sav
+Provence                    = pro
+Dauphine                    = dau dauphin
+Limousin                    = lim limousine
+Poitou                      = poi
+Guyenne                     = guy aqu auitaine
+Toulouse                    = tou
+Aragon                      = ara cat catalonia
+Aragon (north coast)        = ara/nc ara(nc) cat/nc cat(nc) aragon/nc
+Aragon (south coast)        = ara/sc ara(sc) cat/sc cat(sc) aragon/sc
+Castile                     = cas ibe ibi iberia
+Mediterranean               = med
+
+WATER   MIN     ABUTS   SCO IRI NTH PAL
+WATER   NTH     ABUTS   MIN SCO NUM/EC ANG WAS
+COAST   SCO     ABUTS   MIN IRI NTH NUM/EC NUM/WC
+WATER   IRI     ABUTS   MIN SCO PAL NUM/WC WAL ATL BCH
+WATER   WAS     ABUTS   NTH ANG DOV HOL FRI
+COAST   num     ABUTS   SCO WAL DEV ANG NTH IRI
+COAST   NUM/WC  ABUTS   SCO IRI WAL
+COAST   NUM/EC  ABUTS   SCO NTH ANG
+COAST   PAL     ABUTS   IRI ATL MIN
+COAST   WAL     ABUTS   IRI DEV BCH NUM/WC
+COAST   DEV     ABUTS   WAL num LON ECH BCH ang
+COAST   ANG     ABUTS   NTH NUM/EC WAS DOV LON dev
+COAST   LON     ABUTS   DOV ECH DEV ANG CAL
+WATER   DOV     ABUTS   WAS ANG LON ECH NMD CAL FLA HOL
+WATER   BCH     ABUTS   ATL IRI WAL DEV ECH BRT BIS
+COAST   FRI     ABUTS   WAS HOL lux
+COAST   HOL     ABUTS   FRI WAS DOV FLA lux
+COAST   FLA     ABUTS   DOV HOL lux dij CAL
+WATER   ECH     ABUTS   BCH DEV LON DOV NMD BRT
+WATER   BIS     ABUTS   BCH BRT GUY ARA/NC CAS ATL
+WATER   ATL     ABUTS   IRI BCH BIS CAS MED PAL
+COAST   CAL     ABUTS   DOV LON FLA dij par NMD
+COAST   NMD     ABUTS   ECH DOV CAL par orl anj BRT
+COAST   BRT     ABUTS   BIS BCH ECH NMD anj poi orl GUY
+LAND    ANJ     ABUTS   BRT NMD ORL
+LAND    PAR     ABUTS   NMD CAL DIJ CHA DAU ORL
+LAND    ORL     ABUTS   NMD PAR DAU LIM POI BRT ANJ
+LAND    LUX     ABUTS   FRI HOL FLA DIJ LOR
+LAND    LOR     ABUTS   ALS CAN DIJ LUX
+LAND    DIJ     ABUTS   CAL FLA LUX LOR CAN DAU CHA PAR
+LAND    CHA     ABUTS   PAR DIJ DAU
+LAND    CAN     ABUTS   DIJ LOR ALS SAV DAU
+LAND    ALS     ABUTS   LOR CAN
+COAST   SAV     ABUTS   MED PRO dau can
+COAST   PRO     ABUTS   MED SAV TOU lim dau
+LAND    DAU     ABUTS   SAV PRO LIM ORL PAR CHA DIJ CAN
+LAND    LIM     ABUTS   PRO TOU POI ORL DAU
+LAND    POI     ABUTS   BRT ORL LIM TOU GUY
+COAST   GUY     ABUTS   BIS BRT poi tou ARA/NC
+COAST   TOU     ABUTS   MED ARA/SC guy poi lim PRO
+COAST   ara     ABUTS   GUY TOU BIS CAS MED
+COAST   ARA/NC  ABUTS   CAS BIS GUY
+COAST   ARA/SC  ABUTS   MED CAS TOU
+COAST   CAS     ABUTS   MED ATL BIS ARA/NC ARA/SC
+WATER   MED     ABUTS   ATL CAS ARA/SC TOU PRO SAV
+
+

@@ -1,0 +1,36 @@
+#   ---------------------------
+#   This is the file "pure.map"
+#   I wrote it, and I'm proud.
+#         --Manus Hand
+#   ---------------------------
+AUSTRIA (AUSTRIAN)  VIE
+A VIE
+ENGLAND (ENGLISH)   LON
+A LON
+FRANCE  (FRENCH)    PAR
+A PAR
+GERMANY (GERMAN)    BER
+A BER
+ITALY   (ITALIAN)   ROM
+A ROM
+RUSSIA  (RUSSIAN)   MOS
+A MOS
+TURKEY  (TURKISH)   CON
+A CON
+
+Berlin              = ber
+Constantinople      = con
+London              = lon
+Moscow              = mos
+Paris               = par
+Rome                = rom
+Vienna              = vie
+
+LAND    BER     ABUTS   CON LON MOS PAR ROM VIE
+LAND    CON     ABUTS   BER LON MOS PAR ROM VIE
+LAND    LON     ABUTS   BER CON MOS PAR ROM VIE
+LAND    MOS     ABUTS   BER CON LON PAR ROM VIE
+LAND    PAR     ABUTS   BER CON LON MOS ROM VIE
+LAND    ROM     ABUTS   BER CON LON MOS PAR VIE
+LAND    VIE     ABUTS   BER CON LON MOS PAR ROM
+

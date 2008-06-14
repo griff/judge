@@ -1,0 +1,7 @@
+# DPJudge map of Youngstown
+# Created by Mario Huys, Mar 2001
+
+USE youngstown.politics
+USE youngstown.locations
+USE youngstown.geography
+USE youngstown.military

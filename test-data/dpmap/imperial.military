@@ -1,0 +1,113 @@
+# DPJudge map of Imperial: military
+# Created by Joe Carl, Mar 2003
+
+Britain
+F LON
+F EDI
+F NSC
+F FAL
+F GIB
+F ADE
+F BOM
+F SIN
+F HKO
+A DUB
+A QUE
+A VAN
+A DEL
+A PER
+
+France
+A PAR
+A MAR
+A GCS
+A CMB
+F NAN
+F CRS
+F CYN
+F MNV
+F CCH
+F SCT
+
+Russia 
+A MOS
+A WAR
+A GEO
+A ORN
+A OMS
+A IRK
+A VLA
+A ANC
+F STP/SC
+F SEV
+F POA
+
+Holland
+F HOL
+F CTN
+F CEY
+F SUM
+F JAV
+A PMB
+A TRN
+A BRN
+
+Turkey
+F ANG/NC
+F CYP
+F BAG
+A SOF
+A CON
+A CAI
+
+China
+A PEK
+A SHA
+A CAN
+A MAC
+A WUH
+A CHK
+A SNK
+
+Prussia
+A BER
+A PRU
+A SIL
+A RUH
+
+Austria
+A VIE
+A VEN
+A BUD
+F CRO
+
+Japan
+A EDO
+F SAP
+F KAG
+F OKI
+
+USA
+A WDC
+A DET
+A CHC
+A SFO
+F ORE
+F NYC
+
+CSA
+A RIC
+A ATL
+A AUS
+A NOL
+
+Mexico
+A MEX
+F MER
+F MAZ
+
+Brazil
+F RDJ
+F REC
+A BRA
+A OLI

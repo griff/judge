@@ -1,0 +1,18 @@
+USE standard.map
+
+BEGIN WINTER 1900 ADJUSTMENTS
+RULE BUILD_ANY
+
+Belgium     (Belgian:B)     BEL
+Bulgaria    (Bulgarian:L)   BUL
+Spain       (Spanish:N)     SPA
+Serbia      (Serbian:S)     SER
+Sweden      (Swedish:W)     SWE
+Greece      (Greek:C)       GRE
+Tunis       (Tunisian:X)    TUN
+Rumania     (Rumanian:U)    RUM
+Denmark     (Danish)        DEN
+Holland     (Dutch)         HOL
+Norway      (Norwegian)     NWY
+Portugal    (Portuguese)    POR
+

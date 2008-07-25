@@ -10,6 +10,7 @@ module Judge
 
     attr_reader :abbreviation
     attr_reader :name
+    attr_reader :type
 
     def initialize( container, abbreviation, name=nil )
       @container = container
@@ -18,6 +19,10 @@ module Judge
       @ambiguous = [].to_set
       @aliases = [].to_set
       @adjacencies = [].to_set
+    end
+    
+    def type=(new_value)
+      @type = new_value
     end
     
     def name=(new_value)
@@ -86,10 +91,11 @@ module Judge
     end
     
     def abuts( abuts )
-      abuts = abouts.split if abuts.kind_of? String
-      abuts = abouts.to_a if abuts.respond_to? :to_a
+      abuts = abuts.split if abuts.kind_of? String
+      abuts = abuts.to_a if abuts.respond_to? :to_a
+=begin commend
+  
       abuts.each do |abut|
-        
         case center
         when /^(.*)\?$/
           add_ambiguous($1)
@@ -99,6 +105,7 @@ module Judge
           raise 'Invalid alias'
         end
       end
+=end
     end
   end  
 end

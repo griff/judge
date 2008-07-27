@@ -4,7 +4,7 @@ module Judge
     attr_accessor :visual
     
     def initialize
-      @locations = Locations.new(self)
+      @locations = Locations.new
       @powers = []
       @powers_wrap = ImmutableWrapper.new(@powers)
       @unowned = []
@@ -55,6 +55,11 @@ module Judge
 
     def deleted_province(province)
       @powers.each{|p| p.deleted_province(province)}
+    end
+    
+    def validate
+      @powers.all?{|p| p.validate} && @unowned.all?{|p| p.validate}
+      locations.validate
     end
   end
 end

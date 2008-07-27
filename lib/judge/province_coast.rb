@@ -6,11 +6,15 @@ module Judge
       super(container, abbreviation)
       @province = province
       @coast = coast.upcase
-      province.add_coast(self)
+      province.coasts.add(self)
+    end
+    
+    def owner
+      @province.owner
     end
 
     def delete
-      @province.delete_coast(self)
+      @province.coasts.delete(self)
       super
     end
     
@@ -22,9 +26,11 @@ module Judge
       province, coast = Location.abbreviation_and_coast(new_abbrev)
       raise 'No coast for costal location' unless coast
       @abbreviation = province
-      @province.delete_coast(self)
-      @coast = coast
-      @province.add_coast(self)
+      if coast != @coast
+        @province.coasts.delete(self)
+        @coast = coast
+        @province.coasts.add(self)
+      end
     end
     
     def to_s

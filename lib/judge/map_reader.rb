@@ -13,6 +13,7 @@ module Judge
         puts "Reading map #{file}" if @output
         map(file)
         puts "End read map #{file}" if @output
+        @map.validate
         @map
       end
     
@@ -51,11 +52,23 @@ module Judge
                     province = @map.locations.fetch_place(old_abbrev)
                     raise "Invalid old appreviation '#{old_abbrev}'" unless province
                     province.full_abbreviation = abbreviation
-                    province.clear_aliases
+                    province.aliases.clear
                   else
                     province = @map.locations.fetch_or_create_place(abbreviation)
                   end
-                  province << aliases
+
+                  aliases = aliases.split
+                  aliases.each do |center|
+                    center = center.upcase
+                    case center
+                    when /^(.*)\?$/
+                      province.ambiguous.add($1)
+                    when /^(.*)$/
+                      province.aliases.add($1)
+                    else
+                      raise 'Invalid alias'
+                    end
+                  end
                   province.name = place_name
                 
               # Map terrain line
@@ -67,7 +80,10 @@ module Judge
                   # TODO
 
                   province = @map.locations.fetch_or_create_place(abbreviation)
-                  province.type = terrainType
+                  if terrainType != 'AMEND'
+                    province.type = terrainType
+                    province.adjacencies.clear
+                  end
                   province.abuts(abuts)
                   
                 
@@ -109,7 +125,41 @@ module Judge
                   power = @map.fetch_or_create_power(power_name)
                   power.own_word = own_word if own_word
                   power.abbreviation = abbreviation if abbreviation
-                  power << centers
+
+                  centers = centers.split
+                  centers.each do |center|
+                    center = center.upcase
+                    case center
+                    when /^\+([A-Z0-9]{3})$/
+                      #make factory
+                      power.add_factory( center )
+                    when /^\*([A-Z0-9]{3})$/
+                      #make partisan
+                      power.add_partisan( center )
+                    when /^\-([A-Z0-9]{3})$/
+                      #remove home center
+                      c = @map.locations.fetch_province($1)
+                      if c
+                        power.factories.delete(c)
+                        power.partisans.delete(c)
+                        if power.homes.delete(c)
+                          #make unowned
+                          @map.add_unowned(c)
+                        end
+                      end
+                    when /^([A-Z0-9]{3})$/
+                      #make home center
+                      c = @map.locations.fetch_or_create_province($1)
+                      if @map.suplycenter?( c )
+                        #center can not be suplycenter for more than one power
+                        raise "#{$1} is allready a suply center"
+                      end
+                      power.homes.add(c)
+                      power.owns.add(c)
+                    else
+                      throw ArgumentError, "Invalid center #{center}"
+                    end
+                  end
                   
                   @current_power = power
                 

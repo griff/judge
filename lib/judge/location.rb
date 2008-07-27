@@ -11,24 +11,39 @@ module Judge
     attr_reader :abbreviation
     attr_reader :name
     attr_reader :type
+    attr_reader :aliases
+    attr_reader :ambiguous
+    attr_reader :adjacencies
 
     def initialize( container, abbreviation, name=nil )
       @container = container
       @abbreviation = abbreviation.upcase
       @name = name
-      @ambiguous = [].to_set
-      @aliases = [].to_set
+      @ambiguous = StringList.new
+      @aliases = StringList.new
       @adjacencies = [].to_set
+      @suply_center = false
+    end
+    
+    def supply_center=(new_value)
+      @supply_center = new_value
+    end
+    
+    def supply_center?
+      @supply_center
     end
     
     def type=(new_value)
+      new_value = TYPES[new_value.upcase] unless new_value.respond_to? :can_occupy?
       @type = new_value
     end
     
+    def can_occupy?
+      type.can_occupy?
+    end
+    
     def name=(new_value)
-      @container.delete_name(@name) if @name
       @name = new_value
-      @container.add_name(new_value, self)
     end
     
     def hash
@@ -43,29 +58,7 @@ module Judge
       other.kind_of?(Location) && self.full_abbreviation == other.full_abbreviation
     end
 
-    def add_alias( short )
-      short = short.gsub(/\+/, ' ')
-      @aliases.add(short)
-      @container.add_alias(short, self)
-    end
-
-    def add_ambiguous( ambi )
-      short = short.gsub(/\+/, ' ')
-      @ambiguous << ambi
-      @container.add_ambiguous(short, self)
-    end
-    
-    def add_adjacency(other)
-      @adjacencies.add(other)
-    end
-    
-    def delete_adjacency(other)
-      @adjacencies.delete(other)
-    end
-
     def clear_aliases
-      @aliases.each{|e| @container.remove_alias(e)}
-      @ambiguous.each{|e| @container.remove_ambiguous(e)}
       @aliases.clear
       @ambiguous.clear
     end
@@ -73,39 +66,27 @@ module Judge
     def delete
       clear_aliases
     end
-
-    def <<( aliases )
-      aliases = aliases.split if aliases.kind_of? String
-      aliases = aliases.to_a if aliases.respond_to? :to_a
-      aliases.each do |center|
-        center = center.upcase
-        case center
-        when /^(.*)\?$/
-          add_ambiguous($1)
-        when /^(.*)$/
-          add_alias($1)
-        else
-          raise 'Invalid alias'
-        end
-      end
+    
+    def validate
+      raise "No name provided" unless @name
+      raise "No type provided" unless @type
     end
     
     def abuts( abuts )
       abuts = abuts.split if abuts.kind_of? String
       abuts = abuts.to_a if abuts.respond_to? :to_a
-=begin commend
-  
       abuts.each do |abut|
-        case center
-        when /^(.*)\?$/
-          add_ambiguous($1)
-        when /^(.*)$/
-          add_alias($1)
+        case abut
+        when /^\-([a-zA-Z0-9]{3}(?:\/[a-zA-Z0-9]+)?)$/
+          adjacencies.delete($1)
+        when /^[A-Z0-9]{3}(?:\/[A-Z0-9]+)?$/
+          adjacencies.add($1)
+        when /^[a-z0-9]{3}(?:\/[a-z0-9]+)?$/
+          adjacencies.add($1)  # 
         else
-          raise 'Invalid alias'
+          raise "Invalid adjacency #{abut}"
         end
       end
-=end
     end
   end  
 end

@@ -1,5 +1,8 @@
 require 'set'
 require 'judge/immutable_wrapper'
+require 'judge/units'
+require 'judge/location/stringlist'
+require 'judge/location/types'
 require 'judge/locations'
 require 'judge/location'
 require 'judge/power'

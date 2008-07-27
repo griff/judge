@@ -1,8 +1,16 @@
 module Judge
   class Province < Location
+    attr_reader :owner, :coasts
+    
     def initialize( container, abbreviation )
       super container, abbreviation
-      @coasts = Hash.new
+      @coasts = [].to_set
+    end
+
+    def owner=(new_owner)
+      @owner.remove_owned(self) if @owner
+      new_owner.add_owned(self) if new_owner
+      @owner = new_owner
     end
 
     def delete
@@ -11,15 +19,7 @@ module Judge
     end
 
     def fetch_coast( coast )
-      @coasts[coast.upcase]
-    end
-
-    def add_coast( coast )
-      @coasts[coast.coast.upcase] = coast
-    end
-
-    def delete_coast( coast )
-      @coasts.delete[coast.coast.upcase]
+      @coasts.find{|c| c.coast.upcase == coast.upcase }
     end
 
     alias :full_abbreviation :abbreviation
@@ -32,6 +32,12 @@ module Judge
     
     def to_s
       "Province '#{abbreviation}'"
+    end
+    
+    def validate
+      super
+      raise "Mixed province name" unless @coasts.all?{|c| abbreviation == c.abbreviation}
+      raise "Mixed types name" unless @coasts.all?{|c| type == c.type}
     end
   end
 end

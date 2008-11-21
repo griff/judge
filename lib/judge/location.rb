@@ -55,7 +55,7 @@ module Judge
     end
 
     def ==(other)
-      other.kind_of?(Location) && self.full_abbreviation == other.full_abbreviation
+      self.to_s == other.to_s
     end
 
     def clear_aliases
@@ -72,21 +72,8 @@ module Judge
       raise "No type provided" unless @type
     end
     
-    def abuts( abuts )
-      abuts = abuts.split if abuts.kind_of? String
-      abuts = abuts.to_a if abuts.respond_to? :to_a
-      abuts.each do |abut|
-        case abut
-        when /^\-([a-zA-Z0-9]{3}(?:\/[a-zA-Z0-9]+)?)$/
-          adjacencies.delete($1)
-        when /^[A-Z0-9]{3}(?:\/[A-Z0-9]+)?$/
-          adjacencies.add($1)
-        when /^[a-z0-9]{3}(?:\/[a-z0-9]+)?$/
-          adjacencies.add($1)  # 
-        else
-          raise "Invalid adjacency #{abut}"
-        end
-      end
+    def to_s
+      self.full_abbreviation
     end
   end  
 end

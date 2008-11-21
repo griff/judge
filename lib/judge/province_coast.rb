@@ -32,10 +32,6 @@ module Judge
         @province.coasts.add(self)
       end
     end
-    
-    def to_s
-      "Coast '#{coast}' for province '#{abbreviation}'"
-    end
   end
 end
 # vim: sts=4:sw=4:ts=4:et

@@ -33,6 +33,7 @@ module MapReaderTest
   end
 
   def test_power_factories
+    return unless Judge::Extensions.include? :factories
     @powers.each do |p|
       name = p[:name].downcase
       assert_list_equal p[:factories].to_set,
@@ -42,6 +43,7 @@ module MapReaderTest
   end
 
   def test_power_partisans
+    return unless Judge::Extensions.include? :partisans
     @powers.each do |p|
       name = p[:name].downcase
       assert_list_equal p[:partisans].to_set,

@@ -14,8 +14,8 @@ module Judge
       location_u = location.upcase
       loc = @places.values.find{|p| p.name.upcase == location_u}
       loc = fetch_place(location_u) unless loc
-      loc = @places.values.find{|p| p.aliases.any{|a| a.upcase == location_u}} unless loc
-      loc = @places.values.find{|p| p.ambiguous.any{|a| a.upcase == location_u}} unless loc or !use_ambiguous
+      loc = @places.values.find{|p| p.aliases.any?{|a| a.upcase == location_u}} unless loc
+      loc = @places.values.find{|p| p.ambiguous.any?{|a| a.upcase == location_u}} unless loc or !use_ambiguous
       loc
     end
     alias :[] :fetch_location

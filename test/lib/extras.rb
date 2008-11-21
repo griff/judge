@@ -1,7 +1,13 @@
-$root = File.join(File.dirname(__FILE__), '..')
-$:.unshift File.join($root, 'lib')
+$root = File.join(File.dirname(__FILE__), '..', '..')
+#$:.unshift File.join($root, 'lib')
 
 require 'test/unit'
+
+class NilClass
+  def to_set
+    [].to_set
+  end
+end
 
 module Enumerable
   def changed(other)
@@ -14,7 +20,7 @@ end
 module Test::Unit::Assertions
   def assert_list_equal(expected, actual, message=nil)
     added, existing, deleted = expected.changed(actual)
-    full_message = build_message(message, <<EOT, added, deleted)
+    full_message = build_message(message, <<EOT, deleted, added)
 expected same list 
 but had additional item(s) <?> 
 and missing item(s) <?>.

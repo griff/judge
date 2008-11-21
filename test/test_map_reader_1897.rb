@@ -5,7 +5,7 @@ class TestMapReader1897 < Test::Unit::TestCase
   
   def setup
     setup_reader
-  @powers = [
+    @powers = [
       {
         :name => 'AUSTRIA',
         :own_word => 'AUSTRIAN',

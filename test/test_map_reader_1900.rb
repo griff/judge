@@ -1,6 +1,6 @@
 require 'test_map_reader'
 
-class TestMapReaderStandard < Test::Unit::TestCase
+class TestMapReader1898 < Test::Unit::TestCase
   include MapReaderTest
   
   def setup
@@ -15,9 +15,9 @@ class TestMapReaderStandard < Test::Unit::TestCase
         :partisans => []
       },
       {
-        :name => 'ENGLAND',
-        :own_word => 'ENGLISH',
-        :abbreviation => 'E',
+        :name => 'BRITAIN',
+        :own_word => 'BRITISH',
+        :abbreviation => 'B',
         :homes => ['EDI', 'LON', 'LVP'],
         :factories => [],
         :partisans => []
@@ -34,15 +34,15 @@ class TestMapReaderStandard < Test::Unit::TestCase
         :name => 'GERMANY',
         :own_word => 'GERMAN',
         :abbreviation => 'G',
-        :homes => ['BER', 'KIE',  'MUN'],
+        :homes => ['BER', 'COL', 'KIE',  'MUN'],
         :factories => [],
-        :partisans => []
+#        :partisans => []
       },
       {
         :name => 'ITALY',
         :own_word => 'ITALIAN',
         :abbreviation => 'I',
-        :homes => ['NAP', 'ROM', 'VEN'],
+        :homes => ['MIL', 'NAP', 'ROM'],
         :factories => [],
         :partisans => []
       },
@@ -50,21 +50,21 @@ class TestMapReaderStandard < Test::Unit::TestCase
         :name => 'RUSSIA',
         :own_word => 'RUSSIAN',
         :abbreviation => 'R',
-        :homes => ['MOS', 'SEV', 'STP', 'WAR'],
+        :homes => ['MOS', 'SEV', 'STP', 'WAR', 'SIB'],
         :factories => [],
         :partisans => []
       },
       {
         :name => 'TURKEY',
-        :own_word => 'TURKISH',
+        :own_word => 'OTTOMAN',
         :abbreviation => 'T',
-        :homes => ['ANK', 'CON', 'SMY'],
+        :homes => ['ANK', 'CON', 'DAM'],
         :factories => [],
         :partisans => []
       },
     ]
-    @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'HOL', 'NWY', 'POR', 'RUM', 
-                  'SER', 'SPA', 'SWE', 'TUN',]
+    @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'MOR', 'NET', 'NWY', 'POR', 'RUM', 
+                'SER', 'SPA', 'SWE', 'SWI', 'TRP',]
     @locations = [
       {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[]}, 
       {:name=>'Aegean Sea', :full_abbreviation=>'AEG', :aliases=>['AEGEAN'], :ambiguous=>[]}, 
@@ -148,11 +148,11 @@ class TestMapReaderStandard < Test::Unit::TestCase
       {:name=>'Western Mediterranean', :full_abbreviation=>'WES', :aliases=>['WMED', 'WEST', 'WESTERN', 'WESTMED', 'WMS', 'WME', 'WMD', 'WEST MED', 'WES MED', 'WESTERN MED'], :ambiguous=>[]}, 
       {:name=>'Yorkshire', :full_abbreviation=>'YOR', :aliases=>['YORK', 'YONKERS'], :ambiguous=>[]}, 
       {:name=>'Switzerland', :full_abbreviation=>'SWI', :aliases=>[], :ambiguous=>[]},
-      ]
-    @map = @reader.read('standard')
+    ]
+    @map = @reader.read('1900')
   end
-  
-  def test_visual
-    assert_equal 'standard', @map.visual, "Map names do not match"
+
+  def test_visual_name
+    assert_equal '1900', @map.visual, "Map names do not match"
   end
 end

@@ -5,11 +5,13 @@ module Judge
     def initialize( from, to )
       @from = from
       @to = to
+      self.setup
+    end
+    
+    def setup
       @disallowed_units = [Fleet]
       @allowed_powers = [:Austria]
       @must_own = []
-      @weak = false
-      @good_hope = false
     end
     
     def passable?(unit)
@@ -18,15 +20,19 @@ module Judge
     end
     
     def strength
-      @weak ? 0 : 1
+      1
     end
     
-    def retreat_strenght
-      @good_hope ? 0 : 1
+    def retreat_strength
+      1
     end
     
     def can_support?
-      !@weak && !@good_hope
+      true
+    end
+    
+    def eql?(other)
+      other.kind_of?(MovementEdge) && self.to.eql?(other.to) && self.from.eql?(other.from)
     end
   end
 end

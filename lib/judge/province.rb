@@ -30,10 +30,6 @@ module Judge
       @abbreviation = province
     end
     
-    def to_s
-      "Province '#{abbreviation}'"
-    end
-    
     def validate
       super
       raise "Mixed province name" unless @coasts.all?{|c| abbreviation == c.abbreviation}

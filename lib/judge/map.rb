@@ -19,7 +19,7 @@ module Judge
 
     def add_unowned( center )
       center = locations.fetch_or_create_province(center) unless center.kind_of? Location
-      @unowned << center unless suplycenter?(center)
+      @unowned << center unless supply_center?(center)
     end
 
     def delete_unowned( center )
@@ -27,9 +27,14 @@ module Judge
       @unowned.delete(center) if center
     end
 
-    def suplycenter?( center )
+    def supply_center?( center )
       center = locations.fetch_province(center) unless center.kind_of? Location
-      @unowned.any?{|c|  c == center } or
+      unowned.any?{|c|  c == center } or
+      owned_supply_center?(center)
+    end
+    
+    def owned_supply_center?(center)
+      center = locations.fetch_province(center) unless center.kind_of? Location
       @powers.any? do |power|
         power.homes.any? { |c| c == center } 
       end

@@ -20,7 +20,7 @@ module Judge
       def read_file(file)
         file += '.map' if File.extname( file ).empty?
         File.open( File.join( @maps_dir, file ) ) do |io|
-            io.each_line {|line| parse_line(line) }
+          io.each_line {|line|  parse_line(line) }
         end
       end
       
@@ -84,8 +84,30 @@ module Judge
                     province.type = terrainType
                     province.adjacencies.clear
                   end
-                  province.abuts(abuts)
-                  
+                  abuts = abuts.split 
+                  abuts.each do |abut|
+                    if abut =~ /^(\-)?([A-Z]+\:)?([*~])?([a-zA-Z0-9]{3}(?:\/[a-zA-Z0-9]+)?)$/
+                      to = @map.locations.fetch_or_create_place($4)
+                      edge = Judge::MovementEdge.new(province,to)
+                      if $1=='-'
+                        raise "Invalid adjacency #{abut}" if terrainType != 'AMEND'
+                        province.adjacencies.delete(edge)
+                      else
+                        powers = $2
+                        special = $3
+                        if special=='*'
+                          Judge.load_extension('good_hope')
+                          edge.good_hope = true
+                        elsif special =='~'
+                          Judge.load_extension('weak_move')
+                          edge.weak = true
+                        end
+                        province.adjacencies.add(edge)
+                      end
+                    else
+                      raise "Invalid adjacency #{abut}"
+                    end
+                  end
                 
               # Drop terrain line
               when /^DROP((\s+[a-zA-Z0-9]{3}(?:\/[a-zA-Z0-9]+)?)*)$/i
@@ -105,6 +127,7 @@ module Judge
                   part = centers.split.partition{ |c| c.match('$-').nil? }
                   part[0].each {|c| @map.add_unowned(c) }
                   part[1].each {|c| @map.delete_unowned(c) }
+                  @current_power = nil
                 
               # Unit placement
               when /^(F(?:leet)?|A(?:rmy)?)\s+([a-zA-Z0-9]{3}(?:\/[a-zA-Z0-9]+)?)$/
@@ -113,6 +136,18 @@ module Judge
                   
                   puts "Unit '#{unitType}','#{location}': #{line}" if @output
                   puts "Added to power #{current_power.name} " if @output
+              
+              # Owns line
+              when /^OWNS((\s+[a-zA-Z0-9]{3})*)$/
+                centers = $1.strip
+                puts "Owns '#{centers}': #{line}" if @output
+
+                centers = centers.split
+                centers.each do |center|
+                  center = center.upcase
+                  #make home center
+                  @current_power.add_owned(center)
+                end
                 
               # Power line
               when /^([a-zA-Z+]+)(?:\s+\(([a-zA-Z+]+)(?::(\w))?\))?((\s+[+*-]?[a-zA-Z0-9]{3})*)$/
@@ -132,30 +167,18 @@ module Judge
                     case center
                     when /^\+([A-Z0-9]{3})$/
                       #make factory
-                      power.add_factory( center )
+                      Judge.load_extension('factories')
+                      power.add_factory($1)
                     when /^\*([A-Z0-9]{3})$/
                       #make partisan
-                      power.add_partisan( center )
+                      Judge.load_extension('partisans')
+                      power.add_partisan($1)
                     when /^\-([A-Z0-9]{3})$/
                       #remove home center
-                      c = @map.locations.fetch_province($1)
-                      if c
-                        power.factories.delete(c)
-                        power.partisans.delete(c)
-                        if power.homes.delete(c)
-                          #make unowned
-                          @map.add_unowned(c)
-                        end
-                      end
+                      power.remove_owned($1)
                     when /^([A-Z0-9]{3})$/
                       #make home center
-                      c = @map.locations.fetch_or_create_province($1)
-                      if @map.suplycenter?( c )
-                        #center can not be suplycenter for more than one power
-                        raise "#{$1} is allready a suply center"
-                      end
-                      power.homes.add(c)
-                      power.owns.add(c)
+                      power.add_home($1)
                     else
                       throw ArgumentError, "Invalid center #{center}"
                     end

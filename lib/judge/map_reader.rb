@@ -19,8 +19,9 @@ module Judge
     
       def read_file(file)
         file += '.map' if File.extname( file ).empty?
-        File.open( File.join( @maps_dir, file ) ) do |io|
-          io.each_line {|line|  parse_line(line) }
+        lines = File.open( File.join( @maps_dir, file ) ) {|io| io.readlines }
+        lines.each do |line|
+          parse_line(line)
         end
       end
       
@@ -117,7 +118,6 @@ module Judge
                   abbreviations.split.each do |a|
                     @map.locations.delete(a)
                   end
-                  
             
               # Political supply centers
               when /^(UNOWNED|NEUTRAL|CENTERS)((?:\s+-?[a-zA-Z0-9]{3})*)$/i

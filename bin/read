@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+$root = File.join(File.dirname(__FILE__), '..')
+$:.unshift File.join($root, 'lib')
+
+require 'judge'
+require 'judge/dpjudge_map_reader'
+
+dir = File.join($root, 'test-data', 'dpmap')
+reader = Judge::DPjudgeMapReader.new(dir)
+if ARGV[0]
+  reader.read(ARGV[0], true)
+else
+  Dir.glob(File.join(dir, "*.map")).each do |f|
+    next if f=='.' || f=='..' 
+    puts "Reading: #{File.basename(f)}"
+    map = reader.read(f)
+    map.powers.each {|p| puts "#{p.name}   (#{p.own_word}:#{p.abbreviation})"}
+    puts
+  end
+end

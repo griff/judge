@@ -23,6 +23,7 @@ module Judge
       @aliases = StringList.new
       @adjacencies = [].to_set
       @suply_center = false
+      @restrictions = []
     end
     
     def supply_center=(new_value)
@@ -33,16 +34,22 @@ module Judge
       @supply_center
     end
     
+    def restrictions(*args)
+      @restrictions = args.flatten
+    end
+    
     def type=(new_value)
-      new_value = TYPES[new_value.upcase] unless new_value.respond_to? :can_occupy?
+      new_value = TYPES[new_value.to_s.upcase] unless new_value.respond_to? :can_occupy?
+      raise ArgumentError, "Invalid type" unless new_value
       @type = new_value
     end
     
-    def can_occupy?
-      type.can_occupy?
+    def can_occupy?(unit)
+      type.can_occupy?(unit) && @restrictions.all? {|r| unit.is_a? r}
     end
     
     def name=(new_value)
+      raise ArgumentError, "Invalid name" unless new_value && !new_value.empty?
       @name = new_value
     end
     
@@ -67,9 +74,13 @@ module Judge
       clear_aliases
     end
     
+    def delete_adjacency(place)
+      @adjacencies.delete_if{|edge| edge.to == place}
+    end
+    
     def validate
-      raise "No name provided" unless @name
-      raise "No type provided" unless @type
+      raise "No name provided for #{self.full_abbreviation}" unless @name
+      raise "No type provided for #{self.full_abbreviation}" unless @type
     end
     
     def to_s

@@ -2,8 +2,9 @@ module Judge
   class Locations
     include Enumerable
     
-    def initialize
+    def initialize(map)
       @places = {}
+      @map = map
     end
   
     def size
@@ -19,6 +20,11 @@ module Judge
       loc
     end
     alias :[] :fetch_location
+    
+    def replace(old_location, new_location)
+      loc = fetch_place(old_location)
+      @places[new_location.upcase] = loc
+    end
     
     def names
       @places.values.map{|p| p.name}

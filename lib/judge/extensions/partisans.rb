@@ -16,18 +16,21 @@ module Judge
     end
     alias_method_chain :deleted_province, :partisans
 
-    def remove_owned_with_partisans( center )
+    def delete_center_with_partisans( center )
       center = @container.locations.fetch_province(center) unless center.kind_of? Location
-      if center
-        partisans.delete(center)
-        self.remove_owned_without_partisans(center)
+      if center && partisans.delete(center)
+        #make unowned
+        @container.add_unowned(center)
+        true
+      else
+        self.delete_center_without_partisans(center)
       end
     end
-    alias_method_chain :remove_owned, :partisans
+    alias_method_chain :delete_center, :partisans
     
     def add_partisan( center )
       center = @container.locations.fetch_or_create_province(center) unless center.kind_of? Location
-      if @container.owned_supply_center?( center )
+      if @container.supply_center?( center )
         #center can not be suplycenter for more than one power
         raise "#{$1} is allready a suply center"
       end

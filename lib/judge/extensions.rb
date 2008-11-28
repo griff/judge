@@ -12,13 +12,8 @@ end
 module Judge
   Extensions = [].to_set
   def self.load_extension(name)
-#    if !Extensions.include?(name.to_sym)
-#      require 'judge/extensions/'+name
-#    end
+    if !Extensions.include?(name.to_sym)
+      require 'judge/extensions/'+name.to_s
+    end
   end
 end
-
-require 'judge/extensions/factories'
-require 'judge/extensions/partisans'
-require 'judge/extensions/good_hope'
-require 'judge/extensions/weak_move'

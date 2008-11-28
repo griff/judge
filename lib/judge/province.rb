@@ -14,7 +14,7 @@ module Judge
     end
 
     def delete
-      @coasts.each_value{|c| @container.delete(c.full_abbreviation)  }
+      @coasts.each{|c| @container.delete(c.full_abbreviation)  }
       super
     end
 
@@ -27,13 +27,19 @@ module Judge
     def full_abbreviation=(new_abbrev)
       province, coast = Location.abbreviation_and_coast(new_abbrev)
       raise 'Coast on non costal location' if coast
+      old_full = self.full_abbreviation
       @abbreviation = province
+      @container.replace(old_full, self.full_abbreviation)
     end
     
     def validate
       super
-      raise "Mixed province name" unless @coasts.all?{|c| abbreviation == c.abbreviation}
-      raise "Mixed types name" unless @coasts.all?{|c| type == c.type}
+      raise "Mixed province abbreviation" unless @coasts.all?{|c| abbreviation == c.abbreviation}
+      unless @coasts.all?{|c| type == c.type}
+        puts "Main #{self.abbreviation} type #{self.type}"
+        @coasts.each {|c| puts "  Coast #{c.coast} with type #{c.type}"}
+        raise "Mixed types" unless @coasts.all?{|c| self.type == c.type}
+      end
     end
   end
 end

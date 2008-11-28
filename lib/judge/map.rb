@@ -1,10 +1,10 @@
 module Judge
   class Map
     attr_reader :locations, :unowned
-    attr_accessor :visual
+    attr_accessor :visual, :name
     
     def initialize
-      @locations = Locations.new
+      @locations = Locations.new(self)
       @powers = []
       @powers_wrap = ImmutableWrapper.new(@powers)
       @unowned = []
@@ -30,13 +30,15 @@ module Judge
     def supply_center?( center )
       center = locations.fetch_province(center) unless center.kind_of? Location
       unowned.any?{|c|  c == center } or
-      owned_supply_center?(center)
+      @powers.any? do |power|
+        power.owns.any? { |c| c == center } 
+      end
     end
     
-    def owned_supply_center?(center)
+    def delete_supply_center(center)
       center = locations.fetch_province(center) unless center.kind_of? Location
-      @powers.any? do |power|
-        power.homes.any? { |c| c == center } 
+      if center
+        unowned.delete(center) || @powers.any?{|p| p.delete_owned(center)}
       end
     end
 
@@ -47,9 +49,18 @@ module Judge
 
     def fetch_or_create_power(power_name)
       power_name_u = power_name.upcase
-      power = @powers.find{ |p| p.name.upcase == power_name}
+      power = @powers.find{ |p| p.name.upcase == power_name_u}
+      @powers.push( power = Power.new(self, power_name) ) unless power
+      power
+    end
+    
+    def fetch_or_create_power_by_abbreviation(abbr)
+      abbr = abbr.upcase
+      power = @powers.find{|p| p.abbreviation == abbr }
       unless power
-        @powers.push( power = Power.new(self, power_name) )
+        power = Power.new(self)
+        power.abbreviation = abbr
+        @powers.push(power)
       end
       power
     end
@@ -63,7 +74,7 @@ module Judge
     end
     
     def validate
-      @powers.all?{|p| p.validate} && @unowned.all?{|p| p.validate}
+      @powers.each{|p| p.validate} && @unowned.each{|p| p.validate}
       locations.validate
     end
   end

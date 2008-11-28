@@ -1,9 +1,9 @@
 module Judge
   class Power
-    attr_reader :name, :homes, :owns
-    attr_accessor :name
+    attr_reader :homes, :owns, :abbreviation
+    attr_accessor :name, :own_word
 
-    def initialize( container, name)
+    def initialize( container, name=nil)
       @container = container
       @name = name
       self.setup
@@ -16,33 +16,22 @@ module Judge
       @units = [].to_set
       @owns = [].to_set
     end
+    
+    def abbreviation=(new_value)
+      @abbreviation = new_value.upcase
+    end
 
     def deleted_province(province)
       @homes.delete(province)
-      @owns.delete(province)
-    end
-
-    def own_word
-      @own_word or name
-    end
-
-    def own_word=(value)
-      @own_word = value
-    end
-
-    def abbreviation
-      @abbreviation or own_word[0...1]
-    end
-
-    def abbreviation=(abbrev)
-      @abbreviation = abbrev
+      @owns.delete(province) if @owns
     end
     
     def add_home(center)
       center = @container.locations.fetch_or_create_province(center) unless center.kind_of? Location
-      if @container.owned_supply_center?( center )
+      if @container.supply_center?( center )
+        @container.delete_supply_center(center)
         #center can not be suplycenter for more than one power
-        raise "#{center} is allready a suply center"
+#        raise "#{center} is allready a suply center"
       end
       homes.add(center)
       owns.add(center)
@@ -50,30 +39,35 @@ module Judge
 
     def add_owned( center )
       center = @container.locations.fetch_or_create_province(center) unless center.kind_of? Location
-      if !owns.include?(center) && @container.owned_supply_center?( cente )
+      if !owns.include?(center) && @container.supply_center?( center )
+        @container.delete_supply_center(center)
         #center can not be suplycenter for more than one power
-        raise "#{center} is allready a suply center"
+        #raise "#{center} is allready a suply center"
       end
       owns.add(center)
     end
-
-    def remove_owned( center )
+    
+    def delete_owned(center)
       center = @container.locations.fetch_province(center) unless center.kind_of? Location
-      if center
-        owns.delete(center)
-        if homes.delete(center)
-          #make unowned
-          @container.add_unowned(center)
-        end
+      center && owns.delete(center)
+    end
+
+    def delete_center( center )
+      center = @container.locations.fetch_province(center) unless center.kind_of? Location
+      if center && homes.delete(center)
+        @owns.delete(center)
+        #make unowned
+        @container.add_unowned(center)
+        true
+      else
+        false
       end
     end
 
     def validate
-      true
-    end
-    
-    def to_s
-      "Help"
+      raise "No abbreviation provided" unless abbreviation
+      raise "No name provided" unless name
+      raise "No own word provided" unless own_word
     end
   end
 end

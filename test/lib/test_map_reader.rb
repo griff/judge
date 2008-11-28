@@ -85,8 +85,12 @@ module MapReaderTest
   def test_location_aliases
     @locations.each do |l|
       abbr = l[:full_abbreviation]
+      
+      location = @map.locations[abbr]
+      assert_not_nil location, "Location #{abbr} does not exists"
+      
       assert_list_equal l[:aliases].to_set,
-          @map.locations[abbr].aliases.to_set,
+          location.aliases.to_set,
           "Aliases for #{abbr} were loaded wrong"
     end
   end
@@ -95,7 +99,7 @@ module MapReaderTest
     @locations.each do |l|
       abbr = l[:full_abbreviation]
       assert_list_equal l[:ambiguous].to_set,
-          @map.locations[abbr].instance_variable_get(:@ambiguous).to_set,
+          @map.locations[abbr].ambiguous.to_set,
           "Ambiguous for #{abbr} were loaded wrong"
     end
   end

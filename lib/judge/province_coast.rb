@@ -25,12 +25,14 @@ module Judge
     def full_abbreviation=(new_abbrev)
       province, coast = Location.abbreviation_and_coast(new_abbrev)
       raise 'No coast for costal location' unless coast
+      old_full = self.full_abbreviation
       @abbreviation = province
       if coast != @coast
         @province.coasts.delete(self)
         @coast = coast
         @province.coasts.add(self)
       end
+      @container.replace(old_full, self.full_abbreviation)
     end
   end
 end

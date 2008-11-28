@@ -3,6 +3,14 @@ require 'test_map_reader'
 class TestMapReaderStandard < Test::Unit::TestCase
   include MapReaderTest
   
+  def army(location)
+    Judge::Army.new(nil, location)
+  end
+  
+  def fleet(location)
+    Judge::Fleet.new(nil, location)
+  end
+  
   def setup
     setup_reader
     @powers = [
@@ -11,62 +19,57 @@ class TestMapReaderStandard < Test::Unit::TestCase
         :own_word => 'AUSTRIAN',
         :abbreviation => 'A',
         :homes => ['BUD', 'TRI', 'VIE'],
-        :factories => [],
-        :partisans => []
+        :units => [army('BUD'),army('VIE'), fleet('TRI')],
       },
       {
         :name => 'ENGLAND',
         :own_word => 'ENGLISH',
         :abbreviation => 'E',
         :homes => ['EDI', 'LON', 'LVP'],
-        :factories => [],
-        :partisans => []
+        :units => [fleet('EDI'), fleet('LON'), army('LVP')],
       },
       {
         :name => 'FRANCE',
         :own_word => 'FRENCH',
         :abbreviation => 'F',
         :homes => ['BRE', 'MAR', 'PAR'],
-        :factories => [],
-        :partisans => []
+        :units => [fleet('BRE'), army('MAR'), army('PAR')],
       },
       {
         :name => 'GERMANY',
         :own_word => 'GERMAN',
         :abbreviation => 'G',
         :homes => ['BER', 'KIE',  'MUN'],
-        :factories => [],
-        :partisans => []
+        :units => [fleet('KIE'), army('BER'), army('MUN')],
       },
       {
         :name => 'ITALY',
         :own_word => 'ITALIAN',
         :abbreviation => 'I',
         :homes => ['NAP', 'ROM', 'VEN'],
-        :factories => [],
-        :partisans => []
+        :units => [fleet('NAP'), army('ROM'), army('VEN')],
       },
       {
         :name => 'RUSSIA',
         :own_word => 'RUSSIAN',
         :abbreviation => 'R',
         :homes => ['MOS', 'SEV', 'STP', 'WAR'],
-        :factories => [],
-        :partisans => []
+        :units => [army('MOS'), army('WAR'), fleet('SEV'),fleet('STP/SC')],
       },
       {
         :name => 'TURKEY',
         :own_word => 'TURKISH',
         :abbreviation => 'T',
         :homes => ['ANK', 'CON', 'SMY'],
-        :factories => [],
-        :partisans => []
+        :units => [fleet('ANK'), army('CON'), army('SMY')],
       },
     ]
     @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'HOL', 'NWY', 'POR', 'RUM', 
                   'SER', 'SPA', 'SWE', 'TUN',]
     @locations = [
-      {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[]}, 
+      {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[],
+        :type=>'WATER', :abut=>['ALB', 'APU', 'ION', 'TRI', 'VEN']
+      }, 
       {:name=>'Aegean Sea', :full_abbreviation=>'AEG', :aliases=>['AEGEAN'], :ambiguous=>[]}, 
       {:name=>'Albania', :full_abbreviation=>'ALB', :aliases=>[], :ambiguous=>[]}, 
       {:name=>'Ankara', :full_abbreviation=>'ANK', :aliases=>[], :ambiguous=>[]}, 

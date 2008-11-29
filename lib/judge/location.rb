@@ -4,6 +4,8 @@ module Judge
       if abbreviation =~ /^([a-zA-Z0-9]{3})(?:\/([a-zA-Z0-9]+))?/
         abbreviation = $1
         coast = $2
+      else
+        raise "Invalid location name #{abreviation}"
       end
       [abbreviation, coast]
     end
@@ -22,16 +24,11 @@ module Judge
       @ambiguous = StringList.new
       @aliases = StringList.new
       @adjacencies = [].to_set
-      @suply_center = false
       @restrictions = []
     end
     
-    def supply_center=(new_value)
-      @supply_center = new_value
-    end
-    
     def supply_center?
-      @supply_center
+      @container.supply_centers.include?(self)
     end
     
     def restrictions(*args)
@@ -45,7 +42,7 @@ module Judge
     end
     
     def can_occupy?(unit)
-      type.can_occupy?(unit) && @restrictions.all? {|r| unit.is_a? r}
+      type.can_occupy?(unit) && @restrictions.all? {|r| !unit.is_a?(r)}
     end
     
     def name=(new_value)
@@ -70,10 +67,6 @@ module Judge
       @ambiguous.clear
     end
     
-    def delete
-      clear_aliases
-    end
-    
     def delete_adjacency(place)
       @adjacencies.delete_if{|edge| edge.to == place}
     end
@@ -85,6 +78,20 @@ module Judge
     
     def to_s
       self.full_abbreviation
+    end
+
+    def pretty_print(q)
+      q.text(self.name)
+    end
+
+    def _delete
+      clear_aliases
+    end
+    
+    def _replace(old_loc,new_loc)
+      @adjacencies.each do |edge|
+        edge.to = new_loc if edge.to == old_loc
+      end
     end
   end  
 end

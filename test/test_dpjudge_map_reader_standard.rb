@@ -3,64 +3,63 @@ require 'test_map_reader'
 class TestMapReaderStandard < Test::Unit::TestCase
   include MapReaderTest
   
-  def army(location)
-    Judge::Army.new(nil, location)
-  end
-  
-  def fleet(location)
-    Judge::Fleet.new(nil, location)
-  end
-  
   def setup
     setup_reader
     @powers = [
       {
-        :name => 'AUSTRIA',
-        :own_word => 'AUSTRIAN',
+        :name => 'Austria',
+        :own_word => 'Austrian',
         :abbreviation => 'A',
         :homes => ['BUD', 'TRI', 'VIE'],
+        :owns => ['BUD', 'TRI', 'VIE'],
         :units => [army('BUD'),army('VIE'), fleet('TRI')],
       },
       {
-        :name => 'ENGLAND',
-        :own_word => 'ENGLISH',
+        :name => 'England',
+        :own_word => 'English',
         :abbreviation => 'E',
         :homes => ['EDI', 'LON', 'LVP'],
+        :owns => ['EDI', 'LON', 'LVP'],
         :units => [fleet('EDI'), fleet('LON'), army('LVP')],
       },
       {
-        :name => 'FRANCE',
-        :own_word => 'FRENCH',
+        :name => 'France',
+        :own_word => 'French',
         :abbreviation => 'F',
         :homes => ['BRE', 'MAR', 'PAR'],
+        :owns => ['BRE', 'MAR', 'PAR'],
         :units => [fleet('BRE'), army('MAR'), army('PAR')],
       },
       {
-        :name => 'GERMANY',
-        :own_word => 'GERMAN',
+        :name => 'Germany',
+        :own_word => 'German',
         :abbreviation => 'G',
         :homes => ['BER', 'KIE',  'MUN'],
+        :owns => ['BER', 'KIE',  'MUN'],
         :units => [fleet('KIE'), army('BER'), army('MUN')],
       },
       {
-        :name => 'ITALY',
-        :own_word => 'ITALIAN',
+        :name => 'Italy',
+        :own_word => 'Italian',
         :abbreviation => 'I',
         :homes => ['NAP', 'ROM', 'VEN'],
+        :owns => ['NAP', 'ROM', 'VEN'],
         :units => [fleet('NAP'), army('ROM'), army('VEN')],
       },
       {
-        :name => 'RUSSIA',
-        :own_word => 'RUSSIAN',
+        :name => 'Russia',
+        :own_word => 'Russian',
         :abbreviation => 'R',
         :homes => ['MOS', 'SEV', 'STP', 'WAR'],
+        :owns => ['MOS', 'SEV', 'STP', 'WAR'],
         :units => [army('MOS'), army('WAR'), fleet('SEV'),fleet('STP/SC')],
       },
       {
-        :name => 'TURKEY',
-        :own_word => 'TURKISH',
+        :name => 'Turkey',
+        :own_word => 'Turkish',
         :abbreviation => 'T',
         :homes => ['ANK', 'CON', 'SMY'],
+        :owns => ['ANK', 'CON', 'SMY'],
         :units => [fleet('ANK'), army('CON'), army('SMY')],
       },
     ]

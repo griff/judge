@@ -21,11 +21,6 @@ module Judge
     end
     alias :[] :fetch_location
     
-    def replace(old_location, new_location)
-      loc = fetch_place(old_location)
-      @places[new_location.upcase] = loc
-    end
-    
     def names
       @places.values.map{|p| p.name}
     end
@@ -92,12 +87,12 @@ module Judge
     def delete_place(key)
       province = @places.delete(key.upcase)
       if province
-        province.delete
+        province._delete
       
         @places.each_value do |p|
           p.delete_adjacency(province)
         end
-        @map.deleted_province(province)
+        @map._deleted_province(province)
       end
       province
     end
@@ -105,6 +100,19 @@ module Judge
     
     def validate
       @places.values.all?{|p| p.validate}
+    end
+
+    
+    def _replace(old_location, new_location)
+      new_loc = @places.delete(old_location.upcase)
+      old_loc = fetch_place(new_location)
+      @places[new_location.upcase] = new_loc
+      if old_loc
+        @places.values.each do |l|
+          l._replace(old_loc,new_loc)
+        end
+        @map._replace(old_loc,new_loc)
+      end
     end
   end
 end

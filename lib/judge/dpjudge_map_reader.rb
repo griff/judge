@@ -1,18 +1,35 @@
+require 'judge/dbjudge'
+
 module Judge
-  class DPjudgeMapReader
+  class DPJudgeMapReader
       attr_reader :maps_dir
-      attr_accessor :current_power
+      attr_accessor :current_power, :map
+
+      Parser = [
+          DPJudge::UsesLine,
+          DPJudge::MapLine,
+          DPJudge::PlaceLine,
+          DPJudge::MapTerrainLine,
+          DPJudge::DropTerrainLine,
+          DPJudge::PoliticalSupplyCentersLine,
+          DPJudge::UnitPlacementLine,
+          DPJudge::OwnsLine,
+          DPJudge::PowerLine,
+          DPJudge::CommentLine,
+          DPJudge::EmptyLine
+        ]
       
       def initialize( maps_dir )
           @maps_dir = maps_dir
+          @parser = Parser.map{|p| p.new(self)}
       end
     
       def read( file, output=false )
         @map = Map.new
         @output = output
-        puts "Reading map #{file}" if @output
-        map(file)
-        puts "End read map #{file}" if @output
+        debug("Reading map #{file}")
+        map_read(file)
+        debug("End read map #{file}")
         @map.validate
         @map
       end
@@ -26,12 +43,25 @@ module Judge
         end
       end
       
-      def map(file)
+      def map_read(file)
         @map.visual = File.basename(file, File.extname(file))
         read_file(file)
       end
+      
+      def debug(msg)
+        puts msg if @output
+      end
     
       def parse_line( line )
+        line = line.strip
+        handler = @parser.find {|p| p.matches(line)}
+        if handler
+          handler.matches(line)
+          handler.action(line)
+        else
+          puts "unknown: #{line}" #if @output
+        end
+=begin comment
           case line.strip
               when /^USES?\s+(.*)$/i
                   puts "Use file '#$1' #{line}" if @output
@@ -148,9 +178,9 @@ module Judge
                   centers = $2.strip
                   puts "Neutral '#{centers}': #{line}" if @output
                   
-                  part = centers.split.partition{ |c| c.match('$-').nil? }
+                  part = centers.split.partition{ |c| c.match('^-').nil? }
                   part[0].each {|c| @map.add_unowned(c) }
-                  part[1].each {|c| @map.delete_unowned(c) }
+                  part[1].each {|c| @map.delete_unowned(c[1..-1]) }
                   @current_power = nil
                 
               # Unit placement
@@ -174,7 +204,7 @@ module Judge
                 end
                 
               # Power line
-              when /^([a-zA-Z+\-]+)(?:\s+\(([a-zA-Z+\-]+)(?::(\w))?\))?((\s+[+*-]?[a-zA-Z0-9]{3})*)$/
+              when /^([a-zA-Z+\-.]+)(?:\s+\(([a-zA-Z+\-]+)(?::(.))?\))?((\s+[+*-]?[a-zA-Z0-9]{3})*)$/
                   power_name = $1
                   own_word = $2
                   abbreviation = $3
@@ -184,9 +214,10 @@ module Judge
                   own_word = power_name unless own_word
                   abbreviation = own_word[0...1] unless abbreviation
                   
-                  power = @map.fetch_or_create_power(power_name)
-                  power.own_word = own_word
-                  power.abbreviation = abbreviation
+                  power_name = power_name.downcase.gsub(/(^|\+)(.)/) { $2.upcase }
+                  own_word = own_word.downcase.gsub(/(^|\+)(.)/) { ($1=='+' ? ' ' : '') + $2.upcase }
+                  
+                  power = @map.fetch_or_create_power(power_name, own_word, abbreviation)
 
                   centers = centers.split
                   centers.each do |center|
@@ -222,6 +253,7 @@ module Judge
               else
                   puts "unknown: #{line}" #if @output
           end
+=end
       end
   end
 end

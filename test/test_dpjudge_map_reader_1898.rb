@@ -7,60 +7,60 @@ class TestMapReader1898 < Test::Unit::TestCase
     setup_reader
     @powers = [
       {
-        :name => 'AUSTRIA',
-        :own_word => 'AUSTRIAN',
+        :name => 'Austria',
+        :own_word => 'Austrian',
         :abbreviation => 'A',
         :homes => ['BUD', 'TRI', 'VIE'],
-        :factories => [],
-        :partisans => []
+        :owns => ['BUD', 'TRI', 'VIE'],
+        :units => [],
       },
       {
-        :name => 'ENGLAND',
-        :own_word => 'ENGLISH',
+        :name => 'England',
+        :own_word => 'English',
         :abbreviation => 'E',
         :homes => ['EDI', 'LON', 'LVP'],
-        :factories => [],
-        :partisans => []
+        :owns => ['EDI', 'LON', 'LVP'],
+        :units => [],
       },
       {
-        :name => 'FRANCE',
-        :own_word => 'FRENCH',
+        :name => 'France',
+        :own_word => 'French',
         :abbreviation => 'F',
         :homes => ['BRE', 'MAR', 'PAR'],
-        :factories => [],
-        :partisans => []
+        :owns => ['BRE', 'MAR', 'PAR'],
+        :units => [],
       },
       {
-        :name => 'GERMANY',
-        :own_word => 'GERMAN',
+        :name => 'Germany',
+        :own_word => 'German',
         :abbreviation => 'G',
         :homes => ['BER', 'KIE',  'MUN'],
-        :factories => [],
-        :partisans => []
+        :owns => ['BER', 'KIE',  'MUN'],
+        :units => [],
       },
       {
-        :name => 'ITALY',
-        :own_word => 'ITALIAN',
+        :name => 'Italy',
+        :own_word => 'Italian',
         :abbreviation => 'I',
         :homes => ['NAP', 'ROM', 'VEN'],
-        :factories => [],
-        :partisans => []
+        :owns => ['NAP', 'ROM', 'VEN'],
+        :units => [],
       },
       {
-        :name => 'RUSSIA',
-        :own_word => 'RUSSIAN',
+        :name => 'Russia',
+        :own_word => 'Russian',
         :abbreviation => 'R',
         :homes => ['MOS', 'SEV', 'STP', 'WAR'],
-        :factories => [],
-        :partisans => []
+        :owns => ['MOS', 'SEV', 'STP', 'WAR'],
+        :units => [],
       },
       {
-        :name => 'TURKEY',
-        :own_word => 'TURKISH',
+        :name => 'Turkey',
+        :own_word => 'Turkish',
         :abbreviation => 'T',
         :homes => ['ANK', 'CON', 'SMY'],
-        :factories => [],
-        :partisans => []
+        :owns => ['ANK', 'CON', 'SMY'],
+        :units => [],
       },
     ]
     @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'HOL', 'NWY', 'POR', 'RUM', 

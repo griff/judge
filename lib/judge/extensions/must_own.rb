@@ -14,7 +14,7 @@ module Judge
     def passable_with_must_own?(unit)
       passable_without_must_own?(unit) &&
       self.must_own.all? do |l|
-        unit.owner.owns.include? l
+        unit.owner.owns.include?(l)
       end
     end
     alias_method_chain :passable?, :must_own

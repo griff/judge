@@ -9,14 +9,15 @@ module Judge
     end
     
     def setup
-      @disallowed_units = [Fleet]
-      @allowed_powers = [:Austria]
-      @must_own = []
+      @disallowed_units = []
+    end
+    
+    def disallowed_units(*args)
+      @disallowed_units = args.flatten
     end
     
     def passable?(unit)
-      to.type.can_occupy?(unit) && @disallowed_units.all?{|u| !unit.is_a? u} &&
-      @allowed_powers.include?(unit.owner) && @must_own.all?{|a| a == unit.owner}
+      to.type.can_occupy?(unit) && @disallowed_units.all?{|u| !unit.is_a?(u)}
     end
     
     def strength

@@ -6,7 +6,7 @@ require 'judge'
 require 'judge/dpjudge_map_reader'
 
 dir = File.join($root, 'test-data', 'dpmap')
-reader = Judge::DPjudgeMapReader.new(dir)
+reader = Judge::DPJudgeMapReader.new(dir)
 if ARGV[0]
   reader.read(ARGV[0], true)
 else

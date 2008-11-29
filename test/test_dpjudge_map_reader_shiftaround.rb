@@ -1,72 +1,82 @@
 require 'test_map_reader'
 
-class TestMapReader1898 < Test::Unit::TestCase
+class TestMapReaderShiftaround < Test::Unit::TestCase
   include MapReaderTest
+  
+  def army(location)
+    Judge::Army.new(nil, location)
+  end
+  
+  def fleet(location)
+    Judge::Fleet.new(nil, location)
+  end
   
   def setup
     setup_reader
     @powers = [
       {
-        :name => 'AUSTRIA',
-        :own_word => 'AUSTRIAN',
+        :name => 'Austria',
+        :own_word => 'Austrian',
         :abbreviation => 'A',
         :homes => ['BUD', 'TRI', 'VIE'],
-        :factories => [],
-        :partisans => []
+        :owns => ['BRE', 'MAR', 'PAR'],
+        :units => [fleet('BRE'), army('MAR'), army('PAR')],
       },
       {
-        :name => 'BRITAIN',
-        :own_word => 'BRITISH',
-        :abbreviation => 'B',
+        :name => 'England',
+        :own_word => 'English',
+        :abbreviation => 'E',
         :homes => ['EDI', 'LON', 'LVP'],
-        :factories => [],
-        :partisans => []
+        :owns => ['NAP', 'ROM', 'VEN'],
+        :units => [fleet('NAP'), army('ROM'), army('VEN')],
       },
       {
-        :name => 'FRANCE',
-        :own_word => 'FRENCH',
+        :name => 'France',
+        :own_word => 'French',
         :abbreviation => 'F',
         :homes => ['BRE', 'MAR', 'PAR'],
-        :factories => [],
-        :partisans => []
+        :owns => ['BUD', 'TRI', 'VIE'],
+        :units => [army('BUD'),army('VIE'), fleet('TRI')],
       },
       {
-        :name => 'GERMANY',
-        :own_word => 'GERMAN',
+        :name => 'Germany',
+        :own_word => 'German',
         :abbreviation => 'G',
-        :homes => ['BER', 'COL', 'KIE',  'MUN'],
-        :factories => [],
-#        :partisans => []
+        :homes => ['BER', 'KIE',  'MUN'],
+        :owns => ['ANK', 'CON', 'SMY'],
+        :units => [fleet('ANK'), army('CON'), army('SMY')],
       },
       {
-        :name => 'ITALY',
-        :own_word => 'ITALIAN',
+        :name => 'Italy',
+        :own_word => 'Italian',
         :abbreviation => 'I',
-        :homes => ['MIL', 'NAP', 'ROM'],
-        :factories => [],
-        :partisans => []
+        :homes => ['NAP', 'ROM', 'VEN'],
+        :owns => ['MOS', 'SEV', 'STP', 'WAR'],
+        :units => [army('MOS'), army('WAR'), fleet('SEV'),fleet('STP/SC')],
       },
       {
-        :name => 'RUSSIA',
-        :own_word => 'RUSSIAN',
+        :name => 'Russia',
+        :own_word => 'Russian',
         :abbreviation => 'R',
-        :homes => ['MOS', 'SEV', 'STP', 'WAR', 'SIB'],
-        :factories => [],
-        :partisans => []
+        :homes => ['MOS', 'SEV', 'STP', 'WAR'],
+        :owns => ['EDI', 'LON', 'LVP'],
+        :units => [fleet('EDI'), fleet('LON'), army('LVP')],
       },
       {
-        :name => 'TURKEY',
-        :own_word => 'OTTOMAN',
+        :name => 'Turkey',
+        :own_word => 'Turkish',
         :abbreviation => 'T',
-        :homes => ['ANK', 'CON', 'DAM'],
-        :factories => [],
-        :partisans => []
+        :homes => ['ANK', 'CON', 'SMY'],
+        :owns => ['BER', 'KIE',  'MUN'],
+        :units => [fleet('KIE'), army('BER'), army('MUN')],
       },
     ]
-    @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'MOR', 'NET', 'NWY', 'POR', 'RUM', 
-                'SER', 'SPA', 'SWE', 'SWI', 'TRP',]
+    @unowned = ['BEL', 'BUL', 'DEN', 'GRE', 'HOL', 'NWY', 'POR', 'RUM', 
+                  'SER', 'SPA', 'SWE', 'TUN',]
     @locations = [
-      {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[]}, 
+      {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[],
+        :type=>'WATER', :abut=>['ALB', 'APU', 'ION', 'TRI', 'VEN']
+      }, 
       {:name=>'Aegean Sea', :full_abbreviation=>'AEG', :aliases=>['AEGEAN'], :ambiguous=>[]}, 
       {:name=>'Albania', :full_abbreviation=>'ALB', :aliases=>[], :ambiguous=>[]}, 
       {:name=>'Ankara', :full_abbreviation=>'ANK', :aliases=>[], :ambiguous=>[]}, 
@@ -148,11 +158,11 @@ class TestMapReader1898 < Test::Unit::TestCase
       {:name=>'Western Mediterranean', :full_abbreviation=>'WES', :aliases=>['WMED', 'WEST', 'WESTERN', 'WESTMED', 'WMS', 'WME', 'WMD', 'WEST MED', 'WES MED', 'WESTERN MED'], :ambiguous=>[]}, 
       {:name=>'Yorkshire', :full_abbreviation=>'YOR', :aliases=>['YORK', 'YONKERS'], :ambiguous=>[]}, 
       {:name=>'Switzerland', :full_abbreviation=>'SWI', :aliases=>[], :ambiguous=>[]},
-    ]
-    @map = @reader.read('1900')
+      ]
+    @map = @reader.read('shiftaround')
   end
-
-  def test_visual_name
-    assert_equal '1900', @map.visual, "Map names do not match"
+  
+  def test_visual
+    assert_equal 'standard', @map.visual, "Map names do not match"
   end
 end

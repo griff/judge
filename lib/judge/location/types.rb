@@ -36,17 +36,6 @@ module Judge
       def can_support?() true end
     end
   
-    class Port
-      include Singleton
-      def can_occupy?(unit)
-        unit.is_a?(Judge::Fleet) || unit.is_a?(Judge::Army)
-      end
-      def can_convey?
-        true
-      end
-      def can_support?() true end
-    end
-  
     class Land
       include Singleton
       def can_occupy?(unit)
@@ -62,7 +51,6 @@ module Judge
       'WATER' => Water.instance,
       'SHUT' => Shut.instance,
       'COAST' => Coast.instance,
-      'PORT' => Port.instance,
       'LAND' => Land.instance
     }
   end

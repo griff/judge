@@ -1,45 +1,78 @@
 module Judge
   class Map
-    attr_reader :locations, :unowned
+    class UnownedList
+      include Enumerable
+
+      def initialize(map)
+        @map = map
+        @list = [].to_set
+      end
+
+      def each(&block)
+        @list.each(&block)
+      end
+
+      def clear
+        @list.clear
+      end
+
+      def add(center)
+        center = @map.locations.fetch_or_create_province(center) unless center.kind_of? Location
+        @list.add(center) unless @map.supply_centers.include?(center)
+      end
+
+      def delete(center)
+        center = @map.locations.fetch_province(center) unless center.kind_of? Location
+        @list.delete(center) if center
+      end
+
+      def _replace(old_loc, new_loc)
+        if @list.delete(old_loc)
+          @list.add(new_loc)
+        end
+      end
+    end
+    
+    class SupplyCenterList
+      include Enumerable
+
+      def initialize(map)
+        @map = map
+      end
+      
+      def each(&block)
+        @map.unowned.each(&block)
+        @map.powers.each do |power|
+          power.owns.each(&block)
+        end
+      end
+      
+      def include?(center)
+        center = @map.locations.fetch_province(center) unless center.kind_of? Location
+        @map.unowned.include?(center) or
+        @map.powers.any? do |power|
+          power.owns.include?(center)
+        end
+      end
+      
+      def delete(center)
+        center = @map.locations.fetch_province(center) unless center.kind_of? Location
+        if center 
+          @map.powers.each{|p| p.owns.delete(center)} 
+          @map.unowned.delete(center)
+        end
+      end
+    end
+
+    attr_reader :locations, :unowned, :supply_centers
     attr_accessor :visual, :name
     
     def initialize
       @locations = Locations.new(self)
-      @powers = []
+      @powers = [].to_set
       @powers_wrap = ImmutableWrapper.new(@powers)
-      @unowned = []
-    end
-    
-    def each_suplycenter(&block)
-      @unowned.each(&block)
-      @powers.each do |power|
-        power.homes.each(&block)
-      end
-    end
-
-    def add_unowned( center )
-      center = locations.fetch_or_create_province(center) unless center.kind_of? Location
-      @unowned << center unless supply_center?(center)
-    end
-
-    def delete_unowned( center )
-      center = locations.fetch_province(center) unless center.kind_of? Location
-      @unowned.delete(center) if center
-    end
-
-    def supply_center?( center )
-      center = locations.fetch_province(center) unless center.kind_of? Location
-      unowned.any?{|c|  c == center } or
-      @powers.any? do |power|
-        power.owns.any? { |c| c == center } 
-      end
-    end
-    
-    def delete_supply_center(center)
-      center = locations.fetch_province(center) unless center.kind_of? Location
-      if center
-        unowned.delete(center) || @powers.any?{|p| p.delete_owned(center)}
-      end
+      @unowned = UnownedList.new(self)
+      @supply_centers = SupplyCenterList.new(self)
     end
 
     def fetch_power(power_name)
@@ -47,20 +80,19 @@ module Judge
       @powers.find{ |p| p.name.upcase == power_name}
     end
 
-    def fetch_or_create_power(power_name)
+    def fetch_or_create_power(power_name, own_word, abbreviation)
       power_name_u = power_name.upcase
-      power = @powers.find{ |p| p.name.upcase == power_name_u}
-      @powers.push( power = Power.new(self, power_name) ) unless power
-      power
-    end
-    
-    def fetch_or_create_power_by_abbreviation(abbr)
-      abbr = abbr.upcase
-      power = @powers.find{|p| p.abbreviation == abbr }
+      own_word_u = own_word.upcase
+      abbreviation_u = abbreviation.upcase
+      power = @powers.find do |p| 
+        (p.name && p.name.upcase == power_name_u) || 
+        (p.own_word && p.own_word.upcase == own_word_u) ||
+        (p.abbreviation && p.abbreviation.upcase == abbreviation_u)
+      end
       unless power
-        power = Power.new(self)
-        power.abbreviation = abbr
-        @powers.push(power)
+        @powers.add( power = Power.new(self, power_name) )
+        power.own_word = own_word
+        power.abbreviation = abbreviation
       end
       power
     end
@@ -68,14 +100,21 @@ module Judge
     def powers
       @powers_wrap
     end
-
-    def deleted_province(province)
-      @powers.each{|p| p.deleted_province(province)}
-    end
     
     def validate
       @powers.each{|p| p.validate} && @unowned.each{|p| p.validate}
       locations.validate
+    end
+    
+    def _replace(old_loc,new_loc)
+      powers.each do |p|
+        p._replace(old_loc,new_loc)
+      end
+      unowned._replace(old_loc,new_loc)
+    end
+
+    def _deleted_province(province)
+      @powers.each{|p| p._deleted_province(province)}
     end
   end
 end

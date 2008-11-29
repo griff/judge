@@ -12,11 +12,6 @@ module Judge
     def owner
       @province.owner
     end
-
-    def delete
-      @province.coasts.delete(self)
-      super
-    end
     
     def full_abbreviation
       abbreviation + '/' + coast
@@ -32,7 +27,12 @@ module Judge
         @coast = coast
         @province.coasts.add(self)
       end
-      @container.replace(old_full, self.full_abbreviation)
+      @container._replace(old_full, self.full_abbreviation)
+    end
+
+    def _delete
+      @province.coasts.delete(self)
+      super
     end
   end
 end

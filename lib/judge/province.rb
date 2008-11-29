@@ -6,16 +6,15 @@ module Judge
       super container, abbreviation
       @coasts = [].to_set
     end
+    
+    def province
+      self
+    end
 
     def owner=(new_owner)
       @owner.remove_owned(self) if @owner
       new_owner.add_owned(self) if new_owner
       @owner = new_owner
-    end
-
-    def delete
-      @coasts.each{|c| @container.delete(c.full_abbreviation)  }
-      super
     end
 
     def fetch_coast( coast )
@@ -29,7 +28,7 @@ module Judge
       raise 'Coast on non costal location' if coast
       old_full = self.full_abbreviation
       @abbreviation = province
-      @container.replace(old_full, self.full_abbreviation)
+      @container._replace(old_full, self.full_abbreviation)
     end
     
     def validate
@@ -40,6 +39,11 @@ module Judge
         @coasts.each {|c| puts "  Coast #{c.coast} with type #{c.type}"}
         raise "Mixed types" unless @coasts.all?{|c| self.type == c.type}
       end
+    end
+
+    def _delete
+      @coasts.each{|c| @container.delete(c.full_abbreviation)  }
+      super
     end
   end
 end

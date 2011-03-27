@@ -1,0 +1,18 @@
+Spain (north coast) = spa/nc
+Spain (south coast) = spa/sc
+Spain               = spa
+Bulgaria            = bul
+Romania             = rom
+
+spa -> Armenia = arm
+SPA/SC -> Armenia (east coast) = arm/ec
+spa/nc -> Armenia (west coast) = arm/wc
+
+COAST spa ABUTS BUL
+COAST SPA/NC ABUTS ROM
+COAST SPA/SC ABUTS ROM
+LAND BUL ABUTS SPA ROM
+LAND ROM ABUTS BUL SPA/NC SPA/SC
+
+ENGLAND
+DENMARK

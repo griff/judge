@@ -10,6 +10,9 @@ class Module
 end
 
 module Judge
+  autoload :AlreadyFactoryError, 'judge/extensions/factories'
+  autoload :AlreadyPartisanError, 'judge/extensions/partisans'
+  
   Extensions = [].to_set
   def self.load_extension(name)
     if !Extensions.include?(name.to_sym)

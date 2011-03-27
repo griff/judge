@@ -5,26 +5,24 @@ module Judge
         abbreviation = $1
         coast = $2
       else
-        raise "Invalid location name #{abreviation}"
+        raise "Invalid location name #{abbreviation}"
       end
       [abbreviation, coast]
     end
 
-    attr_reader :abbreviation
-    attr_reader :name
-    attr_reader :type
-    attr_reader :aliases
-    attr_reader :ambiguous
-    attr_reader :adjacencies
+    attr_reader :abbreviation, :name, :terrain
+    attr_reader :aliases, :ambiguous, :adjacencies, :map
+    
 
-    def initialize( container, abbreviation, name=nil )
-      @container = container
+    def initialize( map, abbreviation, name=nil )
+      @map = map
       @abbreviation = abbreviation.upcase
       @name = name
       @ambiguous = StringList.new
       @aliases = StringList.new
       @adjacencies = [].to_set
       @restrictions = []
+      @terrain = nil
     end
     
     def supply_center?
@@ -35,14 +33,14 @@ module Judge
       @restrictions = args.flatten
     end
     
-    def type=(new_value)
-      new_value = TYPES[new_value.to_s.upcase] unless new_value.respond_to? :can_occupy?
-      raise ArgumentError, "Invalid type" unless new_value
-      @type = new_value
+    def terrain=(new_value)
+      new_value = TERRAINS[new_value.to_s.upcase] unless new_value.respond_to? :can_occupy?
+      raise ArgumentError, "Invalid terrain" unless new_value
+      @terrain = new_value
     end
     
     def can_occupy?(unit)
-      type.can_occupy?(unit) && @restrictions.all? {|r| !unit.is_a?(r)}
+      terrain.can_occupy?(unit) && @restrictions.all? {|r| !unit.is_a?(r)}
     end
     
     def name=(new_value)
@@ -72,8 +70,8 @@ module Judge
     end
     
     def validate
-      raise "No name provided for #{self.full_abbreviation}" unless @name
-      raise "No type provided for #{self.full_abbreviation}" unless @type
+      raise InvalidLocationError, "No name provided for #{self.full_abbreviation}" unless @name
+      raise InvalidLocationError, "No terrain provided for #{self.full_abbreviation}" unless @terrain
     end
     
     def to_s

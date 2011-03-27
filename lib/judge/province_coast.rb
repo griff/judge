@@ -2,8 +2,8 @@ module Judge
   class ProvinceCoast < Location
     attr_reader :province, :coast
     
-    def initialize( container, province, abbreviation, coast )
-      super(container, abbreviation)
+    def initialize( map, province, abbreviation, coast )
+      super(map, abbreviation)
       @province = province
       @coast = coast.upcase
       province.coasts.add(self)
@@ -19,7 +19,7 @@ module Judge
 
     def full_abbreviation=(new_abbrev)
       province, coast = Location.abbreviation_and_coast(new_abbrev)
-      raise 'No coast for costal location' unless coast
+      raise ArgumentError, 'No coast for costal location' unless coast
       old_full = self.full_abbreviation
       @abbreviation = province
       if coast != @coast
@@ -27,7 +27,7 @@ module Judge
         @coast = coast
         @province.coasts.add(self)
       end
-      @container._replace(old_full, self.full_abbreviation)
+      @map._replace(old_full, self.full_abbreviation)
     end
 
     def _delete

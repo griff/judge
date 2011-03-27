@@ -1,460 +1,527 @@
-Judge::MapReader.define_map('standard') do |map|
-  # Politics
-  map.power('Austria', 'Austrian').owns  bud, tri, vie
-  map.power('England', 'English').owns   edi, lon, lvp
-  map.power('France',  'French').owns    bre, mar, par
-  map.power('Germany', 'German').owns    ber, kie, mun
-  map.power('Italy',   'Italian').owns   nap, rom, ven
-  map.power('Russia',  'Russian').owns   mos, sev, stp, war
-  map.power('Turkey',  'Turkish').owns   ank, con, smy
-  map.unowned bel, bul, den, gre, hol, nwy, por, rum, ser, spa, swe, tun
-  
-  # Geography
-  map.province('adr') do |l|
-    l.name = 'Adriatic Sea'
-    l.type = Water
-    l.aliases 'adriatic'
-    l.adj alb, apu, ion, tri, ven
+
+# Politics
+power('Austria', 'Austrian').homes  %w{bud tri vie}
+power('England', 'English').homes   %w{edi lon lvp}
+power('France',  'French').homes    %w{bre mar par}
+power('Germany', 'German').homes    %w{ber kie mun}
+power('Italy',   'Italian').homes   %w{nap rom ven}
+power('Russia',  'Russian').homes   %w{mos sev stp war}
+power('Turkey',  'Turkish').homes   %w{ank con smy}
+unowned %w{bel bul den gre hol nwy por rum ser spa swe tun}
+
+# Geography
+province('adr') do 
+  name        'Adriatic Sea'
+  terrain     Water
+  aliases     'adriatic'
+  adjacencies alb, apu, ion, tri, ven
 #    WATER   ADR     ABUTS   ALB APU ION TRI VEN
-  end
-  map.province('aeg') do |l|
-    l.name = 'Aegean Sea'
-    l.type = Water
-    l.aliases 'aegean'
-    l.adj bul/sc, con, eas, gre, ion, smy
+end
+province('aeg') do 
+  name  'Aegean Sea'
+  terrain Water
+  aliases 'aegean'
+  adjacencies bul/sc, con, eas, gre, ion, smy
 #    WATER   AEG     ABUTS   BUL/SC CON EAS GRE ION SMY
-  end
-  map.province('alb') do |l|
-    l.name = 'Albania'
-    l.type = Coast
-    l.adj adr, gre, ion, ser, tri
+end
+province('alb') do 
+  name 'Albania'
+  terrain Coast
+  adjacencies adr, gre, ion, ser, tri
 #    COAST   ALB     ABUTS   ADR GRE ION SER TRI
-  end
-  map.province('ank') do |l|
-    l.name = 'Ankara'
-    l.type = Coast
-    l.adj arm, bla, con, smy(Army)
+end
+province('ank') do
+  name 'Ankara'
+  terrain Coast
+  adjacencies arm, bla, con, smy(Army)
 #    COAST   ANK     ABUTS   ARM BLA CON smy
-  end
-  map.province('apu') do |l|
-    l.name = 'Apulia'
-    l.type = Coast
-    l.adj adr, ion, nap, rom(Army), ven
+end
+province('apu') do
+  name 'Apulia'
+  terrain Coast
+  adjacencies adr, ion, nap, rom(Army), ven
 #    COAST   APU     ABUTS   ADR ION NAP rom VEN
-  end
-  map.province('arm') do |l|
-    l.name = 'Armenia'
-    l.type = Coast
-    l.adj ank, bla, sev, smy(Army), syr(Army)
+end
+province('arm') do
+  name 'Armenia'
+  terrain Coast
+  adjacencies ank, bla, sev, smy(Army), syr(Army)
 #    COAST   ARM     ABUTS   ANK BLA SEV smy syr
-  end
-  map.province('bal') do |l|
-    l.name = 'Baltic Sea'
-    l.type = Water
-    l.aliases 'baltic'
-    l.adj ber, bot, den, lvn, kie, pru, swe
+end
+province('bal') do
+  name 'Baltic Sea'
+  terrain Water
+  aliases 'baltic'
+  adjacencies ber, bot, den, lvn, kie, pru, swe
 #    WATER   BAL     ABUTS   BER BOT DEN LVN KIE PRU SWE
-  end
-  map.province('bar') do |l|
-    l.name = 'Barents Sea'
-    l.type = Water
-    l.aliases 'barents'
-    l.adj nwy, nwg, stp/nc
+end
+province('bar') do
+  name 'Barents Sea'
+  terrain Water
+  aliases 'barents'
+  adjacencies nwy, nwg, stp/nc
 #    WATER   BAR     ABUTS   NWY NWG STP/NC
-  end
-  map.province('bel') do |l|
-    l.name = 'Belgium'
-    l.type = Coast
-    l.adj bur(Army), eng, hol, nth, pic, ruh
-#    COAST   BEL     ABUTS   bur ENG HOL  NTH PIC RUH
-  end
-  map.province('ber') do |l|
-    l.name = 'Berlin'
-    l.type = Coast
-    l.adj bal, kie, mun, pru, sil
+end
+province('bel') do
+  name 'Belgium'
+  terrain Coast
+  adjacencies bur, eng, hol, nth, pic, ruh
+#    COAST   BEL     ABUTS   BUR ENG HOL  NTH PIC RUH
+end
+province('ber') do
+  name 'Berlin'
+  terrain Coast
+  adjacencies bal, kie, mun, pru, sil
 #    COAST   BER     ABUTS   BAL KIE MUN PRU SIL
-  end
-  map.province('bla') do |l|
-    l.name = 'Black Sea'
-    l.type = Water
-    l.aliases 'black'
-    l.adj ank, arm, bul/ec, con, rum, sev
+end
+province('bla') do
+  name 'Black Sea'
+  terrain Water
+  aliases 'black'
+  adjacencies ank, arm, bul/ec, con, rum, sev
 #    WATER   BLA     ABUTS   ANK ARM BUL/EC CON RUM SEV
-  end
-  map.province('boh') do |l|
-    l.name = 'Bohemia'
-    l.type = Land
-    l.adj gal, mun, sil, tyr, vie
-    #LAND    BOH     ABUTS   GAL MUN SIL TYR VIE
-  end
-  map.province('bre') do |l|
-    l.name = 'Brest'
-    l.type = Coast
-    l.adj eng, gas, mao, par, pic
-    #COAST   BRE     ABUTS   ENG GAS MAO PAR PIC
-  end
-  map.province('bud') do |l|
-    l.name = 'Budapest'
-    l.type = Land
-    #LAND    BUD     ABUTS   GAL RUM SER TRI VIE
-  end
-  map.province('bul') do |l|
-    l.name = 'Bulgaria'
-    l.type = Coast
-    l.coast('ec') do |c|
-      c.aliases 'bul(ec)', 'bulgaria/ec', 'bulgaria(ec)'
-    end
-    l.coast('sc') do |c|
-      c.aliases 'bul/sc', 'bul(sc)', 'bulgaria/sc', 'bulgaria(sc)'
-    end
-    #COAST   BUL/EC  ABUTS   BLA CON RUM
-    #COAST   BUL/SC  ABUTS   AEG CON GRE
-    #COAST   bul     ABUTS   AEG BLA CON GRE RUM SER
-  end
-  map.province('bur') do |l|
-    l.name = 'Burgundy'
-    l.type = Land
-    l.aliases 'burgandy'
-    #LAND    BUR     ABUTS   BEL GAS RUH MAR MUN PAR PIC SWI
-  end
-  map.province('cly') do |l|
-    l.name = 'Clyde'
-    l.type = Coast
-    #COAST   CLY     ABUTS   EDI LVP NAO NWG
-  end
-  map.province('con') do |l|
-    l.name = 'Constantinople'
-    l.type = Coast
-    #COAST   CON     ABUTS   AEG BUL/EC BUL/SC BLA ANK SMY
-  end
-  map.province('den') do |l|
-    l.name = 'Denmark'
-    l.type = Coast
-    #COAST   DEN     ABUTS   BAL HEL KIE NTH SKA SWE
-  end
-  map.province('eas') do |l|
-    l.name = 'Eastern Mediterranean'
-    l.type = Water
-    l.aliases 'emed', 'east', 'eastern', 'eastmed', 'ems', 'eme', 'emd', 'eas med'
-    #WATER   EAS     ABUTS   AEG ION SMY SYR
-  end
-  map.province('edi') do |l|
-    l.name = 'Edinburgh'
-    l.type = Coast
-    #COAST   EDI     ABUTS   CLY lvp NTH NWG YOR
-  end
-  map.province('eng') do |l|
-    l.name = 'English Channel'
-    l.type = Water
-    l.aliases 'english', 'channel', 'ech', 'eng ch'
-    #WATER   ENG     ABUTS   BEL BRE IRI LON MAO NTH PIC WAL
-  end
-  map.province('fin') do |l|
-    l.name = 'Finland'
-    l.type = Coast
-    #COAST   FIN     ABUTS   BOT nwy STP/SC SWE
-  end
-  map.province('gal') do |l|
-    l.name = 'Galicia'
-    l.type = Land
-    l.aliases 'galacia'
-    #LAND    GAL     ABUTS   BOH BUD RUM SIL UKR VIE WAR
-  end
-  map.province('gas') do |l|
-    l.name = 'Gascony'
-    l.type = Coast
-    #COAST   GAS     ABUTS   BUR BRE MAO mar PAR SPA/NC
-  end
-  map.province('gre') do |l|
-    l.name = 'Greece'
-    l.type = Coast
-    #COAST   GRE     ABUTS   AEG ALB BUL/SC ION SER
-  end
-  map.province('lyo') do |l|
-    l.name = 'Gulf of Lyon'
-    l.aliases 'gol', 'gulfofl', 'lyon'
-    l.type = Water
-    #WATER   LYO     ABUTS   MAR PIE SPA/SC TUS TYS WES
-  end
-  map.province('bot') do |l|
-    l.name = 'Gulf of Bothnia'
-    l.aliases 'gob', 'both', 'gulfofb', 'bothnia'
-    l.type = Water
-    #WATER   BOT     ABUTS   BAL FIN LVN STP/SC SWE
-  end
-  map.province('hel') do |l|
-    l.name = 'Helgoland Bight'
-    l.aliases 'helgoland', 'heligoland', 'heligoland bight'
-    l.type = Water
-    #WATER   HEL     ABUTS   DEN HOL KIE NTH
-  end
-  map.province('hol') do |l|
-    l.name = 'Holland'
-    l.type = Coast
-    #COAST   HOL     ABUTS   BEL HEL KIE NTH RUH
-  end
-  map.province('ion') do |l|
-    l.name = 'Ionian Sea'
-    l.aliases 'ionian'
-    l.type = Water
-    #WATER   ION     ABUTS   ADR AEG ALB APU EAS GRE NAP TUN TYS
-  end
-  map.province('iri') do |l|
-    l.name = 'Irish Sea'
-    l.aliases 'irish', 'irs'
-    l.type = Water
-    #WATER   IRI     ABUTS   ENG LVP MAO NAO WAL
-  end
-  map.province('kie') do |l|
-    l.name = 'Kiel'
-    l.type = Coast
-    #COAST   KIE     ABUTS   BAL BER DEN HEL HOL MUN RUH
-  end
-  map.province('lvp') do |l|
-    l.name = 'Liverpool'
-    l.aliases 'livp', 'lpl'
-    l.type = Coast
-    #COAST   LVP     ABUTS   CLY edi IRI NAO WAL yor
-  end
-  map.province('lvn') do |l|
-    l.name = 'Livonia'
-    l.type = Coast
-    l.aliases 'livo', 'lvo', 'lva'
-    #COAST   LVN     ABUTS   BAL BOT MOS PRU STP/SC WAR
-  end
-  map.province('lon') do |l|
-    l.name = 'London'
-    l.type = Coast
-    #COAST   LON     ABUTS   ENG NTH YOR WAL
-  end
-  map.province('mar') do |l|
-    l.name = 'Marseilles'
-    l.type = Coast
-    l.aliases 'mars'
-    #COAST   MAR     ABUTS   BUR gas LYO PIE SPA/SC SWI
-  end
-  map.province('mao') do |l|
-    l.name = 'Mid-Atlantic Ocean'
-    l.type = Water
-    l.aliases 'midatlanticocean', 'midatlantic', 'mid', 'mat'
-    #WATER   MAO     ABUTS   BRE ENG GAS IRI NAF NAO POR SPA/NC SPA/SC WES
-  end
-  map.province('mos') do |l|
-    l.name = 'Moscow'
-    l.type = Land
-    #LAND    MOS     ABUTS   LVN SEV STP UKR WAR
-  end
-  map.province('mun') do |l|
-    l.name = 'Munich'
-    l.type = Land
-    #LAND    MUN     ABUTS   BER BOH BUR KIE RUH SIL TYR SWI
-  end
-  map.province('nap') do |l|
-    l.name = 'Naples'
-    l.type = Coast
-    #COAST   NAP     ABUTS   APU ION ROM TYS
-  end
-  map.province('nao') do |l|
-    l.name = 'North Atlantic Ocean'
-    l.type = Water
-    l.aliases 'nat'
-    #WATER   NAO     ABUTS   CLY IRI LVP MAO NWG
-  end
-  map.province('naf') do |l|
-    l.name = 'North Africa'
-    l.type = Coast
-    l.aliases 'nora', 'n afr'
-    #COAST   NAF     ABUTS   MAO TUN WES
-  end
-  map.province('nth') do |l|
-    l.name = 'North Sea'
-    l.type = Water
-    l.aliases 'norsea', 'nts'
-    #WATER   NTH     ABUTS   BEL DEN EDI ENG LON HEL HOL NWY NWG SKA YOR
-  end
-  map.province('nwy') do |l|
-    l.name = 'Norway'
-    l.type = Coast
-    l.aliases 'nor', 'norw'
-    #COAST   NWY     ABUTS   BAR fin NTH NWG SKA STP/NC SWE
-  end
-  map.province('nwg') do |l|
-    l.name = 'Norwegian Sea'
-    l.type = Water
-    l.aliases 'norwegian', 'norwsea', 'nrg', 'norg',
-    #WATER   NWG     ABUTS   BAR CLY EDI NAO NWY NTH
-  end
-  map.province('par') do |l|
-    l.name = 'Paris'
-    l.type = Land
-    #LAND    PAR     ABUTS   BUR BRE GAS PIC
-  end
-  map.province('pic') do |l|
-    l.name = 'Picardy'
-    l.type = Coast
-    #COAST   PIC     ABUTS   BEL BRE BUR ENG PAR
-  end
-  map.province('pie') do |l|
-    l.name = 'Piedmont'
-    l.type = Coast
-    #COAST   PIE     ABUTS   LYO MAR TUS TYR ven SWI
-  end
-  map.province('por') do |l|
-    l.name = 'Portugal'
-    l.type = Coast
-    #COAST   POR     ABUTS   MAO SPA/NC SPA/SC
-  end
-  map.province('pru') do |l|
-    l.name = 'Prussia'
-    l.type = Coast
-    #COAST   PRU     ABUTS   BAL BER LVN SIL WAR
-  end
-  map.province('rom') do |l|
-    l.name = 'Rome'
-    l.type = Coast
-    #COAST   ROM     ABUTS   apu NAP TUS TYS ven
-  end
-  map.province('ruh') do |l|
-    l.name = 'Ruhr'
-    l.type = Land
-    #LAND    RUH     ABUTS   BEL BUR HOL KIE MUN
-  end
-  map.province('rum') do |l|
-    l.name = 'Rumania'
-    l.type = Coast
-    #COAST   RUM     ABUTS   BLA BUD BUL/EC GAL SER SEV UKR
-  end
-  map.province('ser') do |l|
-    l.name = 'Serbia'
-    l.type = Land
-    #LAND    SER     ABUTS   ALB BUD BUL GRE RUM TRI
-  end
-  map.province('sev') do |l|
-    l.name = 'Sevastopol'
-    l.type = Coast
-    l.aliases 'sevastapol'
-    #COAST   SEV     ABUTS   ARM BLA MOS RUM UKR
-  end
-  map.province('sil') do |l|
-    l.name = 'Silesia'
-    l.type = Land
-    #LAND    SIL     ABUTS   BER BOH GAL MUN PRU WAR
-  end
-  map.province('ska') do |l|
-    l.name = 'Skagerrak'
-    l.type = Water
-    #WATER   SKA     ABUTS   DEN NWY NTH SWE
-  end
-  map.province('smy') do |l|
-    l.name = 'Smyrna'
-    l.type = Coast
-    #COAST   SMY     ABUTS   AEG ank arm CON EAS SYR
-  end
-  map.province('spa') do |l|
-    l.name = 'Spain'
-    l.type = Coast
-    l.aliases 'spn'
-    l.coast('nc') do |c|
-      c.aliases 'spa(nc)', 'spain/nc', 'spain(nc)', 'spn/nc', 'spn(nc)', 'spa (north coast)'
-    end
-    l.coast('sc') do |c|
-      c.aliases 'spa(sc)', 'spain/sc', 'spain(sc)', 'spn/sc', 'spn(sc)', 'spa (south coast)'
-    end
-    #COAST   SPA/NC  ABUTS   GAS MAO POR
-    #COAST   SPA/SC  ABUTS   LYO MAO MAR POR WES
-    #COAST   spa     ABUTS   GAS LYO MAO MAR POR WES
-  end
-  map.province('stp') do |l|
-    l.name = 'St Petersburg'
-    l.type = Coast
-    l.aliases 'stpete', 'st. petersburg', 'st.petersburg'
-    l.coast('nc') do |c|
-      c.aliases = 'stp(nc)', 'stpete/nc', 'stpete(nc)', 'st. petersburg/nc', 'stp (north coast)'
-    end
-    l.coast('sc') do |c|
-      c.aliases = 'stp(sc)', 'stpete/sc', 'stpete(sc)', 'st. petersburg/sc', 'stp (south+coast)'
-    end
-    #COAST   STP/NC  ABUTS   BAR NWY
-    #COAST   STP/SC  ABUTS   BOT FIN LVN
-    #COAST   stp     ABUTS   BAR BOT FIN LVN MOS NWY
-  end
-  map.province('swe') do |l|
-    l.name = 'Sweden'
-    l.type = Coast
-    #COAST   SWE     ABUTS   BAL BOT DEN FIN NWY SKA
-  end
-  map.province('syr') do |l|
-    l.name = 'Syria'
-    l.type = Coast
-    #COAST   SYR     ABUTS   arm EAS SMY
-  end
-  map.province('tri') do |l|
-    l.name = 'Trieste'
-    l.type = Coast
-    #COAST   TRI     ABUTS   ADR ALB BUD SER TYR VEN VIE
-  end
-  map.province('tun') do |l|
-    l.name = 'Tunis'
-    l.type = Coast
-    #COAST   TUN     ABUTS   ION NAF TYS WES
-  end
-  map.province('tus') do |l|
-    l.name = 'Tuscany'
-    l.type = Coast
-    #COAST   TUS     ABUTS   LYO PIE ROM TYS ven
-  end
-  map.province('tyr') do |l|
-    l.name = 'Tyrolia'
-    l.type = Land
-    l.aliases 'tyl', 'trl', 'tyo'
-    #LAND    TYR     ABUTS   BOH MUN PIE TRI VEN VIE SWI
-  end
-  map.province('tys') do |l|
-    l.name = 'Tyrrhenian Sea'
-    l.type = Water
-    l.aliases 'tyrr', 'tyrrhenian', 'tyn', 'tyh'
-    #WATER   TYS     ABUTS   ION LYO ROM NAP TUN TUS WES
-  end
-  map.province('ukr') do |l|
-    l.name = 'Ukraine'
-    l.type = Land
-    #LAND    UKR     ABUTS   GAL MOS RUM SEV WAR
-  end
-  map.province('ven') do |l|
-    l.name = 'Venice'
-    l.type = Land
-    #COAST   VEN     ABUTS   ADR APU pie rom TRI tus TYR
-  end
-  map.province('vie') do |l|
-    l.name = 'Vienna'
-    l.type = Land
-    #LAND    VIE     ABUTS   BOH BUD GAL TRI TYR
-  end
-  map.province('wal') do |l|
-    l.name = 'Wales'
-    l.type = Coast
-    #COAST   WAL     ABUTS   ENG IRI LON LVP yor
-  end¨
-  map.province('war') do |l|
-    l.name = 'Warsaw'
-    l.type = Land
-    #LAND    WAR     ABUTS   GAL LVN MOS PRU SIL UKR
-  end
-  map.province('wes') do |l|
-    l.name = 'Western Mediterranean'
-    l.type = Water
-    l.aliases 'wmed', 'west', 'western', 'westmed', 'wms', 'wme', 'wmd', 'west med', 'wes med', 'western med'
-    #WATER   WES     ABUTS   MAO LYO NAF SPA/SC TUN TYS
-  end
-  map.province('yor') do |l|
-    l.name = 'Yorkshire'
-    l.type = Coast
-    l.aliases 'york', 'yonkers'
-    #COAST   YOR     ABUTS   EDI LON lvp NTH wal
-  end
-  map.province('swi') do |l|
-    l.name = 'Switzerland'
-    l.type = Shut
-    l.adjecencies mar, bur, mun, tyr, pie
-  end
+end
+province('boh') do
+  name 'Bohemia'
+  terrain Land
+  adjacencies gal, mun, sil, tyr, vie
+  #LAND    BOH     ABUTS   GAL MUN SIL TYR VIE
+end
+province('bre') do
+  name 'Brest'
+  terrain Coast
+  adjacencies eng, gas, mao, par, pic
+  #COAST   BRE     ABUTS   ENG GAS MAO PAR PIC
+end
+province('bud') do
+  name 'Budapest'
+  terrain Land
+  adjacencies gal, rum, ser, tri, vie
+  #LAND    BUD     ABUTS   GAL RUM SER TRI VIE
+end
+province('bul') do
+  name 'Bulgaria'
+  terrain Coast
+  adjacencies aeg, bla, con, gre, rum, ser
+  coast('ec') do
+    aliases %{bul(ec) bulgaria/ec bulgaria(ec)}
+    adjacencies bla, con, rum
+  end
+  coast('sc') do
+    aliases %{bul/sc bul(sc) bulgaria/sc bulgaria(sc)}
+    adjacencies aeg, con, gre
+  end
+  #COAST   BUL/EC  ABUTS   BLA CON RUM
+  #COAST   BUL/SC  ABUTS   AEG CON GRE
+  #COAST   bul     ABUTS   AEG BLA CON GRE RUM SER
+end
+province('bur') do
+  name 'Burgundy'
+  terrain Land
+  aliases 'burgandy'
+  adjacencies bel, gas, ruh, mar, mun, par, pic, swi
+  #LAND    BUR     ABUTS   BEL GAS RUH MAR MUN PAR PIC SWI
+end
+province('cly') do
+  name 'Clyde'
+  terrain Coast
+  adjacencies edi, lvp, nao, nwg
+  #COAST   CLY     ABUTS   EDI LVP NAO NWG
+end
+province('con') do
+  name 'Constantinople'
+  terrain Coast
+  adjacencies aeg, bul/ec, bul/sc, bla, ank, smy
+  #COAST   CON     ABUTS   AEG BUL/EC BUL/SC BLA ANK SMY
+end
+province('den') do
+  name 'Denmark'
+  terrain Coast
+  adjacencies bal, hel, kie, nth, ska, swe
+  #COAST   DEN     ABUTS   BAL HEL KIE NTH SKA SWE
+end
+province('eas') do
+  name 'Eastern Mediterranean'
+  terrain Water
+  aliases %w{emed east eastern eastmed ems eme emd eas\ med}
+  adjacencies aeg, ion, smy, syr
+  #WATER   EAS     ABUTS   AEG ION SMY SYR
+end
+province('edi') do
+  name 'Edinburgh'
+  terrain Coast
+  adjacencies cly, lvp(Army), nth, nwg, yor
+  #COAST   EDI     ABUTS   CLY lvp NTH NWG YOR
+end
+province('eng') do
+  name 'English Channel'
+  terrain Water
+  aliases %w{english channel ech eng\ ch}
+  adjacencies bel, bre, iri, lon, mao, nth, pic, wal
+  #WATER   ENG     ABUTS   BEL BRE IRI LON MAO NTH PIC WAL
+end
+province('fin') do
+  name 'Finland'
+  terrain Coast
+  adjacencies bot, nwy(Army), stp/sc, swe
+  #COAST   FIN     ABUTS   BOT nwy STP/SC SWE
+end
+province('gal') do
+  name 'Galicia'
+  terrain Land
+  aliases 'galacia'
+  adjacencies boh, bud, rum, sil, ukr, vie, war
+  #LAND    GAL     ABUTS   BOH BUD RUM SIL UKR VIE WAR
+end
+province('gas') do
+  name 'Gascony'
+  terrain Coast
+  adjacencies bur, bre, mao, mar(Army), par, spa/nc
+  #COAST   GAS     ABUTS   BUR BRE MAO mar PAR SPA/NC
+end
+province('gre') do
+  name 'Greece'
+  terrain Coast
+  adjacencies aeg, alb, bul/sc, ion, ser
+  #COAST   GRE     ABUTS   AEG ALB BUL/SC ION SER
+end
+province('lyo') do
+  name 'Gulf of Lyon'
+  aliases %w{gol gulfofl lyon}
+  terrain Water
+  adjacencies mar, pie, spa/sc, tus, tys, wes
+  #WATER   LYO     ABUTS   MAR PIE SPA/SC TUS TYS WES
+end
+province('bot') do
+  name 'Gulf of Bothnia'
+  aliases %w{gob both gulfofb bothnia}
+  terrain Water
+  adjacencies bal, fin, lvn, stp/sc, swe
+  #WATER   BOT     ABUTS   BAL FIN LVN STP/SC SWE
+end
+province('hel') do
+  name 'Helgoland Bight'
+  aliases %w{helgoland heligoland heligoland\ bight}
+  terrain Water
+  adjacencies den, hol, kie, nth
+  #WATER   HEL     ABUTS   DEN HOL KIE NTH
+end
+province('hol') do
+  name 'Holland'
+  terrain Coast
+  adjacencies bel, hel, kie, nth, ruh
+  #COAST   HOL     ABUTS   BEL HEL KIE NTH RUH
+end
+province('ion') do
+  name 'Ionian Sea'
+  aliases 'ionian'
+  terrain Water
+  adjacencies adr, aeg, alb, apu, eas, gre, nap, tun, tys
+  #WATER   ION     ABUTS   ADR AEG ALB APU EAS GRE NAP TUN TYS
+end
+province('iri') do
+  name 'Irish Sea'
+  aliases %w{irish irs}
+  terrain Water
+  adjacencies eng, lvp, mao, nao, wal
+  #WATER   IRI     ABUTS   ENG LVP MAO NAO WAL
+end
+province('kie') do
+  name 'Kiel'
+  terrain Coast
+  adjacencies bal, ber, den, hel, hol, mun, ruh
+  #COAST   KIE     ABUTS   BAL BER DEN HEL HOL MUN RUH
+end
+province('lvp') do
+  name 'Liverpool'
+  aliases %w{livp lpl}
+  terrain Coast
+  adjacencies cly, edi(Army), iri, nao, wal, yor(Army)
+  #COAST   LVP     ABUTS   CLY edi IRI NAO WAL yor
+end
+province('lvn') do
+  name 'Livonia'
+  terrain Coast
+  aliases %w{livo lvo lva}
+  adjacencies bal, bot, mos, pru, stp/sc, war
+  #COAST   LVN     ABUTS   BAL BOT MOS PRU STP/SC WAR
+end
+province('lon') do
+  name 'London'
+  terrain Coast
+  adjacencies eng, nth, yor, wal
+  #COAST   LON     ABUTS   ENG NTH YOR WAL
+end
+province('mar') do
+  name 'Marseilles'
+  terrain Coast
+  aliases 'mars'
+  adjacencies bur, gas(Army), lyo, pie, spa/sc, swi
+  #COAST   MAR     ABUTS   BUR gas LYO PIE SPA/SC SWI
+end
+province('mao') do
+  name 'Mid-Atlantic Ocean'
+  terrain Water
+  aliases %w{midatlanticocean midatlantic mid mat}
+  adjacencies bre, eng, gas, iri, naf, nao, por, spa/nc, spa/sc, wes
+  #WATER   MAO     ABUTS   BRE ENG GAS IRI NAF NAO POR SPA/NC SPA/SC WES
+end
+province('mos') do
+  name 'Moscow'
+  terrain Land
+  adjacencies lvn, sev, stp, ukr, war
+  #LAND    MOS     ABUTS   LVN SEV STP UKR WAR
+end
+province('mun') do
+  name 'Munich'
+  terrain Land
+  adjacencies ber, boh, bur, kie, ruh, sil, tyr, swi
+  #LAND    MUN     ABUTS   BER BOH BUR KIE RUH SIL TYR SWI
+end
+province('nap') do
+  name 'Naples'
+  terrain Coast
+  adjacencies apu, ion, rom, tys
+  #COAST   NAP     ABUTS   APU ION ROM TYS
+end
+province('nao') do
+  name 'North Atlantic Ocean'
+  terrain Water
+  aliases 'nat'
+  adjacencies cly, iri, lvp, mao, nwg
+  #WATER   NAO     ABUTS   CLY IRI LVP MAO NWG
+end
+province('naf') do
+  name 'North Africa'
+  terrain Coast
+  aliases %w{nora n\ afr}
+  adjacencies mao, tun, wes
+  #COAST   NAF     ABUTS   MAO TUN WES
+end
+province('nth') do
+  name 'North Sea'
+  terrain Water
+  aliases %w{norsea nts}
+  adjacencies bel, den, edi, eng, lon, hel, hol, nwy, nwg, ska, yor
+  #WATER   NTH     ABUTS   BEL DEN EDI ENG LON HEL HOL NWY NWG SKA YOR
+end
+province('nwy') do
+  name 'Norway'
+  terrain Coast
+  aliases %w{nor norw}
+  adjacencies bar, fin(Army), nth, nwg, ska, stp/nc, swe
+  #COAST   NWY     ABUTS   BAR fin NTH NWG SKA STP/NC SWE
+end
+province('nwg') do
+  name 'Norwegian Sea'
+  terrain Water
+  aliases %w{norwegian norwsea nrg norg}
+  adjacencies bar, cly, edi, nao, nwy, nth
+  #WATER   NWG     ABUTS   BAR CLY EDI NAO NWY NTH
+end
+province('par') do
+  name 'Paris'
+  terrain Land
+  adjacencies bur, bre, gas, pic
+  #LAND    PAR     ABUTS   BUR BRE GAS PIC
+end
+province('pic') do
+  name 'Picardy'
+  terrain Coast
+  adjacencies bel, bre, bur, eng, par
+  #COAST   PIC     ABUTS   BEL BRE BUR ENG PAR
+end
+province('pie') do
+  name 'Piedmont'
+  terrain Coast
+  adjacencies lyo, mar, tus, tyr, ven(Army), swi
+  #COAST   PIE     ABUTS   LYO MAR TUS TYR ven SWI
+end
+province('por') do
+  name 'Portugal'
+  terrain Coast
+  adjacencies mao, spa/nc, spa/sc
+  #COAST   POR     ABUTS   MAO SPA/NC SPA/SC
+end
+province('pru') do
+  name 'Prussia'
+  terrain Coast
+  adjacencies bal, ber, lvn, sil, war
+  #COAST   PRU     ABUTS   BAL BER LVN SIL WAR
+end
+province('rom') do
+  name 'Rome'
+  terrain Coast
+  adjacencies apu(Army), nap, tus, tys, ven(Army)
+  #COAST   ROM     ABUTS   apu NAP TUS TYS ven
+end
+province('ruh') do
+  name 'Ruhr'
+  terrain Land
+  adjacencies bel, bur, hol, kie, mun
+  #LAND    RUH     ABUTS   BEL BUR HOL KIE MUN
+end
+province('rum') do
+  name 'Rumania'
+  terrain Coast
+  adjacencies bla, bud, bul/ec, gal, ser, sev, ukr
+  #COAST   RUM     ABUTS   BLA BUD BUL/EC GAL SER SEV UKR
+end
+province('ser') do
+  name 'Serbia'
+  terrain Land
+  adjacencies alb, bud, bul, gre, rum, tri
+  #LAND    SER     ABUTS   ALB BUD BUL GRE RUM TRI
+end
+province('sev') do
+  name 'Sevastopol'
+  terrain Coast
+  aliases 'sevastapol'
+  adjacencies arm, bla, mos, rum, ukr
+  #COAST   SEV     ABUTS   ARM BLA MOS RUM UKR
+end
+province('sil') do
+  name 'Silesia'
+  terrain Land
+  adjacencies ber, boh, gal, mun, pru, war
+  #LAND    SIL     ABUTS   BER BOH GAL MUN PRU WAR
+end
+province('ska') do
+  name 'Skagerrak'
+  terrain Water
+  adjacencies den, nwy, nth, swe
+  #WATER   SKA     ABUTS   DEN NWY NTH SWE
+end
+province('smy') do
+  name 'Smyrna'
+  terrain Coast
+  adjacencies aeg, ank(Army), arm(Army), con, eas, syr
+  #COAST   SMY     ABUTS   AEG ank arm CON EAS SYR
+end
+province('spa') do
+  name 'Spain'
+  terrain Coast
+  aliases 'spn'
+  adjacencies gas, lyo, mao, mar, por, wes
+  coast('nc') do
+    aliases %w{spa(nc) spain/nc spain(nc) spn/nc spn(nc) spa\ (north coast)}
+    adjacencies gas, mao, por
+  end
+  coast('sc') do
+    aliases %w{spa(sc) spain/sc spain(sc) spn/sc spn(sc) spa\ (south coast)}
+    adjacencies lyo, mao, por, wes
+  end
+  #COAST   SPA/NC  ABUTS   GAS MAO POR
+  #COAST   SPA/SC  ABUTS   LYO MAO MAR POR WES
+  #COAST   spa     ABUTS   GAS LYO MAO MAR POR WES
+end
+province('stp') do
+  name 'St Petersburg'
+  terrain Coast
+  aliases %{stpete st.\ petersburg st.petersburg}
+  adjacencies bar, bot, fin, lvn, mos, nwy
+  coast('nc') do
+    aliases %w{stp(nc) stpete/nc stpete(nc) st.\ petersburg/nc stp\ (north coast)}
+    adjacencies bar, nwy
+  end
+  coast('sc') do
+    aliases %w{stp(sc) stpete/sc stpete(sc) st.\ petersburg/sc stp\ (south+coast)}
+    adjacencies bot, fin, lvn
+  end
+  #COAST   STP/NC  ABUTS   BAR NWY
+  #COAST   STP/SC  ABUTS   BOT FIN LVN
+  #COAST   stp     ABUTS   BAR BOT FIN LVN MOS NWY
+end
+province('swe') do
+  name 'Sweden'
+  terrain Coast
+  adjacencies bal, bot, den, fin, nwy, ska
+  #COAST   SWE     ABUTS   BAL BOT DEN FIN NWY SKA
+end
+province('syr') do
+  name 'Syria'
+  terrain Coast
+  adjacencies arm(Army), eas, smy
+  #COAST   SYR     ABUTS   arm EAS SMY
+end
+province('tri') do
+  name 'Trieste'
+  terrain Coast
+  adjacencies adr, alb, bud, ser, tyr, ven, vie
+  #COAST   TRI     ABUTS   ADR ALB BUD SER TYR VEN VIE
+end
+province('tun') do
+  name 'Tunis'
+  terrain Coast
+  adjacencies ion, naf, tys, wes
+  #COAST   TUN     ABUTS   ION NAF TYS WES
+end
+province('tus') do
+  name 'Tuscany'
+  terrain Coast
+  adjacencies lyo, pie, rom, tys, ven(Army)
+  #COAST   TUS     ABUTS   LYO PIE ROM TYS ven
+end
+province('tyr') do
+  name 'Tyrolia'
+  terrain Land
+  aliases %{tyl trl tyo}
+  adjacencies boh, mun, pie, tri, ven, vie, swi
+  #LAND    TYR     ABUTS   BOH MUN PIE TRI VEN VIE SWI
+end
+province('tys') do
+  name 'Tyrrhenian Sea'
+  terrain Water
+  aliases %{tyrr tyrrhenian tyn tyh}
+  adjacencies ion, lyo, rom, nap, tun, tus, wes
+  #WATER   TYS     ABUTS   ION LYO ROM NAP TUN TUS WES
+end
+province('ukr') do
+  name 'Ukraine'
+  terrain Land
+  adjacencies gal, mos, rum, sev, war
+  #LAND    UKR     ABUTS   GAL MOS RUM SEV WAR
+end
+province('ven') do
+  name 'Venice'
+  terrain Land
+  adjacencies adr, apu, pie(Army), rom(Army), tri, tus(Army), tyr
+  #COAST   VEN     ABUTS   ADR APU pie rom TRI tus TYR
+end
+province('vie') do
+  name 'Vienna'
+  terrain Land
+  adjacencies boh, bud, gal, tri, tyr
+  #LAND    VIE     ABUTS   BOH BUD GAL TRI TYR
+end
+province('wal') do
+  name 'Wales'
+  terrain Coast
+  adjacencies eng, iri, lon, lvp, yor(Army)
+  #COAST   WAL     ABUTS   ENG IRI LON LVP yor
+end
+province('war') do
+  name 'Warsaw'
+  terrain Land
+  adjacencies gal, lvn, mos, pru, sil, ukr
+  #LAND    WAR     ABUTS   GAL LVN MOS PRU SIL UKR
+end
+province('wes') do
+  name 'Western Mediterranean'
+  terrain Water
+  aliases %{wmed west western westmed wms wme wmd west\ med wes\ med western\ med}
+  adjacencies mao, lyo, naf, spa/sc, tun, tys
+  #WATER   WES     ABUTS   MAO LYO NAF SPA/SC TUN TYS
+end
+province('yor') do
+  name 'Yorkshire'
+  terrain Coast
+  aliases %{york yonkers}
+  adjacencies edi, lon, lvp(Army), nth, wal(Army)
+  #COAST   YOR     ABUTS   EDI LON lvp NTH wal
+end
+province('swi') do
+  name 'Switzerland'
+  terrain Shut
+  adjacencies mar, bur, mun, tyr, pie
 end

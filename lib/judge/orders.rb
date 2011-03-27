@@ -1,8 +1,27 @@
 module Judge
+  module OrderContainer
+    class OrderList
+      
+    end
+    
+    def orders
+      @orders ||= 
+    end
+  end
+  
   class Order
     attr_reader :unit
     def initialize(unit)
       @unit = unit
+      @invalid = false
+    end
+    
+    def invalid?
+      @invalid
+    end
+    
+    def mark_invalid
+      @invalid = true
     end
   end
   class MovementOrder < Order

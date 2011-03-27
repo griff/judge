@@ -11,7 +11,7 @@ module Judge
       def can_support?() true end
     end
     
-    TYPES['PORT'] = Port.instance
+    TERRAINS['PORT'] = Port.instance
   end
   Extensions << :ports
 end

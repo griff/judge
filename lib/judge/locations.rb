@@ -13,7 +13,7 @@ module Judge
     
     def fetch_location( location, use_ambiguous=true )
       location_u = location.upcase
-      loc = @places.values.find{|p| p.name.upcase == location_u}
+      loc = @places.values.find{|p| p.name && p.name.upcase == location_u}
       loc = fetch_place(location_u) unless loc
       loc = @places.values.find{|p| p.aliases.any?{|a| a.upcase == location_u}} unless loc
       loc = @places.values.find{|p| p.ambiguous.any?{|a| a.upcase == location_u}} unless loc or !use_ambiguous
@@ -35,18 +35,18 @@ module Judge
 
     def fetch_province( province )
       province, coast = Location.abbreviation_and_coast(province, coast)
-      raise 'Coast specified' if coast
+      raise ArgumentError, 'Coast specified' if coast
       @places[province.upcase]
     end
     
     def fetch_or_create_province(province)
       province, coast = Location.abbreviation_and_coast(province, coast)
-      raise 'Coast specified' if coast
+      raise ArgumentError, 'Coast specified' if coast
       
       province_u = province.upcase
       result = @places[province_u]
       unless result
-        result = @places[province_u] = Province.new(self, province)
+        result = @places[province_u] = Province.new(@map, province)
       end
       result
     end
@@ -69,10 +69,10 @@ module Judge
       unless result
         if coast
           owner = @places[province_u]
-          owner = @places[province_u] = Province.new(self, province) unless owner
-          result = @places[full_abbreviation] = ProvinceCoast.new(self, owner, province, coast)
+          owner = @places[province_u] = Province.new(@map, province) unless owner
+          result = @places[full_abbreviation] = ProvinceCoast.new(@map, owner, province, coast)
         else
-          result = @places[full_abbreviation] = Province.new(self, province)
+          result = @places[full_abbreviation] = Province.new(@map, province)
         end
       end
 
@@ -102,6 +102,8 @@ module Judge
       @places.values.all?{|p| p.validate}
     end
 
+    def finish
+    end
     
     def _replace(old_location, new_location)
       new_loc = @places.delete(old_location.upcase)

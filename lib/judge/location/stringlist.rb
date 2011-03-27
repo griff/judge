@@ -6,6 +6,10 @@ module Judge
       def initialize(arr=[])
         @items = arr
       end
+      
+      def size
+        @items.size
+      end
     
       def add(item)
         item = item.gsub(/\+/, ' ')

@@ -1,6 +1,6 @@
 require 'test_map_reader'
 
-class TestMapReader1898 < Test::Unit::TestCase
+class TestMapReader1900 < Test::Unit::TestCase
   include MapReaderTest
   
   def setup

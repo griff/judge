@@ -17,7 +17,7 @@ module Judge
     end
     
     def passable?(unit)
-      to.type.can_occupy?(unit) && @disallowed_units.all?{|u| !unit.is_a?(u)}
+      to.terrain.can_occupy?(unit) && @disallowed_units.all?{|u| !unit.is_a?(u)}
     end
     
     def strength

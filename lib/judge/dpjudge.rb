@@ -1,9 +1,22 @@
 module Judge
+  class DPJudgeNoCurrentPower < JudgeError
+  end
+  
+  class DPJudgeProvinceRedefinitionError < JudgeError
+  end
+
+  class DPJudgeLoadLoopDetectedError < JudgeError
+  end
+  
   module DPJudge
     class ParserLine
       def initialize(reader)
         @reader = reader
       end
+      
+      def prereq(line)
+      end
+      
       def matches(line)
         if line =~ self.class::Expr
           @m1 = $1
@@ -23,6 +36,12 @@ module Judge
       def action(line)
       end
     end
+    class CurrentPowerParserLine < ParserLine
+      def prereq(line)
+        raise DPJudgeNoCurrentPower, "No power is currently active" unless @reader.current_power
+      end
+    end
+    
     class UsesLine < ParserLine
       Expr = /^USES?\s+(.*)$/i
       def action(line)
@@ -52,11 +71,12 @@ module Judge
 
         if old_abbrev
           province = @reader.map.locations.fetch_place(old_abbrev)
-          raise "Invalid old appreviation '#{old_abbrev}'" unless province
+          raise InvalidLocationError, "Invalid old abbreviation '#{old_abbrev}'" unless province
           province.full_abbreviation = abbreviation
           province.aliases.clear
         else
           province = @reader.map.locations.fetch_or_create_place(abbreviation)
+          raise DPJudgeProvinceRedefinitionError, "Province already configured" if province.name || province.ambiguous.size > 0 || province.aliases.size > 0
         end
         province.name = place_name
 
@@ -85,9 +105,10 @@ module Judge
 
         Judge.load_extension('ports') if terrainType == 'PORT'
 
-        province = @reader.map.locations.fetch_or_create_place(abbreviation)
+        province = @reader.map.locations.fetch_location(abbreviation, false)
+        raise InvalidLocationError, "Undefined province #{abbreviation}" unless province
         if terrainType != 'AMEND'
-          province.type = terrainType
+          province.terrain = terrainType
           province.adjacencies.clear if abuts
         end
         
@@ -165,6 +186,16 @@ module Judge
         end
       end
     end
+
+    class VictoryLine < ParserLine
+      Expr = /^VICTORY\s+(\d+)$/i
+      def action(line)
+        count = @m1.to_i
+        @reader.debug("Victory #{count}: #{line}")
+        
+        @reader.map.victory = count
+      end
+    end
     
     class PoliticalSupplyCentersLine < ParserLine
       Expr = /^(UNOWNED|NEUTRAL|CENTERS)((?:\s+-?[a-zA-Z0-9]{3})*)$/i
@@ -179,7 +210,7 @@ module Judge
       end
     end
     
-    class UnitPlacementLine < ParserLine
+    class UnitPlacementLine < CurrentPowerParserLine
       Expr = /^(F(?:leet)?|A(?:rmy)?)\s+(.+)$/i
       def action(line)
         unitType = @m1
@@ -202,18 +233,27 @@ module Judge
       end
     end
     
-    class OwnsLine < ParserLine
+    class UnitsLine < CurrentPowerParserLine
+      Expr = /^UNITS$/i
+      def action(line)
+        @reader.current_power.units.clear
+      end
+    end
+    
+    class OwnsLine < CurrentPowerParserLine
       Expr = /^OWNS((\s+[a-zA-Z0-9]{3})*)$/i
       def action(line)
         centers = @m1.strip
         @reader.debug("Owns '#{centers}': #{line}")
-
-        @reader.current_power.owns.clear
         
         centers = centers.split
+        
+        #clear list of owned supply centers
+        @reader.current_power.owns.clear if centers.size == 0
+        
         centers.each do |center|
           center = center.upcase
-          #make home center
+          #make supply center owned by power
           @reader.current_power.owns.add(center)
         end
       end

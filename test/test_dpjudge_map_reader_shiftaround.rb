@@ -75,7 +75,7 @@ class TestMapReaderShiftaround < Test::Unit::TestCase
                   'SER', 'SPA', 'SWE', 'TUN',]
     @locations = [
       {:name=>'Adriatic Sea', :full_abbreviation=>'ADR', :aliases=>['ADRIATIC'], :ambiguous=>[],
-        :type=>'WATER', :abut=>['ALB', 'APU', 'ION', 'TRI', 'VEN']
+        :terrain=>'WATER', :abut=>['ALB', 'APU', 'ION', 'TRI', 'VEN']
       }, 
       {:name=>'Aegean Sea', :full_abbreviation=>'AEG', :aliases=>['AEGEAN'], :ambiguous=>[]}, 
       {:name=>'Albania', :full_abbreviation=>'ALB', :aliases=>[], :ambiguous=>[]}, 

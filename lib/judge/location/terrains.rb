@@ -47,7 +47,7 @@ module Judge
       def can_support?() true end
     end
 
-    TYPES = {
+    TERRAINS = {
       'WATER' => Water.instance,
       'SHUT' => Shut.instance,
       'COAST' => Coast.instance,

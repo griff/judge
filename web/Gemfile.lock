@@ -1,0 +1,40 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    backports (2.0.3)
+    cgi_multipart_eof_fix (2.5.0)
+    daemons (1.0.10)
+    fastthread (1.0.1)
+    gem_plugin (0.2.3)
+    haml (3.0.25)
+    mongrel (1.1.5)
+      cgi_multipart_eof_fix (>= 2.4)
+      daemons (>= 1.0.3)
+      fastthread (>= 1.0.1)
+      gem_plugin (>= 0.2.3)
+    monkey-lib (0.5.4)
+      backports
+    rack (1.2.2)
+    sinatra (1.2.3)
+      rack (~> 1.1)
+      tilt (< 2.0, >= 1.2.2)
+    sinatra-advanced-routes (0.5.1)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+      sinatra-sugar (~> 0.5.0)
+    sinatra-reloader (0.5.0)
+      sinatra (~> 1.0)
+      sinatra-advanced-routes (~> 0.5.0)
+    sinatra-sugar (0.5.0)
+      monkey-lib (~> 0.5.0)
+      sinatra (~> 1.0)
+    tilt (1.2.2)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  haml
+  mongrel
+  sinatra
+  sinatra-reloader

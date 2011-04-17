@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+$root = File.join(File.dirname(__FILE__), '..')
+$:.unshift File.join($root, 'lib')
+
+require 'nokogiri'
+
+doc = Nokogiri::XML(File.read(ARGV[0]))
+
+doc.xpath('//*[@style and not(@class) and @style != "display:inline"]').each do |e|
+  puts e.name + "##{e['id']} " + e['style'].to_s + " " + e['class'].to_s
+end

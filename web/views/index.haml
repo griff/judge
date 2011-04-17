@@ -1,0 +1,35 @@
+%html
+  %head
+    %script{:src=>"svgweb/src/svg-uncompressed.js", :'data-path'=>"svgweb/src", :'data-debug'=>"true"}
+    %script{:src=>"javascripts/jquery-1.5.2.js"}
+    %script{:src=>"javascripts/jquery.svgweb.js"}
+    %script{:src=>"javascripts/jquery.svgweb.dom.js"}
+    %script{:src=>"javascripts/main-map.js"}
+  %body
+    .content{:style=>'position:relative;margin-left:200px'}
+      .menu{:style=>'position:absolute;left:-200px'}
+        %p Hello world
+        %p
+          %a.map-location{:href=>'#ber'} Berlin
+          %a.order-link{:href=>'#ber - bal', :title=>'Attacks'} ->
+          %a.map-location{:href=>'#bal'} Baltic Sea
+        %input#link
+      .map
+        .controls{:style=>'position:absolute; left:15px; top:25px;-webkit-user-drag:none;-webkit-user-select:none;-moz-user-select:none'}
+          %div{:style=>'overflow:hidden;width:40px;height:76px;-webkit-user-drag:none;-moz-user-select:none'}
+            %img{:src=>'zoom.png', :style=>'position:relative;left:-10px;top:-22px;width:59px; height:100px;-webkit-user-drag:none;-moz-user-select:none'}
+          #zoomIn{:style=>'position:absolute;top:2px;left:8px;height:20px;width:24px;cursor:pointer;-webkit-user-drag:none;-webkit-user-select:none', :title=>'Zoom In'}
+          #zoomFit{:style=>'position:absolute;top:22px;left:3px;height:31px;width:34px;cursor:pointer;-webkit-user-drag:none;-webkit-user-select:none', :title=>'Zoom to Fit'}
+          #zoomOut{:style=>'position:absolute;top:53px;left:8px;height:20px;width:24px;cursor:pointer;-webkit-user-drag:none;-webkit-user-select:none', :title=>'Zoom Out'}
+        <!--[if !IE]>-->
+        %object#map{:data=>"maps/standard-strip.svg", :type=>"image/svg+xml",
+                :width=>'100%', :height=>300, :style=>'-webkit-user-select:none;-moz-user-select:none;'}
+        <!--<![endif]-->
+        <!--[if lt IE 9]>
+        %object#map{:data=>"maps/standard.svg", :classid=>"image/svg+xml",
+                :width=>1152, :height=>965}
+        <![endif]-->
+        <!--[if gte IE 9]>
+        %object#map{:data=>"maps/standard.svg", :type=>"image/svg+xml",
+                :width=>1152, :height=>965}
+        <![endif]-->
